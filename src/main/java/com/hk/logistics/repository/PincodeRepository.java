@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PincodeRepository extends JpaRepository<Pincode, Long>, JpaSpecificationExecutor<Pincode> {
 
+    Pincode findByPincode(String pincode);
+
 }

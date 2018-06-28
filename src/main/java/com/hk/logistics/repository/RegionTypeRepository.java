@@ -1,8 +1,11 @@
 package com.hk.logistics.repository;
 
 import com.hk.logistics.domain.RegionType;
+import com.hk.logistics.domain.SourceDestinationMapping;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 /**

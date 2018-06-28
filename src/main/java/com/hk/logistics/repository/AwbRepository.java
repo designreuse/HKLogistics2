@@ -1,8 +1,13 @@
 package com.hk.logistics.repository;
 
 import com.hk.logistics.domain.Awb;
+import com.hk.logistics.domain.AwbStatus;
+import com.hk.logistics.domain.Channel;
+import com.hk.logistics.domain.VendorWHCourierMapping;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 /**
@@ -11,5 +16,11 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface AwbRepository extends JpaRepository<Awb, Long>, JpaSpecificationExecutor<Awb> {
+
+    List<Awb> findByVendorWHCourierMappingAndCodAndAwbStatus(VendorWHCourierMapping vendorWHCourierMapping, Boolean cod, AwbStatus awbStatus);
+    Awb findByVendorWHCourierMappingAndAwbNumber(VendorWHCourierMapping vendorWHCourierMapping,String awbNumber);
+    Awb findByVendorWHCourierMappingAndAwbNumberAndCod(VendorWHCourierMapping vendorWHCourierMapping,String awbNumber,Boolean isCod);
+    Awb findByAwbNumber(String awbNumber);
+    Awb findByChannelAndAwbNumber(Channel channel, String awbNumber);
 
 }
