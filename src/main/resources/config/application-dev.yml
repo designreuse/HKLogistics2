@@ -32,9 +32,9 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/HKLogistics?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: root
-        password:
+        url: jdbc:mysql://192.168.70.108:3306/hk_logistics?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: hkadmin
+        password: admin2K11!
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -53,12 +53,12 @@ spring:
             hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.BeanClassLoaderAwareJCacheRegionFactory
     data:
         elasticsearch:
-            cluster-name:
-            cluster-nodes: localhost:9300
-            properties:
-                path:
-                    logs: build/elasticsearch/log
-                    data: build/elasticsearch/data
+            cluster-name: elasticsearch-manish30
+            cluster-nodes: 192.168.70.139:9300
+            #properties:
+             #   path:
+              #      logs: build/elasticsearch/log
+               #     data: build/elasticsearch/data
     liquibase:
         contexts: dev
     mail:

@@ -1,6 +1,6 @@
 package com.hk.logistics.service.dto;
 
-import net.minidev.json.JSONValue;
+import org.json.simple.JSONValue;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;

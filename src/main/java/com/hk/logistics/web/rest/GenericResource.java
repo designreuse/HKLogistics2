@@ -246,7 +246,7 @@ public class GenericResource {
     	return awbCourierResponse;
     }
 
-    @PostMapping("/opr/awb/courier")
+    @PostMapping("/opr/awb/courier1")
     @Timed
     public AwbDTO attachAwbForCourier(AwbAttachAPIDto awbAttachAPIDto) throws URISyntaxException {
     	Awb awb=awbService.attachAwb(awbAttachAPIDto);
