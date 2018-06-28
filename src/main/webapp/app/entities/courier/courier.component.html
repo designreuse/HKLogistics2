@@ -1,0 +1,99 @@
+<div>
+    <h2 id="page-heading">
+        <span>Couriers</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-courier" [routerLink]="['/courier/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down" >
+            Create new Courier
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="couriers">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="name"><span>Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="shortCode"><span>Short Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="active"><span>Active</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="trackingParameter"><span>Tracking Parameter</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="trackingUrl"><span>Tracking Url</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="parentCourierId"><span>Parent Courier Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="hkShipping"><span>Hk Shipping</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="vendorShipping"><span>Vendor Shipping</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="reversePickup"><span>Reverse Pickup</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="courierGroupName"><span>Courier Group</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let courier of couriers ;trackBy: trackId">
+                <td><a [routerLink]="['/courier', courier.id, 'view' ]">{{courier.id}}</a></td>
+                <td>{{courier.name}}</td>
+                <td>{{courier.shortCode}}</td>
+                <td>{{courier.active}}</td>
+                <td>{{courier.trackingParameter}}</td>
+                <td>{{courier.trackingUrl}}</td>
+                <td>{{courier.parentCourierId}}</td>
+                <td>{{courier.hkShipping}}</td>
+                <td>{{courier.vendorShipping}}</td>
+                <td>{{courier.reversePickup}}</td>
+                <td>
+                    <div *ngIf="courier.courierGroupId">
+                        <a [routerLink]="['../courier-group', courier.courierGroupId , 'view' ]" >{{courier.courierGroupName}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/courier', courier.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/courier', courier.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'courier/'+ courier.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="couriers && couriers.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

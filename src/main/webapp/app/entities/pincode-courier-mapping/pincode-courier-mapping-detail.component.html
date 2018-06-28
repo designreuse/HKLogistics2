@@ -1,0 +1,97 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="pincodeCourierMapping">
+            <h2><span>Pincode Courier Mapping</span> {{pincodeCourierMapping.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Routing Code</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.routingCode}}</span>
+                </dd>
+                <dt><span>Applicable For Cheapest Courier</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.applicableForCheapestCourier}}</span>
+                </dd>
+                <dt><span>Estimated Delivery Days</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.estimatedDeliveryDays}}</span>
+                </dd>
+                <dt><span>Pickup Available</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.pickupAvailable}}</span>
+                </dd>
+                <dt><span>Prepaid Air</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.prepaidAir}}</span>
+                </dd>
+                <dt><span>Prepaid Ground</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.prepaidGround}}</span>
+                </dd>
+                <dt><span>Cod Air</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.codAir}}</span>
+                </dd>
+                <dt><span>Cod Ground</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.codGround}}</span>
+                </dd>
+                <dt><span>Reverse Air</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.reverseAir}}</span>
+                </dd>
+                <dt><span>Reverse Ground</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.reverseGround}}</span>
+                </dd>
+                <dt><span>Card On Delivery Air</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.cardOnDeliveryAir}}</span>
+                </dd>
+                <dt><span>Card On Delivery Ground</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.cardOnDeliveryGround}}</span>
+                </dd>
+                <dt><span>Delivery Type One</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.deliveryTypeOne}}</span>
+                </dd>
+                <dt><span>Delivery Type Two</span></dt>
+                <dd>
+                    <span>{{pincodeCourierMapping.deliveryTypeTwo}}</span>
+                </dd>
+                <dt><span>Pincode</span></dt>
+                <dd>
+                    <div *ngIf="pincodeCourierMapping.pincodeId">
+                        <a [routerLink]="['/pincode', pincodeCourierMapping.pincodeId, 'view']">{{pincodeCourierMapping.pincodeId}}</a>
+                    </div>
+                </dd>
+                <dt><span>Vendor WH Courier Mapping</span></dt>
+                <dd>
+                    <div *ngIf="pincodeCourierMapping.vendorWHCourierMappingId">
+                        <a [routerLink]="['/vendor-wh-courier-mapping', pincodeCourierMapping.vendorWHCourierMappingId, 'view']">{{pincodeCourierMapping.vendorWHCourierMappingId}}</a>
+                    </div>
+                </dd>
+                <dt><span>Source Destination Mapping</span></dt>
+                <dd>
+                    <div *ngIf="pincodeCourierMapping.sourceDestinationMappingId">
+                        <a [routerLink]="['/source-destination-mapping', pincodeCourierMapping.sourceDestinationMappingId, 'view']">{{pincodeCourierMapping.sourceDestinationMappingId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/pincode-courier-mapping', pincodeCourierMapping.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

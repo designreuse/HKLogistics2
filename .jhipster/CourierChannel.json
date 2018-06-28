@@ -1,0 +1,33 @@
+{
+    "name": "CourierChannel",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "vendorWHCourierMapping",
+            "otherEntityName": "vendorWHCourierMapping",
+            "otherEntityRelationshipName": "courierChannel"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "channel",
+            "otherEntityName": "channel",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "courier",
+            "otherEntityName": "courier",
+            "otherEntityField": "name"
+        }
+    ],
+    "changelogDate": "20180628164148",
+    "entityTableName": "courier_channel",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

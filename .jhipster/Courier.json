@@ -1,0 +1,73 @@
+{
+    "name": "Courier",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "shortCode",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "active",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "trackingParameter",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "trackingUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "parentCourierId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "hkShipping",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "vendorShipping",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "reversePickup",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "courierChannel",
+            "otherEntityName": "courierChannel",
+            "otherEntityRelationshipName": "courier"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "courierGroup",
+            "otherEntityName": "courierGroup",
+            "otherEntityField": "name"
+        }
+    ],
+    "changelogDate": "20180628164150",
+    "entityTableName": "courier",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-pincode-region-zone-heading">Create or edit a Pincode Region Zone</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!pincodeRegionZone.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="pincodeRegionZone.id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_regionType">Region Type</label>
+                    <select class="form-control" id="field_regionType" name="regionType" [(ngModel)]="pincodeRegionZone.regionTypeId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="regionTypeOption.id" *ngFor="let regionTypeOption of regiontypes; trackBy: trackRegionTypeById">{{regionTypeOption.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_courierGroup">Courier Group</label>
+                    <select class="form-control" id="field_courierGroup" name="courierGroup" [(ngModel)]="pincodeRegionZone.courierGroupId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="courierGroupOption.id" *ngFor="let courierGroupOption of couriergroups; trackBy: trackCourierGroupById">{{courierGroupOption.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_sourceDestinationMapping">Source Destination Mapping</label>
+                    <select class="form-control" id="field_sourceDestinationMapping" name="sourceDestinationMapping" [(ngModel)]="pincodeRegionZone.sourceDestinationMappingId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="sourceDestinationMappingOption.id" *ngFor="let sourceDestinationMappingOption of sourcedestinationmappings; trackBy: trackSourceDestinationMappingById">{{sourceDestinationMappingOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

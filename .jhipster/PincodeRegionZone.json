@@ -1,0 +1,33 @@
+{
+    "name": "PincodeRegionZone",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "regionType",
+            "otherEntityName": "regionType",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "courierGroup",
+            "otherEntityName": "courierGroup",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "sourceDestinationMapping",
+            "otherEntityName": "sourceDestinationMapping",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180628164205",
+    "entityTableName": "pincode_region_zone",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

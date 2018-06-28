@@ -1,0 +1,120 @@
+{
+    "name": "PincodeCourierMapping",
+    "fields": [
+        {
+            "fieldName": "routingCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "applicableForCheapestCourier",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "estimatedDeliveryDays",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "pickupAvailable",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "prepaidAir",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "prepaidGround",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "codAir",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "codGround",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "reverseAir",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "reverseGround",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "cardOnDeliveryAir",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "cardOnDeliveryGround",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "deliveryTypeOne",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "deliveryTypeTwo",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "pincode",
+            "otherEntityName": "pincode",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "vendorWHCourierMapping",
+            "otherEntityName": "vendorWHCourierMapping",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "sourceDestinationMapping",
+            "otherEntityName": "sourceDestinationMapping",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180628164204",
+    "entityTableName": "pincode_courier_mapping",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

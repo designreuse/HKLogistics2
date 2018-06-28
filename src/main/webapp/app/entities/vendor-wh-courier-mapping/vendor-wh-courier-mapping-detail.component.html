@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="vendorWHCourierMapping">
+            <h2><span>Vendor WH Courier Mapping</span> {{vendorWHCourierMapping.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Active</span></dt>
+                <dd>
+                    <span>{{vendorWHCourierMapping.active}}</span>
+                </dd>
+                <dt><span>Vendor</span></dt>
+                <dd>
+                    <span>{{vendorWHCourierMapping.vendor}}</span>
+                </dd>
+                <dt><span>Warehouse</span></dt>
+                <dd>
+                    <span>{{vendorWHCourierMapping.warehouse}}</span>
+                </dd>
+                <dt><span>Courier Channel</span></dt>
+                <dd>
+                    <div *ngIf="vendorWHCourierMapping.courierChannelId">
+                        <a [routerLink]="['/courier-channel', vendorWHCourierMapping.courierChannelId, 'view']">{{vendorWHCourierMapping.courierChannelId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/vendor-wh-courier-mapping', vendorWHCourierMapping.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

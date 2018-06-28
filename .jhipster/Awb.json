@@ -1,0 +1,77 @@
+{
+    "name": "Awb",
+    "fields": [
+        {
+            "fieldName": "awbNumber",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "awbBarCode",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "cod",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "createDate",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "returnAwbNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "returnAwbBarCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "isBrightAwb",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "channel",
+            "otherEntityName": "channel",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "vendorWHCourierMapping",
+            "otherEntityName": "vendorWHCourierMapping",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "awbStatus",
+            "otherEntityName": "awbStatus",
+            "otherEntityField": "status"
+        }
+    ],
+    "changelogDate": "20180628164158",
+    "entityTableName": "awb",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

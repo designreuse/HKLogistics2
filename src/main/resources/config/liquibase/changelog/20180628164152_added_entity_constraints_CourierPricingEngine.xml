@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity CourierPricingEngine.
+    -->
+    <changeSet id="20180628164152-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="courier_id"
+                                 baseTableName="courier_pricing_engine"
+                                 constraintName="fk_courier_pricing_engine_courier_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="courier"/>
+
+        <addForeignKeyConstraint baseColumnNames="region_type_id"
+                                 baseTableName="courier_pricing_engine"
+                                 constraintName="fk_courier_pricing_engine_region_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="region_type"/>
+
+    </changeSet>
+</databaseChangeLog>

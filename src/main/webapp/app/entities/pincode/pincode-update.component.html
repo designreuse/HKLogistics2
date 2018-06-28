@@ -1,0 +1,83 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-pincode-heading">Create or edit a Pincode</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!pincode.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="pincode.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_pincode">Pincode</label>
+                    <input type="text" class="form-control" name="pincode" id="field_pincode"
+                        [(ngModel)]="pincode.pincode" required/>
+                    <div [hidden]="!(editForm.controls.pincode?.dirty && editForm.controls.pincode?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.pincode?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_region">Region</label>
+                    <input type="text" class="form-control" name="region" id="field_region"
+                        [(ngModel)]="pincode.region" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_locality">Locality</label>
+                    <input type="text" class="form-control" name="locality" id="field_locality"
+                        [(ngModel)]="pincode.locality" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lastMileCost">Last Mile Cost</label>
+                    <input type="number" class="form-control" name="lastMileCost" id="field_lastMileCost"
+                        [(ngModel)]="pincode.lastMileCost" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_tier">Tier</label>
+                    <input type="text" class="form-control" name="tier" id="field_tier"
+                        [(ngModel)]="pincode.tier" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_city">City</label>
+                    <select class="form-control" id="field_city" name="city" [(ngModel)]="pincode.cityId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="cityOption.id" *ngFor="let cityOption of cities; trackBy: trackCityById">{{cityOption.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_state">State</label>
+                    <select class="form-control" id="field_state" name="state" [(ngModel)]="pincode.stateId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="stateOption.id" *ngFor="let stateOption of states; trackBy: trackStateById">{{stateOption.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_zone">Zone</label>
+                    <select class="form-control" id="field_zone" name="zone" [(ngModel)]="pincode.zoneId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="zoneOption.id" *ngFor="let zoneOption of zones; trackBy: trackZoneById">{{zoneOption.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_hub">Hub</label>
+                    <select class="form-control" id="field_hub" name="hub" [(ngModel)]="pincode.hubId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="hubOption.id" *ngFor="let hubOption of hubs; trackBy: trackHubById">{{hubOption.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

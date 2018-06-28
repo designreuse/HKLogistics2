@@ -1,0 +1,175 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-pincode-courier-mapping-heading">Create or edit a Pincode Courier Mapping</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!pincodeCourierMapping.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="pincodeCourierMapping.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_routingCode">Routing Code</label>
+                    <input type="text" class="form-control" name="routingCode" id="field_routingCode"
+                        [(ngModel)]="pincodeCourierMapping.routingCode" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_applicableForCheapestCourier">Applicable For Cheapest Courier</label>
+                    <input type="checkbox" class="form-control" name="applicableForCheapestCourier" id="field_applicableForCheapestCourier"
+                        [(ngModel)]="pincodeCourierMapping.applicableForCheapestCourier" />
+                    <div [hidden]="!(editForm.controls.applicableForCheapestCourier?.dirty && editForm.controls.applicableForCheapestCourier?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.applicableForCheapestCourier?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_estimatedDeliveryDays">Estimated Delivery Days</label>
+                    <input type="number" class="form-control" name="estimatedDeliveryDays" id="field_estimatedDeliveryDays"
+                        [(ngModel)]="pincodeCourierMapping.estimatedDeliveryDays" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_pickupAvailable">Pickup Available</label>
+                    <input type="checkbox" class="form-control" name="pickupAvailable" id="field_pickupAvailable"
+                        [(ngModel)]="pincodeCourierMapping.pickupAvailable" />
+                    <div [hidden]="!(editForm.controls.pickupAvailable?.dirty && editForm.controls.pickupAvailable?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.pickupAvailable?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_prepaidAir">Prepaid Air</label>
+                    <input type="checkbox" class="form-control" name="prepaidAir" id="field_prepaidAir"
+                        [(ngModel)]="pincodeCourierMapping.prepaidAir" />
+                    <div [hidden]="!(editForm.controls.prepaidAir?.dirty && editForm.controls.prepaidAir?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.prepaidAir?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_prepaidGround">Prepaid Ground</label>
+                    <input type="checkbox" class="form-control" name="prepaidGround" id="field_prepaidGround"
+                        [(ngModel)]="pincodeCourierMapping.prepaidGround" />
+                    <div [hidden]="!(editForm.controls.prepaidGround?.dirty && editForm.controls.prepaidGround?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.prepaidGround?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_codAir">Cod Air</label>
+                    <input type="checkbox" class="form-control" name="codAir" id="field_codAir"
+                        [(ngModel)]="pincodeCourierMapping.codAir" />
+                    <div [hidden]="!(editForm.controls.codAir?.dirty && editForm.controls.codAir?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.codAir?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_codGround">Cod Ground</label>
+                    <input type="checkbox" class="form-control" name="codGround" id="field_codGround"
+                        [(ngModel)]="pincodeCourierMapping.codGround" />
+                    <div [hidden]="!(editForm.controls.codGround?.dirty && editForm.controls.codGround?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.codGround?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_reverseAir">Reverse Air</label>
+                    <input type="checkbox" class="form-control" name="reverseAir" id="field_reverseAir"
+                        [(ngModel)]="pincodeCourierMapping.reverseAir" />
+                    <div [hidden]="!(editForm.controls.reverseAir?.dirty && editForm.controls.reverseAir?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.reverseAir?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_reverseGround">Reverse Ground</label>
+                    <input type="checkbox" class="form-control" name="reverseGround" id="field_reverseGround"
+                        [(ngModel)]="pincodeCourierMapping.reverseGround" />
+                    <div [hidden]="!(editForm.controls.reverseGround?.dirty && editForm.controls.reverseGround?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.reverseGround?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_cardOnDeliveryAir">Card On Delivery Air</label>
+                    <input type="checkbox" class="form-control" name="cardOnDeliveryAir" id="field_cardOnDeliveryAir"
+                        [(ngModel)]="pincodeCourierMapping.cardOnDeliveryAir" />
+                    <div [hidden]="!(editForm.controls.cardOnDeliveryAir?.dirty && editForm.controls.cardOnDeliveryAir?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.cardOnDeliveryAir?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_cardOnDeliveryGround">Card On Delivery Ground</label>
+                    <input type="checkbox" class="form-control" name="cardOnDeliveryGround" id="field_cardOnDeliveryGround"
+                        [(ngModel)]="pincodeCourierMapping.cardOnDeliveryGround" />
+                    <div [hidden]="!(editForm.controls.cardOnDeliveryGround?.dirty && editForm.controls.cardOnDeliveryGround?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.cardOnDeliveryGround?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryTypeOne">Delivery Type One</label>
+                    <input type="checkbox" class="form-control" name="deliveryTypeOne" id="field_deliveryTypeOne"
+                        [(ngModel)]="pincodeCourierMapping.deliveryTypeOne" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_deliveryTypeTwo">Delivery Type Two</label>
+                    <input type="checkbox" class="form-control" name="deliveryTypeTwo" id="field_deliveryTypeTwo"
+                        [(ngModel)]="pincodeCourierMapping.deliveryTypeTwo" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_pincode">Pincode</label>
+                    <select class="form-control" id="field_pincode" name="pincode" [(ngModel)]="pincodeCourierMapping.pincodeId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="pincodeOption.id" *ngFor="let pincodeOption of pincodes; trackBy: trackPincodeById">{{pincodeOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_vendorWHCourierMapping">Vendor WH Courier Mapping</label>
+                    <select class="form-control" id="field_vendorWHCourierMapping" name="vendorWHCourierMapping" [(ngModel)]="pincodeCourierMapping.vendorWHCourierMappingId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="vendorWHCourierMappingOption.id" *ngFor="let vendorWHCourierMappingOption of vendorwhcouriermappings; trackBy: trackVendorWHCourierMappingById">{{vendorWHCourierMappingOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_sourceDestinationMapping">Source Destination Mapping</label>
+                    <select class="form-control" id="field_sourceDestinationMapping" name="sourceDestinationMapping" [(ngModel)]="pincodeCourierMapping.sourceDestinationMappingId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="sourceDestinationMappingOption.id" *ngFor="let sourceDestinationMappingOption of sourcedestinationmappings; trackBy: trackSourceDestinationMappingById">{{sourceDestinationMappingOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

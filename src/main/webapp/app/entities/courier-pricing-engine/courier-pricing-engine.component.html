@@ -1,0 +1,103 @@
+<div>
+    <h2 id="page-heading">
+        <span>Courier Pricing Engines</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-courier-pricing-engine" [routerLink]="['/courier-pricing-engine/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down" >
+            Create new Courier Pricing Engine
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="courierPricingEngines">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>First Base Wt</span></th>
+            <th><span>First Base Cost</span></th>
+            <th><span>Second Base Wt</span></th>
+            <th><span>Second Base Cost</span></th>
+            <th><span>Additional Wt</span></th>
+            <th><span>Additional Cost</span></th>
+            <th><span>Fuel Surcharge</span></th>
+            <th><span>Min Cod Charges</span></th>
+            <th><span>Cod Cutoff Amount</span></th>
+            <th><span>Variable Cod Charges</span></th>
+            <th><span>Valid Upto</span></th>
+            <th><span>Cost Parameters</span></th>
+            <th><span>Courier</span></th>
+            <th><span>Region Type</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let courierPricingEngine of courierPricingEngines ;trackBy: trackId">
+                <td><a [routerLink]="['/courier-pricing-engine', courierPricingEngine.id, 'view' ]">{{courierPricingEngine.id}}</a></td>
+                <td>{{courierPricingEngine.firstBaseWt}}</td>
+                <td>{{courierPricingEngine.firstBaseCost}}</td>
+                <td>{{courierPricingEngine.secondBaseWt}}</td>
+                <td>{{courierPricingEngine.secondBaseCost}}</td>
+                <td>{{courierPricingEngine.additionalWt}}</td>
+                <td>{{courierPricingEngine.additionalCost}}</td>
+                <td>{{courierPricingEngine.fuelSurcharge}}</td>
+                <td>{{courierPricingEngine.minCodCharges}}</td>
+                <td>{{courierPricingEngine.codCutoffAmount}}</td>
+                <td>{{courierPricingEngine.variableCodCharges}}</td>
+                <td>{{courierPricingEngine.validUpto | date:'mediumDate'}}</td>
+                <td>{{courierPricingEngine.costParameters}}</td>
+                <td>
+                    <div *ngIf="courierPricingEngine.courierId">
+                        <a [routerLink]="['../courier', courierPricingEngine.courierId , 'view' ]" >{{courierPricingEngine.courierName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="courierPricingEngine.regionTypeId">
+                        <a [routerLink]="['../region-type', courierPricingEngine.regionTypeId , 'view' ]" >{{courierPricingEngine.regionTypeName}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/courier-pricing-engine', courierPricingEngine.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/courier-pricing-engine', courierPricingEngine.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'courier-pricing-engine/'+ courierPricingEngine.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

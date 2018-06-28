@@ -1,0 +1,67 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="pincode">
+            <h2><span>Pincode</span> {{pincode.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Pincode</span></dt>
+                <dd>
+                    <span>{{pincode.pincode}}</span>
+                </dd>
+                <dt><span>Region</span></dt>
+                <dd>
+                    <span>{{pincode.region}}</span>
+                </dd>
+                <dt><span>Locality</span></dt>
+                <dd>
+                    <span>{{pincode.locality}}</span>
+                </dd>
+                <dt><span>Last Mile Cost</span></dt>
+                <dd>
+                    <span>{{pincode.lastMileCost}}</span>
+                </dd>
+                <dt><span>Tier</span></dt>
+                <dd>
+                    <span>{{pincode.tier}}</span>
+                </dd>
+                <dt><span>City</span></dt>
+                <dd>
+                    <div *ngIf="pincode.cityId">
+                        <a [routerLink]="['/city', pincode.cityId, 'view']">{{pincode.cityName}}</a>
+                    </div>
+                </dd>
+                <dt><span>State</span></dt>
+                <dd>
+                    <div *ngIf="pincode.stateId">
+                        <a [routerLink]="['/state', pincode.stateId, 'view']">{{pincode.stateName}}</a>
+                    </div>
+                </dd>
+                <dt><span>Zone</span></dt>
+                <dd>
+                    <div *ngIf="pincode.zoneId">
+                        <a [routerLink]="['/zone', pincode.zoneId, 'view']">{{pincode.zoneName}}</a>
+                    </div>
+                </dd>
+                <dt><span>Hub</span></dt>
+                <dd>
+                    <div *ngIf="pincode.hubId">
+                        <a [routerLink]="['/hub', pincode.hubId, 'view']">{{pincode.hubName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/pincode', pincode.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

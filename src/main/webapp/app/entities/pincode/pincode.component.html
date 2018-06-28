@@ -1,0 +1,101 @@
+<div>
+    <h2 id="page-heading">
+        <span>Pincodes</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-pincode" [routerLink]="['/pincode/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down" >
+            Create new Pincode
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="pincodes">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Pincode</span></th>
+            <th><span>Region</span></th>
+            <th><span>Locality</span></th>
+            <th><span>Last Mile Cost</span></th>
+            <th><span>Tier</span></th>
+            <th><span>City</span></th>
+            <th><span>State</span></th>
+            <th><span>Zone</span></th>
+            <th><span>Hub</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let pincode of pincodes ;trackBy: trackId">
+                <td><a [routerLink]="['/pincode', pincode.id, 'view' ]">{{pincode.id}}</a></td>
+                <td>{{pincode.pincode}}</td>
+                <td>{{pincode.region}}</td>
+                <td>{{pincode.locality}}</td>
+                <td>{{pincode.lastMileCost}}</td>
+                <td>{{pincode.tier}}</td>
+                <td>
+                    <div *ngIf="pincode.cityId">
+                        <a [routerLink]="['../city', pincode.cityId , 'view' ]" >{{pincode.cityName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="pincode.stateId">
+                        <a [routerLink]="['../state', pincode.stateId , 'view' ]" >{{pincode.stateName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="pincode.zoneId">
+                        <a [routerLink]="['../zone', pincode.zoneId , 'view' ]" >{{pincode.zoneName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="pincode.hubId">
+                        <a [routerLink]="['../hub', pincode.hubId , 'view' ]" >{{pincode.hubName}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/pincode', pincode.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/pincode', pincode.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'pincode/'+ pincode.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="awb">
+            <h2><span>Awb</span> {{awb.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Awb Number</span></dt>
+                <dd>
+                    <span>{{awb.awbNumber}}</span>
+                </dd>
+                <dt><span>Awb Bar Code</span></dt>
+                <dd>
+                    <span>{{awb.awbBarCode}}</span>
+                </dd>
+                <dt><span>Cod</span></dt>
+                <dd>
+                    <span>{{awb.cod}}</span>
+                </dd>
+                <dt><span>Create Date</span></dt>
+                <dd>
+                    <span>{{awb.createDate}}</span>
+                </dd>
+                <dt><span>Return Awb Number</span></dt>
+                <dd>
+                    <span>{{awb.returnAwbNumber}}</span>
+                </dd>
+                <dt><span>Return Awb Bar Code</span></dt>
+                <dd>
+                    <span>{{awb.returnAwbBarCode}}</span>
+                </dd>
+                <dt><span>Is Bright Awb</span></dt>
+                <dd>
+                    <span>{{awb.isBrightAwb}}</span>
+                </dd>
+                <dt><span>Channel</span></dt>
+                <dd>
+                    <div *ngIf="awb.channelId">
+                        <a [routerLink]="['/channel', awb.channelId, 'view']">{{awb.channelName}}</a>
+                    </div>
+                </dd>
+                <dt><span>Vendor WH Courier Mapping</span></dt>
+                <dd>
+                    <div *ngIf="awb.vendorWHCourierMappingId">
+                        <a [routerLink]="['/vendor-wh-courier-mapping', awb.vendorWHCourierMappingId, 'view']">{{awb.vendorWHCourierMappingId}}</a>
+                    </div>
+                </dd>
+                <dt><span>Awb Status</span></dt>
+                <dd>
+                    <div *ngIf="awb.awbStatusId">
+                        <a [routerLink]="['/awb-status', awb.awbStatusId, 'view']">{{awb.awbStatusStatus}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/awb', awb.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

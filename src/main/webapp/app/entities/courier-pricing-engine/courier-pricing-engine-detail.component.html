@@ -1,0 +1,83 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="courierPricingEngine">
+            <h2><span>Courier Pricing Engine</span> {{courierPricingEngine.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>First Base Wt</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.firstBaseWt}}</span>
+                </dd>
+                <dt><span>First Base Cost</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.firstBaseCost}}</span>
+                </dd>
+                <dt><span>Second Base Wt</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.secondBaseWt}}</span>
+                </dd>
+                <dt><span>Second Base Cost</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.secondBaseCost}}</span>
+                </dd>
+                <dt><span>Additional Wt</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.additionalWt}}</span>
+                </dd>
+                <dt><span>Additional Cost</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.additionalCost}}</span>
+                </dd>
+                <dt><span>Fuel Surcharge</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.fuelSurcharge}}</span>
+                </dd>
+                <dt><span>Min Cod Charges</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.minCodCharges}}</span>
+                </dd>
+                <dt><span>Cod Cutoff Amount</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.codCutoffAmount}}</span>
+                </dd>
+                <dt><span>Variable Cod Charges</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.variableCodCharges}}</span>
+                </dd>
+                <dt><span>Valid Upto</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.validUpto}}</span>
+                </dd>
+                <dt><span>Cost Parameters</span></dt>
+                <dd>
+                    <span>{{courierPricingEngine.costParameters}}</span>
+                </dd>
+                <dt><span>Courier</span></dt>
+                <dd>
+                    <div *ngIf="courierPricingEngine.courierId">
+                        <a [routerLink]="['/courier', courierPricingEngine.courierId, 'view']">{{courierPricingEngine.courierName}}</a>
+                    </div>
+                </dd>
+                <dt><span>Region Type</span></dt>
+                <dd>
+                    <div *ngIf="courierPricingEngine.regionTypeId">
+                        <a [routerLink]="['/region-type', courierPricingEngine.regionTypeId, 'view']">{{courierPricingEngine.regionTypeName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/courier-pricing-engine', courierPricingEngine.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,115 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-awb-heading">Create or edit a Awb</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!awb.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="awb.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_awbNumber">Awb Number</label>
+                    <input type="text" class="form-control" name="awbNumber" id="field_awbNumber"
+                        [(ngModel)]="awb.awbNumber" required/>
+                    <div [hidden]="!(editForm.controls.awbNumber?.dirty && editForm.controls.awbNumber?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.awbNumber?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_awbBarCode">Awb Bar Code</label>
+                    <input type="text" class="form-control" name="awbBarCode" id="field_awbBarCode"
+                        [(ngModel)]="awb.awbBarCode" required/>
+                    <div [hidden]="!(editForm.controls.awbBarCode?.dirty && editForm.controls.awbBarCode?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.awbBarCode?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_cod">Cod</label>
+                    <input type="checkbox" class="form-control" name="cod" id="field_cod"
+                        [(ngModel)]="awb.cod" />
+                    <div [hidden]="!(editForm.controls.cod?.dirty && editForm.controls.cod?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.cod?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_createDate">Create Date</label>
+                    <div class="input-group">
+                        <input id="field_createDate" type="text" class="form-control" name="createDate" ngbDatepicker  #createDateDp="ngbDatepicker" [(ngModel)]="awb.createDate"
+                        required/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="createDateDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                    <div [hidden]="!(editForm.controls.createDate?.dirty && editForm.controls.createDate?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.createDate?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_returnAwbNumber">Return Awb Number</label>
+                    <input type="text" class="form-control" name="returnAwbNumber" id="field_returnAwbNumber"
+                        [(ngModel)]="awb.returnAwbNumber" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_returnAwbBarCode">Return Awb Bar Code</label>
+                    <input type="text" class="form-control" name="returnAwbBarCode" id="field_returnAwbBarCode"
+                        [(ngModel)]="awb.returnAwbBarCode" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_isBrightAwb">Is Bright Awb</label>
+                    <input type="checkbox" class="form-control" name="isBrightAwb" id="field_isBrightAwb"
+                        [(ngModel)]="awb.isBrightAwb" />
+                    <div [hidden]="!(editForm.controls.isBrightAwb?.dirty && editForm.controls.isBrightAwb?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.isBrightAwb?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_channel">Channel</label>
+                    <select class="form-control" id="field_channel" name="channel" [(ngModel)]="awb.channelId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="channelOption.id" *ngFor="let channelOption of channels; trackBy: trackChannelById">{{channelOption.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_vendorWHCourierMapping">Vendor WH Courier Mapping</label>
+                    <select class="form-control" id="field_vendorWHCourierMapping" name="vendorWHCourierMapping" [(ngModel)]="awb.vendorWHCourierMappingId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="vendorWHCourierMappingOption.id" *ngFor="let vendorWHCourierMappingOption of vendorwhcouriermappings; trackBy: trackVendorWHCourierMappingById">{{vendorWHCourierMappingOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_awbStatus">Awb Status</label>
+                    <select class="form-control" id="field_awbStatus" name="awbStatus" [(ngModel)]="awb.awbStatusId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="awbStatusOption.id" *ngFor="let awbStatusOption of awbstatuses; trackBy: trackAwbStatusById">{{awbStatusOption.status}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

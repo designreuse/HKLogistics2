@@ -1,0 +1,37 @@
+{
+    "name": "VendorWHCourierMapping",
+    "fields": [
+        {
+            "fieldName": "active",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "vendor",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "warehouse",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "courierChannel",
+            "otherEntityName": "courierChannel",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20180628164156",
+    "entityTableName": "vendor_wh_courier_mapping",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

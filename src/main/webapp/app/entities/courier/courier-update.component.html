@@ -1,0 +1,94 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-courier-heading">Create or edit a Courier</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!courier.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="courier.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                        [(ngModel)]="courier.name" required/>
+                    <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.name?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_shortCode">Short Code</label>
+                    <input type="text" class="form-control" name="shortCode" id="field_shortCode"
+                        [(ngModel)]="courier.shortCode" required/>
+                    <div [hidden]="!(editForm.controls.shortCode?.dirty && editForm.controls.shortCode?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.shortCode?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_active">Active</label>
+                    <input type="checkbox" class="form-control" name="active" id="field_active"
+                        [(ngModel)]="courier.active" />
+                    <div [hidden]="!(editForm.controls.active?.dirty && editForm.controls.active?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.active?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_trackingParameter">Tracking Parameter</label>
+                    <input type="text" class="form-control" name="trackingParameter" id="field_trackingParameter"
+                        [(ngModel)]="courier.trackingParameter" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_trackingUrl">Tracking Url</label>
+                    <input type="text" class="form-control" name="trackingUrl" id="field_trackingUrl"
+                        [(ngModel)]="courier.trackingUrl" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_parentCourierId">Parent Courier Id</label>
+                    <input type="number" class="form-control" name="parentCourierId" id="field_parentCourierId"
+                        [(ngModel)]="courier.parentCourierId" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_hkShipping">Hk Shipping</label>
+                    <input type="checkbox" class="form-control" name="hkShipping" id="field_hkShipping"
+                        [(ngModel)]="courier.hkShipping" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_vendorShipping">Vendor Shipping</label>
+                    <input type="checkbox" class="form-control" name="vendorShipping" id="field_vendorShipping"
+                        [(ngModel)]="courier.vendorShipping" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_reversePickup">Reverse Pickup</label>
+                    <input type="checkbox" class="form-control" name="reversePickup" id="field_reversePickup"
+                        [(ngModel)]="courier.reversePickup" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_courierGroup">Courier Group</label>
+                    <select class="form-control" id="field_courierGroup" name="courierGroup" [(ngModel)]="courier.courierGroupId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="courierGroupOption.id" *ngFor="let courierGroupOption of couriergroups; trackBy: trackCourierGroupById">{{courierGroupOption.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

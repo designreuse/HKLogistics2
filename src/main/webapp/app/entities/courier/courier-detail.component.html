@@ -1,0 +1,65 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="courier">
+            <h2><span>Courier</span> {{courier.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Name</span></dt>
+                <dd>
+                    <span>{{courier.name}}</span>
+                </dd>
+                <dt><span>Short Code</span></dt>
+                <dd>
+                    <span>{{courier.shortCode}}</span>
+                </dd>
+                <dt><span>Active</span></dt>
+                <dd>
+                    <span>{{courier.active}}</span>
+                </dd>
+                <dt><span>Tracking Parameter</span></dt>
+                <dd>
+                    <span>{{courier.trackingParameter}}</span>
+                </dd>
+                <dt><span>Tracking Url</span></dt>
+                <dd>
+                    <span>{{courier.trackingUrl}}</span>
+                </dd>
+                <dt><span>Parent Courier Id</span></dt>
+                <dd>
+                    <span>{{courier.parentCourierId}}</span>
+                </dd>
+                <dt><span>Hk Shipping</span></dt>
+                <dd>
+                    <span>{{courier.hkShipping}}</span>
+                </dd>
+                <dt><span>Vendor Shipping</span></dt>
+                <dd>
+                    <span>{{courier.vendorShipping}}</span>
+                </dd>
+                <dt><span>Reverse Pickup</span></dt>
+                <dd>
+                    <span>{{courier.reversePickup}}</span>
+                </dd>
+                <dt><span>Courier Group</span></dt>
+                <dd>
+                    <div *ngIf="courier.courierGroupId">
+                        <a [routerLink]="['/courier-group', courier.courierGroupId, 'view']">{{courier.courierGroupName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/courier', courier.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

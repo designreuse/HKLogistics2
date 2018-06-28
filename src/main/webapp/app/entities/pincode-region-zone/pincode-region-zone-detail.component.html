@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="pincodeRegionZone">
+            <h2><span>Pincode Region Zone</span> {{pincodeRegionZone.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Region Type</span></dt>
+                <dd>
+                    <div *ngIf="pincodeRegionZone.regionTypeId">
+                        <a [routerLink]="['/region-type', pincodeRegionZone.regionTypeId, 'view']">{{pincodeRegionZone.regionTypeName}}</a>
+                    </div>
+                </dd>
+                <dt><span>Courier Group</span></dt>
+                <dd>
+                    <div *ngIf="pincodeRegionZone.courierGroupId">
+                        <a [routerLink]="['/courier-group', pincodeRegionZone.courierGroupId, 'view']">{{pincodeRegionZone.courierGroupName}}</a>
+                    </div>
+                </dd>
+                <dt><span>Source Destination Mapping</span></dt>
+                <dd>
+                    <div *ngIf="pincodeRegionZone.sourceDestinationMappingId">
+                        <a [routerLink]="['/source-destination-mapping', pincodeRegionZone.sourceDestinationMappingId, 'view']">{{pincodeRegionZone.sourceDestinationMappingId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/pincode-region-zone', pincodeRegionZone.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-product-variant-heading">Create or edit a Product Variant</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!productVariant.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="productVariant.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_variantId">Variant Id</label>
+                    <input type="text" class="form-control" name="variantId" id="field_variantId"
+                        [(ngModel)]="productVariant.variantId" required/>
+                    <div [hidden]="!(editForm.controls.variantId?.dirty && editForm.controls.variantId?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.variantId?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_serviceable">Serviceable</label>
+                    <input type="checkbox" class="form-control" name="serviceable" id="field_serviceable"
+                        [(ngModel)]="productVariant.serviceable" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_pincode">Pincode</label>
+                    <input type="text" class="form-control" name="pincode" id="field_pincode"
+                        [(ngModel)]="productVariant.pincode" />
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

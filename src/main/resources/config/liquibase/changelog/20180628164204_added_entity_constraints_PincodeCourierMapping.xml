@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity PincodeCourierMapping.
+    -->
+    <changeSet id="20180628164204-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="pincode_id"
+                                 baseTableName="pincode_courier_mapping"
+                                 constraintName="fk_pincode_courier_mapping_pincode_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="pincode"/>
+
+        <addForeignKeyConstraint baseColumnNames="vendorwhcourier_mapping_id"
+                                 baseTableName="pincode_courier_mapping"
+                                 constraintName="fk_pincode_courier_mapping_vendorwhcourier_mapping_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="vendor_wh_courier_mapping"/>
+
+        <addForeignKeyConstraint baseColumnNames="source_destination_mapping_id"
+                                 baseTableName="pincode_courier_mapping"
+                                 constraintName="fk_pincode_courier_mapping_source_destination_mapping_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="source_destination_mapping"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,143 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-courier-pricing-engine-heading">Create or edit a Courier Pricing Engine</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!courierPricingEngine.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="courierPricingEngine.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_firstBaseWt">First Base Wt</label>
+                    <input type="number" class="form-control" name="firstBaseWt" id="field_firstBaseWt"
+                        [(ngModel)]="courierPricingEngine.firstBaseWt" required/>
+                    <div [hidden]="!(editForm.controls.firstBaseWt?.dirty && editForm.controls.firstBaseWt?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.firstBaseWt?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.firstBaseWt?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_firstBaseCost">First Base Cost</label>
+                    <input type="number" class="form-control" name="firstBaseCost" id="field_firstBaseCost"
+                        [(ngModel)]="courierPricingEngine.firstBaseCost" required/>
+                    <div [hidden]="!(editForm.controls.firstBaseCost?.dirty && editForm.controls.firstBaseCost?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.firstBaseCost?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.firstBaseCost?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_secondBaseWt">Second Base Wt</label>
+                    <input type="number" class="form-control" name="secondBaseWt" id="field_secondBaseWt"
+                        [(ngModel)]="courierPricingEngine.secondBaseWt" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_secondBaseCost">Second Base Cost</label>
+                    <input type="number" class="form-control" name="secondBaseCost" id="field_secondBaseCost"
+                        [(ngModel)]="courierPricingEngine.secondBaseCost" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_additionalWt">Additional Wt</label>
+                    <input type="number" class="form-control" name="additionalWt" id="field_additionalWt"
+                        [(ngModel)]="courierPricingEngine.additionalWt" required/>
+                    <div [hidden]="!(editForm.controls.additionalWt?.dirty && editForm.controls.additionalWt?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.additionalWt?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.additionalWt?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_additionalCost">Additional Cost</label>
+                    <input type="number" class="form-control" name="additionalCost" id="field_additionalCost"
+                        [(ngModel)]="courierPricingEngine.additionalCost" required/>
+                    <div [hidden]="!(editForm.controls.additionalCost?.dirty && editForm.controls.additionalCost?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.additionalCost?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.additionalCost?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_fuelSurcharge">Fuel Surcharge</label>
+                    <input type="number" class="form-control" name="fuelSurcharge" id="field_fuelSurcharge"
+                        [(ngModel)]="courierPricingEngine.fuelSurcharge" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_minCodCharges">Min Cod Charges</label>
+                    <input type="number" class="form-control" name="minCodCharges" id="field_minCodCharges"
+                        [(ngModel)]="courierPricingEngine.minCodCharges" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_codCutoffAmount">Cod Cutoff Amount</label>
+                    <input type="number" class="form-control" name="codCutoffAmount" id="field_codCutoffAmount"
+                        [(ngModel)]="courierPricingEngine.codCutoffAmount" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_variableCodCharges">Variable Cod Charges</label>
+                    <input type="number" class="form-control" name="variableCodCharges" id="field_variableCodCharges"
+                        [(ngModel)]="courierPricingEngine.variableCodCharges" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_validUpto">Valid Upto</label>
+                    <div class="input-group">
+                        <input id="field_validUpto" type="text" class="form-control" name="validUpto" ngbDatepicker  #validUptoDp="ngbDatepicker" [(ngModel)]="courierPricingEngine.validUpto"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="validUptoDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_costParameters">Cost Parameters</label>
+                    <input type="text" class="form-control" name="costParameters" id="field_costParameters"
+                        [(ngModel)]="courierPricingEngine.costParameters" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_courier">Courier</label>
+                    <select class="form-control" id="field_courier" name="courier" [(ngModel)]="courierPricingEngine.courierId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="courierOption.id" *ngFor="let courierOption of couriers; trackBy: trackCourierById">{{courierOption.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_regionType">Region Type</label>
+                    <select class="form-control" id="field_regionType" name="regionType" [(ngModel)]="courierPricingEngine.regionTypeId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="regionTypeOption.id" *ngFor="let regionTypeOption of regiontypes; trackBy: trackRegionTypeById">{{regionTypeOption.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

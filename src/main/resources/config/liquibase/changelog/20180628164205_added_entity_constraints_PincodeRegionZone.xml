@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity PincodeRegionZone.
+    -->
+    <changeSet id="20180628164205-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="region_type_id"
+                                 baseTableName="pincode_region_zone"
+                                 constraintName="fk_pincode_region_zone_region_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="region_type"/>
+
+        <addForeignKeyConstraint baseColumnNames="courier_group_id"
+                                 baseTableName="pincode_region_zone"
+                                 constraintName="fk_pincode_region_zone_courier_group_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="courier_group"/>
+
+        <addForeignKeyConstraint baseColumnNames="source_destination_mapping_id"
+                                 baseTableName="pincode_region_zone"
+                                 constraintName="fk_pincode_region_zone_source_destination_mapping_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="source_destination_mapping"/>
+
+    </changeSet>
+</databaseChangeLog>

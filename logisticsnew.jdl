@@ -1,0 +1,163 @@
+entity RegionType {
+	name String,
+	priority Long,    
+}
+
+entity CourierChannel {
+}
+
+entity CourierGroup {
+	name String
+}
+
+entity Courier{
+	name String required,
+	shortCode String required,
+	active Boolean required,
+	trackingParameter String,
+    trackingUrl String,
+    parentCourierId Long,
+    hkShipping Boolean,
+    vendorShipping Boolean,
+    reversePickup Boolean
+}
+entity Pincode {
+    pincode String required,
+	region String,
+	locality String,
+    lastMileCost Double,
+    tier String
+}
+entity CourierPricingEngine {
+	firstBaseWt Double required,
+	firstBaseCost Double required,
+    secondBaseWt Double,
+    secondBaseCost Double,
+    additionalWt Double required,
+    additionalCost Double required,
+    fuelSurcharge Double,
+    minCodCharges Double,
+    codCutoffAmount Double,
+    variableCodCharges Double,
+    validUpto LocalDate
+    costParameters String
+}
+// new entity
+entity ProductVariant {
+    variantId String required,
+	serviceable Boolean,
+	pincode String
+}
+// new entity
+entity Channel {
+	name String required,
+	store String required
+}
+
+// new entity
+entity SourceDestinationMapping {
+    sourcePincode String required,
+	destinationPincode String required
+    
+}
+
+// new entity
+entity VendorWHCourierMapping {
+    active Boolean required,
+	vendor String,
+	warehouse Long
+}
+entity AwbStatus {
+	status String
+}
+entity Awb {
+	awbNumber String required,
+    awbBarCode String required,
+    cod Boolean required,
+    createDate LocalDate required,
+    returnAwbNumber String,
+    returnAwbBarCode String,
+    isBrightAwb Boolean required,
+}
+entity City {
+	name String required
+}
+
+entity Country {
+	name String required,
+	countryCode String required
+}
+entity State {
+	name String required,
+	identifier String,
+    unionTerritory Boolean required
+    
+}
+entity Zone {
+	name String required
+    
+}
+entity Hub {
+	name String required,
+	address String,
+    country String    
+}
+
+entity PincodeCourierMapping {
+    routingCode String,
+    applicableForCheapestCourier Boolean required,
+    estimatedDeliveryDays Double,
+    pickupAvailable Boolean required,
+    prepaidAir Boolean required,
+	prepaidGround Boolean required,
+    codAir Boolean required,
+    codGround Boolean required,
+	reverseAir Boolean required,
+    reverseGround Boolean required,
+	cardOnDeliveryAir Boolean required,
+    cardOnDeliveryGround Boolean required,
+    deliveryTypeOne Boolean,
+    deliveryTypeTwo Boolean
+}
+
+entity PincodeRegionZone {
+}
+
+relationship OneToMany {
+  //new relationship
+	CourierChannel{vendorWHCourierMapping} to VendorWHCourierMapping{courierChannel},
+	Channel{courierChannel} to CourierChannel{channel(name)}
+	Courier{courierChannel} to CourierChannel{courier(name)}
+}
+
+relationship ManyToOne {
+    CourierPricingEngine{courier(name)} to Courier,
+    CourierPricingEngine{regionType(name)} to RegionType,
+    Pincode{city(name)} to City,
+    Pincode{state(name)} to State,
+    Pincode{zone(name)} to Zone,
+    Pincode{hub(name)} to Hub{pinCode},
+    PincodeCourierMapping{pincode} to Pincode,
+	//new relationship
+	PincodeCourierMapping{vendorWHCourierMapping} to VendorWHCourierMapping,
+	PincodeCourierMapping{sourceDestinationMapping} to SourceDestinationMapping,
+    PincodeRegionZone{regionType(name)} to RegionType,
+    PincodeRegionZone{courierGroup(name)} to CourierGroup,
+    PincodeRegionZone{sourceDestinationMapping} to SourceDestinationMapping,
+    Awb{channel(name)} to Channel,
+    Awb{vendorWHCourierMapping} to VendorWHCourierMapping,
+    Awb{awbStatus(status)} to AwbStatus,
+	Courier{courierGroup(name)} to CourierGroup{courier(name)}
+}
+
+// Set pagination options
+paginate Courier with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+//angularSuffix * with mySuffix
+
+filter *

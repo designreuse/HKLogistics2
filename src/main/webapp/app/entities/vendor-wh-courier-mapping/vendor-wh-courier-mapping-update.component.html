@@ -1,0 +1,52 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-vendor-wh-courier-mapping-heading">Create or edit a Vendor WH Courier Mapping</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!vendorWHCourierMapping.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="vendorWHCourierMapping.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_active">Active</label>
+                    <input type="checkbox" class="form-control" name="active" id="field_active"
+                        [(ngModel)]="vendorWHCourierMapping.active" />
+                    <div [hidden]="!(editForm.controls.active?.dirty && editForm.controls.active?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.active?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_vendor">Vendor</label>
+                    <input type="text" class="form-control" name="vendor" id="field_vendor"
+                        [(ngModel)]="vendorWHCourierMapping.vendor" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_warehouse">Warehouse</label>
+                    <input type="number" class="form-control" name="warehouse" id="field_warehouse"
+                        [(ngModel)]="vendorWHCourierMapping.warehouse" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_courierChannel">Courier Channel</label>
+                    <select class="form-control" id="field_courierChannel" name="courierChannel" [(ngModel)]="vendorWHCourierMapping.courierChannelId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="courierChannelOption.id" *ngFor="let courierChannelOption of courierchannels; trackBy: trackCourierChannelById">{{courierChannelOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
