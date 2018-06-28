@@ -1,10 +1,10 @@
 <div>
     <h2 id="page-heading">
-        <span>Awbs</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-awb" [routerLink]="['/awb/new']">
+        <span>Shipment Service Types</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-shipment-service-type" [routerLink]="['/shipment-service-type/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create new Awb
+            Create new Shipment Service Type
             </span>
         </button>
     </h2>
@@ -25,67 +25,35 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="awbs">
+    <div class="table-responsive" *ngIf="shipmentServiceTypes">
         <table class="table table-striped">
             <thead>
             <tr>
             <th><span>ID</span></th>
-            <th><span>Awb Number</span></th>
-            <th><span>Awb Bar Code</span></th>
-            <th><span>Cod</span></th>
-            <th><span>Create Date</span></th>
-            <th><span>Return Awb Number</span></th>
-            <th><span>Return Awb Bar Code</span></th>
-            <th><span>Is Bright Awb</span></th>
-            <th><span>Tracking Link</span></th>
-            <th><span>Channel</span></th>
-            <th><span>Vendor WH Courier Mapping</span></th>
-            <th><span>Awb Status</span></th>
+            <th><span>Name</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let awb of awbs ;trackBy: trackId">
-                <td><a [routerLink]="['/awb', awb.id, 'view' ]">{{awb.id}}</a></td>
-                <td>{{awb.awbNumber}}</td>
-                <td>{{awb.awbBarCode}}</td>
-                <td>{{awb.cod}}</td>
-                <td>{{awb.createDate | date:'mediumDate'}}</td>
-                <td>{{awb.returnAwbNumber}}</td>
-                <td>{{awb.returnAwbBarCode}}</td>
-                <td>{{awb.isBrightAwb}}</td>
-                <td>{{awb.trackingLink}}</td>
-                <td>
-                    <div *ngIf="awb.channelId">
-                        <a [routerLink]="['../channel', awb.channelId , 'view' ]" >{{awb.channelName}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="awb.vendorWHCourierMappingId">
-                        <a [routerLink]="['../vendor-wh-courier-mapping', awb.vendorWHCourierMappingId , 'view' ]" >{{awb.vendorWHCourierMappingId}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="awb.awbStatusId">
-                        <a [routerLink]="['../awb-status', awb.awbStatusId , 'view' ]" >{{awb.awbStatusStatus}}</a>
-                    </div>
-                </td>
+            <tr *ngFor="let shipmentServiceType of shipmentServiceTypes ;trackBy: trackId">
+                <td><a [routerLink]="['/shipment-service-type', shipmentServiceType.id, 'view' ]">{{shipmentServiceType.id}}</a></td>
+                <td>{{shipmentServiceType.name}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['/awb', awb.id, 'view' ]"
+                                [routerLink]="['/shipment-service-type', shipmentServiceType.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/awb', awb.id, 'edit']"
+                                [routerLink]="['/shipment-service-type', shipmentServiceType.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'awb/'+ awb.id + '/delete'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'shipment-service-type/'+ shipmentServiceType.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">

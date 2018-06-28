@@ -78,11 +78,14 @@ entity Awb {
     returnAwbNumber String,
     returnAwbBarCode String,
     isBrightAwb Boolean required,
+	trackingLink String
 }
 entity City {
 	name String required
 }
-
+entity ShipmentServiceType {
+	name String required
+}
 entity Country {
 	name String required,
 	countryCode String required

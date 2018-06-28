@@ -74,6 +74,9 @@ public class AwbResourceIntTest {
     private static final Boolean DEFAULT_IS_BRIGHT_AWB = false;
     private static final Boolean UPDATED_IS_BRIGHT_AWB = true;
 
+    private static final String DEFAULT_TRACKING_LINK = "AAAAAAAAAA";
+    private static final String UPDATED_TRACKING_LINK = "BBBBBBBBBB";
+
     @Autowired
     private AwbRepository awbRepository;
 
@@ -137,7 +140,8 @@ public class AwbResourceIntTest {
             .createDate(DEFAULT_CREATE_DATE)
             .returnAwbNumber(DEFAULT_RETURN_AWB_NUMBER)
             .returnAwbBarCode(DEFAULT_RETURN_AWB_BAR_CODE)
-            .isBrightAwb(DEFAULT_IS_BRIGHT_AWB);
+            .isBrightAwb(DEFAULT_IS_BRIGHT_AWB)
+            .trackingLink(DEFAULT_TRACKING_LINK);
         return awb;
     }
 
@@ -169,6 +173,7 @@ public class AwbResourceIntTest {
         assertThat(testAwb.getReturnAwbNumber()).isEqualTo(DEFAULT_RETURN_AWB_NUMBER);
         assertThat(testAwb.getReturnAwbBarCode()).isEqualTo(DEFAULT_RETURN_AWB_BAR_CODE);
         assertThat(testAwb.isIsBrightAwb()).isEqualTo(DEFAULT_IS_BRIGHT_AWB);
+        assertThat(testAwb.getTrackingLink()).isEqualTo(DEFAULT_TRACKING_LINK);
 
         // Validate the Awb in Elasticsearch
         verify(mockAwbSearchRepository, times(1)).save(testAwb);
@@ -309,7 +314,8 @@ public class AwbResourceIntTest {
             .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.toString())))
             .andExpect(jsonPath("$.[*].returnAwbNumber").value(hasItem(DEFAULT_RETURN_AWB_NUMBER.toString())))
             .andExpect(jsonPath("$.[*].returnAwbBarCode").value(hasItem(DEFAULT_RETURN_AWB_BAR_CODE.toString())))
-            .andExpect(jsonPath("$.[*].isBrightAwb").value(hasItem(DEFAULT_IS_BRIGHT_AWB.booleanValue())));
+            .andExpect(jsonPath("$.[*].isBrightAwb").value(hasItem(DEFAULT_IS_BRIGHT_AWB.booleanValue())))
+            .andExpect(jsonPath("$.[*].trackingLink").value(hasItem(DEFAULT_TRACKING_LINK.toString())));
     }
     
 
@@ -330,7 +336,8 @@ public class AwbResourceIntTest {
             .andExpect(jsonPath("$.createDate").value(DEFAULT_CREATE_DATE.toString()))
             .andExpect(jsonPath("$.returnAwbNumber").value(DEFAULT_RETURN_AWB_NUMBER.toString()))
             .andExpect(jsonPath("$.returnAwbBarCode").value(DEFAULT_RETURN_AWB_BAR_CODE.toString()))
-            .andExpect(jsonPath("$.isBrightAwb").value(DEFAULT_IS_BRIGHT_AWB.booleanValue()));
+            .andExpect(jsonPath("$.isBrightAwb").value(DEFAULT_IS_BRIGHT_AWB.booleanValue()))
+            .andExpect(jsonPath("$.trackingLink").value(DEFAULT_TRACKING_LINK.toString()));
     }
 
     @Test
@@ -635,6 +642,45 @@ public class AwbResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllAwbsByTrackingLinkIsEqualToSomething() throws Exception {
+        // Initialize the database
+        awbRepository.saveAndFlush(awb);
+
+        // Get all the awbList where trackingLink equals to DEFAULT_TRACKING_LINK
+        defaultAwbShouldBeFound("trackingLink.equals=" + DEFAULT_TRACKING_LINK);
+
+        // Get all the awbList where trackingLink equals to UPDATED_TRACKING_LINK
+        defaultAwbShouldNotBeFound("trackingLink.equals=" + UPDATED_TRACKING_LINK);
+    }
+
+    @Test
+    @Transactional
+    public void getAllAwbsByTrackingLinkIsInShouldWork() throws Exception {
+        // Initialize the database
+        awbRepository.saveAndFlush(awb);
+
+        // Get all the awbList where trackingLink in DEFAULT_TRACKING_LINK or UPDATED_TRACKING_LINK
+        defaultAwbShouldBeFound("trackingLink.in=" + DEFAULT_TRACKING_LINK + "," + UPDATED_TRACKING_LINK);
+
+        // Get all the awbList where trackingLink equals to UPDATED_TRACKING_LINK
+        defaultAwbShouldNotBeFound("trackingLink.in=" + UPDATED_TRACKING_LINK);
+    }
+
+    @Test
+    @Transactional
+    public void getAllAwbsByTrackingLinkIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        awbRepository.saveAndFlush(awb);
+
+        // Get all the awbList where trackingLink is not null
+        defaultAwbShouldBeFound("trackingLink.specified=true");
+
+        // Get all the awbList where trackingLink is null
+        defaultAwbShouldNotBeFound("trackingLink.specified=false");
+    }
+
+    @Test
+    @Transactional
     public void getAllAwbsByChannelIsEqualToSomething() throws Exception {
         // Initialize the database
         Channel channel = ChannelResourceIntTest.createEntity(em);
@@ -703,7 +749,8 @@ public class AwbResourceIntTest {
             .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.toString())))
             .andExpect(jsonPath("$.[*].returnAwbNumber").value(hasItem(DEFAULT_RETURN_AWB_NUMBER.toString())))
             .andExpect(jsonPath("$.[*].returnAwbBarCode").value(hasItem(DEFAULT_RETURN_AWB_BAR_CODE.toString())))
-            .andExpect(jsonPath("$.[*].isBrightAwb").value(hasItem(DEFAULT_IS_BRIGHT_AWB.booleanValue())));
+            .andExpect(jsonPath("$.[*].isBrightAwb").value(hasItem(DEFAULT_IS_BRIGHT_AWB.booleanValue())))
+            .andExpect(jsonPath("$.[*].trackingLink").value(hasItem(DEFAULT_TRACKING_LINK.toString())));
     }
 
     /**
@@ -744,7 +791,8 @@ public class AwbResourceIntTest {
             .createDate(UPDATED_CREATE_DATE)
             .returnAwbNumber(UPDATED_RETURN_AWB_NUMBER)
             .returnAwbBarCode(UPDATED_RETURN_AWB_BAR_CODE)
-            .isBrightAwb(UPDATED_IS_BRIGHT_AWB);
+            .isBrightAwb(UPDATED_IS_BRIGHT_AWB)
+            .trackingLink(UPDATED_TRACKING_LINK);
         AwbDTO awbDTO = awbMapper.toDto(updatedAwb);
 
         restAwbMockMvc.perform(put("/api/awbs")
@@ -763,6 +811,7 @@ public class AwbResourceIntTest {
         assertThat(testAwb.getReturnAwbNumber()).isEqualTo(UPDATED_RETURN_AWB_NUMBER);
         assertThat(testAwb.getReturnAwbBarCode()).isEqualTo(UPDATED_RETURN_AWB_BAR_CODE);
         assertThat(testAwb.isIsBrightAwb()).isEqualTo(UPDATED_IS_BRIGHT_AWB);
+        assertThat(testAwb.getTrackingLink()).isEqualTo(UPDATED_TRACKING_LINK);
 
         // Validate the Awb in Elasticsearch
         verify(mockAwbSearchRepository, times(1)).save(testAwb);
@@ -829,7 +878,8 @@ public class AwbResourceIntTest {
             .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.toString())))
             .andExpect(jsonPath("$.[*].returnAwbNumber").value(hasItem(DEFAULT_RETURN_AWB_NUMBER.toString())))
             .andExpect(jsonPath("$.[*].returnAwbBarCode").value(hasItem(DEFAULT_RETURN_AWB_BAR_CODE.toString())))
-            .andExpect(jsonPath("$.[*].isBrightAwb").value(hasItem(DEFAULT_IS_BRIGHT_AWB.booleanValue())));
+            .andExpect(jsonPath("$.[*].isBrightAwb").value(hasItem(DEFAULT_IS_BRIGHT_AWB.booleanValue())))
+            .andExpect(jsonPath("$.[*].trackingLink").value(hasItem(DEFAULT_TRACKING_LINK.toString())));
     }
 
     @Test

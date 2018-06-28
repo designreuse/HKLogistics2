@@ -43,6 +43,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "trackingLink",
+            "fieldType": "String"
         }
     ],
     "relationships": [

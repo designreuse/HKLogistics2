@@ -9,6 +9,7 @@ export interface IAwb {
     returnAwbNumber?: string;
     returnAwbBarCode?: string;
     isBrightAwb?: boolean;
+    trackingLink?: string;
     channelName?: string;
     channelId?: number;
     vendorWHCourierMappingId?: number;
@@ -26,6 +27,7 @@ export class Awb implements IAwb {
         public returnAwbNumber?: string,
         public returnAwbBarCode?: string,
         public isBrightAwb?: boolean,
+        public trackingLink?: string,
         public channelName?: string,
         public channelId?: number,
         public vendorWHCourierMappingId?: number,

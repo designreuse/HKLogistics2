@@ -101,6 +101,9 @@ public class AwbQueryService extends QueryService<Awb> {
             if (criteria.getIsBrightAwb() != null) {
                 specification = specification.and(buildSpecification(criteria.getIsBrightAwb(), Awb_.isBrightAwb));
             }
+            if (criteria.getTrackingLink() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTrackingLink(), Awb_.trackingLink));
+            }
             if (criteria.getChannelId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getChannelId(), Awb_.channel, Channel_.id));
             }

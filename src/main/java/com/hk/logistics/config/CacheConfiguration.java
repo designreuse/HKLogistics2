@@ -62,6 +62,7 @@ public class CacheConfiguration {
             cm.createCache(com.hk.logistics.domain.Hub.class.getName() + ".pinCodes", jcacheConfiguration);
             cm.createCache(com.hk.logistics.domain.PincodeCourierMapping.class.getName(), jcacheConfiguration);
             cm.createCache(com.hk.logistics.domain.PincodeRegionZone.class.getName(), jcacheConfiguration);
+            cm.createCache(com.hk.logistics.domain.ShipmentServiceType.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

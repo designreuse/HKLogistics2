@@ -24,6 +24,7 @@
     <include file="config/liquibase/changelog/20180628164203_added_entity_Hub.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180628164204_added_entity_PincodeCourierMapping.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180628164205_added_entity_PincodeRegionZone.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180628171657_added_entity_ShipmentServiceType.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180628164148_added_entity_constraints_CourierChannel.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180628164150_added_entity_constraints_Courier.xml" relativeToChangelogFile="false"/>
