@@ -13,7 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -139,6 +143,41 @@ public class AwbResource {
     public List<AwbDTO> searchAwbs(@RequestParam String query) {
         log.debug("REST request to search Awbs for query {}", query);
         return awbService.search(query);
+    }
+    
+    @GetMapping("/awbs/download")
+    public void handleForexRequest(HttpServletResponse response, AwbCriteria criteria) {
+       // model.addAttribute("Awb", awbQueryService.findByCriteria(criteria));
+        //return "awbExcelView";
+        log.debug("REST Awb download: {}", criteria.getAwbStatusId(), criteria.getVendorWHCourierMappingId());
+        String filepath = "/home/shashankshukla/shashank/Sample-File.xlsx";
+
+
+        try {
+            FileInputStream file = new FileInputStream(filepath);
+            // Set the content type and attachment header.
+            response.addHeader("Content-disposition", "attachment;filename=Sample-File.xlsx");
+            response.setContentType("application/vnd.ms-excel");
+
+            // get your file as InputStream
+            InputStream is = file;
+            // copy it to response's OutputStream
+            org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
+            response.flushBuffer();
+        } catch (Exception ex) {
+            log.info("Error writing file to output stream. Filename was '{}'", ex);
+            String responseToClient= ex.getMessage();
+            try {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write(responseToClient);
+                response.getWriter().flush();
+                response.getWriter().close();
+            }catch (Exception e){
+                throw new RuntimeException("IOError writing file to output stream");
+            }
+
+        }
+
     }
 
 }

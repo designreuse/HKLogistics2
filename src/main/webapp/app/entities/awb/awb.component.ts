@@ -25,7 +25,7 @@ export class AwbComponent implements OnInit, OnDestroy {
     filterOptions: String[];
     awbstatuses: IAwbStatus[];
     awbStatus: IAwbStatus;
-    courierGroup: ICourier;
+    courier: ICourier;
 
     constructor(
         private awbService: AwbService,
@@ -109,8 +109,8 @@ export class AwbComponent implements OnInit, OnDestroy {
             this.currentAccount = account;
         });
         this.registerChangeInAwbs();
-        this.awbStatus=null;
-        this.courierGroup=null;
+        this.awbStatus = null;
+        this.courier = null;
     }
 
     ngOnDestroy() {
@@ -142,12 +142,12 @@ export class AwbComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
     downloadFileFromServer() {
-        console.log(this.courierGroup,this.awbStatus);
-        if(this.courierGroup == null || this.awbStatus == null){
-            alert("Please Select Filters First");
-        }else{
-            this.awbService.downloadFile(this.courierGroup,this.awbStatus);
+        console.log( this.courier, this.awbStatus );
+        if (this.courier == null || this.awbStatus == null) {
+            alert( 'Please Select Filters First' );
+        } else {
+            this.awbService.downloadFile(this.courier, this.awbStatus);
         }
-        return;
+        return ;
     }
 }
