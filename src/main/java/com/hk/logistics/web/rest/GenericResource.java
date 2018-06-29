@@ -226,7 +226,7 @@ public class GenericResource {
         return new Gson().toJson(healthkartResponse);
     }
 
-    @GetMapping("/storeOrder/availability")
+    @PostMapping("/storeOrder/availability")
     public StoreVariantAPIObj getVariantServiceabilityDetails(VariantServiceabilityRequest variantServiceabilityRequest) {
     	StoreVariantAPIObj storeVariantAPIObj=variantService.getVariantServiceabilityDetails(variantServiceabilityRequest);
     	return storeVariantAPIObj;
