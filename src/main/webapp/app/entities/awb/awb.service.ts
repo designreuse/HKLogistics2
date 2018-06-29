@@ -7,6 +7,10 @@ import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { IAwb } from 'app/shared/model/awb.model';
+import { TagContentType } from '@angular/compiler';
+
+import { ICourier } from 'app/shared/model/courier.model';
+import { IAwbStatus } from 'app/shared/model/awb-status.model';
 
 type EntityResponseType = HttpResponse<IAwb>;
 type EntityArrayResponseType = HttpResponse<IAwb[]>;
@@ -15,6 +19,7 @@ type EntityArrayResponseType = HttpResponse<IAwb[]>;
 export class AwbService {
     private resourceUrl = SERVER_API_URL + 'api/awbs';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/awbs';
+    private downloadUrl = SERVER_API_URL + 'api/awbs/download';
 
     constructor(private http: HttpClient) {}
 
@@ -74,4 +79,44 @@ export class AwbService {
         });
         return res;
     }
+
+    downloadFile(courierGroup: ICourier, awbStatus: IAwbStatus) {
+        const finalUrl = this.downloadUrl+ "/?courierId.equals="+courierGroup.id+"&awbStatusId.equals="+awbStatus.id;
+        const fileType =".xlsx"
+        const filename ="courier-awb-status" + fileType;
+        console.log('downloadFile Service Called ' + finalUrl);
+        return this.http
+            .get(finalUrl, {
+                responseType: "blob"
+            })
+            .map(res => {
+                return {
+                    filename: filename,
+                    data: res
+                };
+            })
+            .subscribe(res => {
+                const url = window.URL.createObjectURL(res.data);
+                const a = document.createElement('a');
+                document.body.appendChild(a);
+                a.setAttribute('style', 'display: none');
+                a.href = url;
+                a.download = res.filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove(); // remove the element
+            }, error => {
+                console.log(error)
+                alert(error.message);
+            }, () => {
+                console.log('Completed file download.')
+            });
+    }
+
+    filter(req?: any): Observable<HttpResponse<any> {
+        console.log('req.filter');
+        const options = createRequestOption(req);
+        return this.http.get<any>(this.resourceUrl + '/download' , { params: options, observe: 'response' });
+    }
 }
+
