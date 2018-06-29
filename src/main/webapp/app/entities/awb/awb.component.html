@@ -11,8 +11,8 @@
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-6">Courier Group
-            <select [(ngModel)]="courierGroup" class="form-control">
-                <option option value="null" disabled selected>Select Courier Group</option>
+            <select [(ngModel)]="courier" class="form-control">
+                <option option value="null" disabled selected>Select Courier</option>
                 <option [ngValue]="courierOption" *ngFor="let courierOption of couriers; trackBy: trackCourierById">{{courierOption.name}}</option>
             </select>
         </div>
