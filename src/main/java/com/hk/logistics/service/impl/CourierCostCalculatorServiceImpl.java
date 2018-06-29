@@ -185,7 +185,7 @@ public class CourierCostCalculatorServiceImpl implements CourierCostCalculatorSe
 			}
 			String vendor= VendorService.vendorShortCodes.get(vendorCode)!=null?vendorCode:null;
 			CourierChannel courierChannel=courierChannelRepository.findByCourierAndChannel(courier,channel1);
-			VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndCourierChannelAndActive(vendor, courierChannel, true);
+			VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndCourierAndActive(vendor, courierChannel.getCourier(), true);
 			Awb awb = awbService.getAvailableAwbByVendorWHCourierMappingAndCodAndAwbStatus(vendorWHCourierMapping, cod, EnumAwbStatus.Unused.getAsAwbStatus());
 			if (awb != null) {
 				awb.setAwbStatus(EnumAwbStatus.Used.getAsAwbStatus());

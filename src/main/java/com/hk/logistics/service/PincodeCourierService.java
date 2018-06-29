@@ -28,7 +28,7 @@ public interface PincodeCourierService {
                                                       boolean isReversePickup, boolean checkForCardOnDelivery);
 
 	List<VendorWHCourierMapping> getVendorWHMappings(List<Long> warehouses, String vendor,
-                                                     List<CourierChannel> courierChannels, Boolean isHkFulfilled);
+                                                     List<Courier> couriers, Boolean isHkFulfilled);
 
 	List<CourierChannel> getAllCourierListForStoreAndChannel(String storeId, String channelName);
 

@@ -166,7 +166,7 @@ public class AwbServiceImpl implements AwbService {
             vendor, awbAttachAPIDto.getProductVariantId(), null);
         Channel channel=channelRepository.findByNameAndStore(awbAttachAPIDto.getChannel(), awbAttachAPIDto.getStore());
         CourierChannel courierChannel=courierChannelRepository.findByCourierAndChannel(couriers.get(0),channel);
-        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByWarehouseAndCourierChannelAndActive(warehouse, courierChannel, true);
+        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByWarehouseAndCourierAndActive(warehouse, courierChannel.getCourier(), true);
         Awb awb=attachAwbForShipment(couriers.get(0), courierChannel, vendorWHCourierMapping, awbAttachAPIDto.isCod());
         return awb;//:TODO CardoN Delivery logic
     }
@@ -262,7 +262,7 @@ public class AwbServiceImpl implements AwbService {
         Channel channel=channelRepository.findByNameAndStore(awbChangeAPIDto.getChannel(), awbChangeAPIDto.getStore());
         CourierChannel courierChannel=courierChannelRepository.findByCourierAndChannel(courier, channel);
         Long warehouse=Long.parseLong(awbChangeAPIDto.getWarehouseId());
-        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierChannelAndActive(null,warehouse, courierChannel, true);
+        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierAndActive(null,warehouse, courierChannel.getCourier(), true);
         Awb suggestedAwb = attachAwbForShipment(courier, courierChannel, vendorWHCourierMapping ,true);
         if (suggestedAwb != null) {
             //shipment.setAwb(suggestedAwb);
@@ -283,7 +283,7 @@ public class AwbServiceImpl implements AwbService {
         Courier courier=courierRepository.findByShortCode(awbChangeAPIDto.getCourierName());
         CourierChannel courierChannel=courierChannelRepository.findByCourierAndChannel(courier, channel);
         WarehouseDTO warehouse=WarehouseService.warehouseMap.get(awbChangeAPIDto.getWarehouseId());
-        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierChannelAndActive(null,warehouse.getId(), courierChannel, true);
+        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierAndActive(null,warehouse.getId(), courierChannel.getCourier(), true);
         Awb awb=awbRepository.findByChannelAndAwbNumber(channel,awbChangeAPIDto.getNewAwbNumber());
         awb.setAwbStatus(EnumAwbStatus.Used.getAsAwbStatus());
         awbRepository.save(awb);
@@ -299,7 +299,7 @@ public class AwbServiceImpl implements AwbService {
         Channel channel=channelRepository.findByNameAndStore(brightChangeCourierRequest.getChannel(), brightChangeCourierRequest.getStore());
         CourierChannel courierChannel=courierChannelRepository.findByCourierAndChannel(courier,channel);
         Long warehouse=warehouseService.getWarehouseCodeByFulfillmentCentreCode(brightChangeCourierRequest.getWarehouseFcCode());
-        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierChannelAndActive(null,warehouse, courierChannel, true);
+        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierAndActive(null,warehouse, courierChannel.getCourier(), true);
         Awb awb=awbService.attachAwbForShipment(courier,courierChannel, vendorWHCourierMapping ,(Boolean)brightChangeCourierRequest.isCod());
         if(brightChangeCourierRequest.getOldAwbNumberToPreserve()!=null){
             Awb oldAwb=awbRepository.findByVendorWHCourierMappingAndAwbNumber(vendorWHCourierMapping, brightChangeCourierRequest.getOldAwbNumberToPreserve());
@@ -314,7 +314,7 @@ public class AwbServiceImpl implements AwbService {
         Courier courier = courierRepository.findByShortCode(courierShortCode);
         Channel channel2=channelRepository.findByNameAndStore(channel,store);
         CourierChannel courierChannel=courierChannelRepository.findByCourierAndChannel(courier, channel2);
-        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierChannelAndActive(vendorCode,warehouse, courierChannel, true);
+        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierAndActive(vendorCode,warehouse, courierChannel.getCourier(), true);
         String msg=null;
         if(courierChannel != null){
             Awb awb = awbRepository.findByVendorWHCourierMappingAndAwbNumber(vendorWHCourierMapping,awbNumber);
@@ -336,7 +336,7 @@ public class AwbServiceImpl implements AwbService {
         Channel channel=channelRepository.findByNameAndStore(channelName, store);
         CourierChannel courierChannel=courierChannelRepository.findByCourierAndChannel(courier,channel);
         Long warehouse=warehouseService.getWarehouseCodeByFulfillmentCentreCode(fulfillmentCentreCode);
-        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierChannelAndActive(null,warehouse, courierChannel, true);
+        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierAndActive(null,warehouse, courierChannel.getCourier(), true);
         Awb awb = awbRepository.findByVendorWHCourierMappingAndAwbNumberAndCod(vendorWHCourierMapping,awbNumber, Boolean.parseBoolean(isCod));
         return awb;
     }
@@ -346,7 +346,7 @@ public class AwbServiceImpl implements AwbService {
         Channel channel=channelRepository.findByNameAndStore(channelName, store);
         CourierChannel courierChannel=courierChannelRepository.findByCourierAndChannel(courier,channel);
         Long warehouse=warehouseService.getWarehouseCodeByFulfillmentCentreCode(fulfillmentCentreCode);
-        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierChannelAndActive(null,warehouse, courierChannel, true);
+        VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierAndActive(null,warehouse, courierChannel.getCourier(), true);
         if(com.mysql.jdbc.StringUtils.isNullOrEmpty(isCod)){
             Awb awb = awbRepository.findByVendorWHCourierMappingAndAwbNumber(vendorWHCourierMapping,awbNumber);
             return awb;

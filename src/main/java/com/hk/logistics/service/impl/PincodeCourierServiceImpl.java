@@ -67,8 +67,12 @@ public class PincodeCourierServiceImpl implements PincodeCourierService {
 		if(vendor!=null){
 			Channel channel1=channelRepository.findByNameAndStore(channel, store);
 			List<CourierChannel> courierChannels=courierChannelRepository.findByChannel(channel1);
+			List<Courier> couriers=new ArrayList<>();
+			for(CourierChannel courierChannel:courierChannels){
+				couriers.add(courierChannel.getCourier());
+			}
 			if(courierChannels!=null){
-				List<VendorWHCourierMapping> vendorWHCourierMappings=getVendorWHMappings(warehouses,vendor,courierChannels, isHkFulfilled);
+				List<VendorWHCourierMapping> vendorWHCourierMappings=getVendorWHMappings(warehouses,vendor,couriers, isHkFulfilled);
 				if(vendorWHCourierMappings!=null){
 					if(vendorWHCourierMappings!=null){
 						List<PincodeCourierMapping> pincodeCourierMappings=getListOfPincodeCourierMappingOnShipmentServiceType(shipmentServiceTypes,sourceDestinationMapping,vendorWHCourierMappings);
@@ -85,8 +89,12 @@ public class PincodeCourierServiceImpl implements PincodeCourierService {
 		if(vendor!=null){
 			Channel channel1=channelRepository.findByNameAndStore(channel, null);
 			List<CourierChannel> courierChannels=courierChannelRepository.findByChannel(channel1);
+			List<Courier> couriers=new ArrayList<>();
+			for(CourierChannel courierChannel:courierChannels){
+				couriers.add(courierChannel.getCourier());
+			}
 			if(courierChannels!=null){
-				List<VendorWHCourierMapping> vendorWHCourierMappings=getVendorWHMappings(warehouses,vendor,courierChannels, isHkFulfilled);
+				List<VendorWHCourierMapping> vendorWHCourierMappings=getVendorWHMappings(warehouses,vendor,couriers, isHkFulfilled);
 				if(vendorWHCourierMappings!=null){
 					List<PincodeCourierMapping> pincodeCourierMappings=getListOfPincodeCourierMappingOnShipmentServiceType(shipmentServiceType,sourceDestinationMapping,vendorWHCourierMappings);
 					return pincodeCourierMappings;
@@ -190,13 +198,13 @@ public class PincodeCourierServiceImpl implements PincodeCourierService {
 		}
 	}
 
-	public List<VendorWHCourierMapping> getVendorWHMappings(List<Long> warehouses, String vendor, List<CourierChannel> courierChannels, Boolean isHkFulfilled){
+	public List<VendorWHCourierMapping> getVendorWHMappings(List<Long> warehouses, String vendor, List<Courier> couriers, Boolean isHkFulfilled){
 		List<VendorWHCourierMapping> vendorWHCourierMappings=new ArrayList<VendorWHCourierMapping>();
 		if(isHkFulfilled){
-			vendorWHCourierMappings=vendorWHCourierMappingRepository.findByWarehouseInAndCourierChannelInAndActive(warehouses, courierChannels, true);
+			vendorWHCourierMappings=vendorWHCourierMappingRepository.findByWarehouseInAndCourierInAndActive(warehouses, couriers, true);
 		}
 		else{
-			vendorWHCourierMappings=vendorWHCourierMappingRepository.findByVendorAndCourierChannelInAndActive(vendor, courierChannels,true);
+			vendorWHCourierMappings=vendorWHCourierMappingRepository.findByVendorAndCourierInAndActive(vendor, couriers,true);
 		}
 		return vendorWHCourierMappings;
 	}
