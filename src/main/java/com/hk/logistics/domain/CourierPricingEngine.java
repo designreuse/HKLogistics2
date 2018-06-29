@@ -41,6 +41,12 @@ public class CourierPricingEngine implements Serializable {
     @Column(name = "second_base_cost")
     private Double secondBaseCost;
 
+    @Column(name = "third_base_wt")
+    private Double thirdBaseWt;
+
+    @Column(name = "third_base_cost")
+    private Double thirdBaseCost;
+
     @NotNull
     @Column(name = "additional_wt", nullable = false)
     private Double additionalWt;
@@ -134,6 +140,32 @@ public class CourierPricingEngine implements Serializable {
 
     public void setSecondBaseCost(Double secondBaseCost) {
         this.secondBaseCost = secondBaseCost;
+    }
+
+    public Double getThirdBaseWt() {
+        return thirdBaseWt;
+    }
+
+    public CourierPricingEngine thirdBaseWt(Double thirdBaseWt) {
+        this.thirdBaseWt = thirdBaseWt;
+        return this;
+    }
+
+    public void setThirdBaseWt(Double thirdBaseWt) {
+        this.thirdBaseWt = thirdBaseWt;
+    }
+
+    public Double getThirdBaseCost() {
+        return thirdBaseCost;
+    }
+
+    public CourierPricingEngine thirdBaseCost(Double thirdBaseCost) {
+        this.thirdBaseCost = thirdBaseCost;
+        return this;
+    }
+
+    public void setThirdBaseCost(Double thirdBaseCost) {
+        this.thirdBaseCost = thirdBaseCost;
     }
 
     public Double getAdditionalWt() {
@@ -295,6 +327,8 @@ public class CourierPricingEngine implements Serializable {
             ", firstBaseCost=" + getFirstBaseCost() +
             ", secondBaseWt=" + getSecondBaseWt() +
             ", secondBaseCost=" + getSecondBaseCost() +
+            ", thirdBaseWt=" + getThirdBaseWt() +
+            ", thirdBaseCost=" + getThirdBaseCost() +
             ", additionalWt=" + getAdditionalWt() +
             ", additionalCost=" + getAdditionalCost() +
             ", fuelSurcharge=" + getFuelSurcharge() +

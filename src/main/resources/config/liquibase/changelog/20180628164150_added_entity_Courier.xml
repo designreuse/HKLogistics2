@@ -34,14 +34,6 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="tracking_parameter" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="tracking_url" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
             <column name="parent_courier_id" type="bigint">
                 <constraints nullable="true" />
             </column>

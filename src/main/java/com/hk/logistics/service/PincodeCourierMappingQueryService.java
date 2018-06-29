@@ -122,9 +122,6 @@ public class PincodeCourierMappingQueryService extends QueryService<PincodeCouri
             if (criteria.getDeliveryTypeTwo() != null) {
                 specification = specification.and(buildSpecification(criteria.getDeliveryTypeTwo(), PincodeCourierMapping_.deliveryTypeTwo));
             }
-            if (criteria.getPincodeId() != null) {
-                specification = specification.and(buildReferringEntitySpecification(criteria.getPincodeId(), PincodeCourierMapping_.pincode, Pincode_.id));
-            }
             if (criteria.getVendorWHCourierMappingId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getVendorWHCourierMappingId(), PincodeCourierMapping_.vendorWHCourierMapping, VendorWHCourierMapping_.id));
             }

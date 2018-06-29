@@ -49,10 +49,6 @@ public class Awb implements Serializable {
     @Column(name = "return_awb_bar_code")
     private String returnAwbBarCode;
 
-    @NotNull
-    @Column(name = "is_bright_awb", nullable = false)
-    private Boolean isBrightAwb;
-
     @Column(name = "tracking_link")
     private String trackingLink;
 
@@ -155,19 +151,6 @@ public class Awb implements Serializable {
         this.returnAwbBarCode = returnAwbBarCode;
     }
 
-    public Boolean isIsBrightAwb() {
-        return isBrightAwb;
-    }
-
-    public Awb isBrightAwb(Boolean isBrightAwb) {
-        this.isBrightAwb = isBrightAwb;
-        return this;
-    }
-
-    public void setIsBrightAwb(Boolean isBrightAwb) {
-        this.isBrightAwb = isBrightAwb;
-    }
-
     public String getTrackingLink() {
         return trackingLink;
     }
@@ -251,7 +234,6 @@ public class Awb implements Serializable {
             ", createDate='" + getCreateDate() + "'" +
             ", returnAwbNumber='" + getReturnAwbNumber() + "'" +
             ", returnAwbBarCode='" + getReturnAwbBarCode() + "'" +
-            ", isBrightAwb='" + isIsBrightAwb() + "'" +
             ", trackingLink='" + getTrackingLink() + "'" +
             "}";
     }

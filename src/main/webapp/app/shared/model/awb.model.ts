@@ -8,7 +8,6 @@ export interface IAwb {
     createDate?: Moment;
     returnAwbNumber?: string;
     returnAwbBarCode?: string;
-    isBrightAwb?: boolean;
     trackingLink?: string;
     channelName?: string;
     channelId?: number;
@@ -26,7 +25,6 @@ export class Awb implements IAwb {
         public createDate?: Moment,
         public returnAwbNumber?: string,
         public returnAwbBarCode?: string,
-        public isBrightAwb?: boolean,
         public trackingLink?: string,
         public channelName?: string,
         public channelId?: number,
@@ -35,6 +33,5 @@ export class Awb implements IAwb {
         public awbStatusId?: number
     ) {
         this.cod = false;
-        this.isBrightAwb = false;
     }
 }

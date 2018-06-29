@@ -36,7 +36,6 @@
             <th><span>Create Date</span></th>
             <th><span>Return Awb Number</span></th>
             <th><span>Return Awb Bar Code</span></th>
-            <th><span>Is Bright Awb</span></th>
             <th><span>Tracking Link</span></th>
             <th><span>Channel</span></th>
             <th><span>Vendor WH Courier Mapping</span></th>
@@ -53,7 +52,6 @@
                 <td>{{awb.createDate | date:'mediumDate'}}</td>
                 <td>{{awb.returnAwbNumber}}</td>
                 <td>{{awb.returnAwbBarCode}}</td>
-                <td>{{awb.isBrightAwb}}</td>
                 <td>{{awb.trackingLink}}</td>
                 <td>
                     <div *ngIf="awb.channelId">

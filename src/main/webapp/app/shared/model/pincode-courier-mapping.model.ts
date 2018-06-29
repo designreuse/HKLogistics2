@@ -14,7 +14,6 @@ export interface IPincodeCourierMapping {
     cardOnDeliveryGround?: boolean;
     deliveryTypeOne?: boolean;
     deliveryTypeTwo?: boolean;
-    pincodeId?: number;
     vendorWHCourierMappingId?: number;
     sourceDestinationMappingId?: number;
 }
@@ -36,7 +35,6 @@ export class PincodeCourierMapping implements IPincodeCourierMapping {
         public cardOnDeliveryGround?: boolean,
         public deliveryTypeOne?: boolean,
         public deliveryTypeTwo?: boolean,
-        public pincodeId?: number,
         public vendorWHCourierMappingId?: number,
         public sourceDestinationMappingId?: number
     ) {

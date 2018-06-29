@@ -23,14 +23,6 @@
             ]
         },
         {
-            "fieldName": "trackingParameter",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "trackingUrl",
-            "fieldType": "String"
-        },
-        {
             "fieldName": "parentCourierId",
             "fieldType": "Long"
         },

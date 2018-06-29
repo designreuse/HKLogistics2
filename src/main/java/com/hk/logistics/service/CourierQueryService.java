@@ -89,12 +89,6 @@ public class CourierQueryService extends QueryService<Courier> {
             if (criteria.getActive() != null) {
                 specification = specification.and(buildSpecification(criteria.getActive(), Courier_.active));
             }
-            if (criteria.getTrackingParameter() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getTrackingParameter(), Courier_.trackingParameter));
-            }
-            if (criteria.getTrackingUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getTrackingUrl(), Courier_.trackingUrl));
-            }
             if (criteria.getParentCourierId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getParentCourierId(), Courier_.parentCourierId));
             }

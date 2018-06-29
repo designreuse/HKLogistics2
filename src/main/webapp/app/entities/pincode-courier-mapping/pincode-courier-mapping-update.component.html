@@ -141,13 +141,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" for="field_pincode">Pincode</label>
-                    <select class="form-control" id="field_pincode" name="pincode" [(ngModel)]="pincodeCourierMapping.pincodeId" >
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="pincodeOption.id" *ngFor="let pincodeOption of pincodes; trackBy: trackPincodeById">{{pincodeOption.id}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
                     <label class="form-control-label" for="field_vendorWHCourierMapping">Vendor WH Courier Mapping</label>
                     <select class="form-control" id="field_vendorWHCourierMapping" name="vendorWHCourierMapping" [(ngModel)]="pincodeCourierMapping.vendorWHCourierMappingId" >
                         <option [ngValue]="null"></option>

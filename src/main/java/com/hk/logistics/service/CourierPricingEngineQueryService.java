@@ -92,6 +92,12 @@ public class CourierPricingEngineQueryService extends QueryService<CourierPricin
             if (criteria.getSecondBaseCost() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getSecondBaseCost(), CourierPricingEngine_.secondBaseCost));
             }
+            if (criteria.getThirdBaseWt() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getThirdBaseWt(), CourierPricingEngine_.thirdBaseWt));
+            }
+            if (criteria.getThirdBaseCost() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getThirdBaseCost(), CourierPricingEngine_.thirdBaseCost));
+            }
             if (criteria.getAdditionalWt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getAdditionalWt(), CourierPricingEngine_.additionalWt));
             }

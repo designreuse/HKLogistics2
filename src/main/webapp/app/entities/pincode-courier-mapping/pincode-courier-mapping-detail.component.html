@@ -61,12 +61,6 @@
                 <dd>
                     <span>{{pincodeCourierMapping.deliveryTypeTwo}}</span>
                 </dd>
-                <dt><span>Pincode</span></dt>
-                <dd>
-                    <div *ngIf="pincodeCourierMapping.pincodeId">
-                        <a [routerLink]="['/pincode', pincodeCourierMapping.pincodeId, 'view']">{{pincodeCourierMapping.pincodeId}}</a>
-                    </div>
-                </dd>
                 <dt><span>Vendor WH Courier Mapping</span></dt>
                 <dd>
                     <div *ngIf="pincodeCourierMapping.vendorWHCourierMappingId">

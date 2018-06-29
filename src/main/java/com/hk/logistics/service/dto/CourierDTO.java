@@ -20,10 +20,6 @@ public class CourierDTO implements Serializable {
     @NotNull
     private Boolean active;
 
-    private String trackingParameter;
-
-    private String trackingUrl;
-
     private Long parentCourierId;
 
     private Boolean hkShipping;
@@ -66,22 +62,6 @@ public class CourierDTO implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public String getTrackingParameter() {
-        return trackingParameter;
-    }
-
-    public void setTrackingParameter(String trackingParameter) {
-        this.trackingParameter = trackingParameter;
-    }
-
-    public String getTrackingUrl() {
-        return trackingUrl;
-    }
-
-    public void setTrackingUrl(String trackingUrl) {
-        this.trackingUrl = trackingUrl;
     }
 
     public Long getParentCourierId() {
@@ -160,8 +140,6 @@ public class CourierDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", shortCode='" + getShortCode() + "'" +
             ", active='" + isActive() + "'" +
-            ", trackingParameter='" + getTrackingParameter() + "'" +
-            ", trackingUrl='" + getTrackingUrl() + "'" +
             ", parentCourierId=" + getParentCourierId() +
             ", hkShipping='" + isHkShipping() + "'" +
             ", vendorShipping='" + isVendorShipping() + "'" +

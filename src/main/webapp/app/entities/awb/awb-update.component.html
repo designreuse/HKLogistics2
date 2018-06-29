@@ -69,17 +69,6 @@
                         [(ngModel)]="awb.returnAwbBarCode" />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" for="field_isBrightAwb">Is Bright Awb</label>
-                    <input type="checkbox" class="form-control" name="isBrightAwb" id="field_isBrightAwb"
-                        [(ngModel)]="awb.isBrightAwb" />
-                    <div [hidden]="!(editForm.controls.isBrightAwb?.dirty && editForm.controls.isBrightAwb?.invalid)">
-                        <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.isBrightAwb?.errors?.required">
-                        This field is required.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label class="form-control-label" for="field_trackingLink">Tracking Link</label>
                     <input type="text" class="form-control" name="trackingLink" id="field_trackingLink"
                         [(ngModel)]="awb.trackingLink" />

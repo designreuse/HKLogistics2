@@ -64,6 +64,12 @@ public class CourierPricingEngineResourceIntTest {
     private static final Double DEFAULT_SECOND_BASE_COST = 1D;
     private static final Double UPDATED_SECOND_BASE_COST = 2D;
 
+    private static final Double DEFAULT_THIRD_BASE_WT = 1D;
+    private static final Double UPDATED_THIRD_BASE_WT = 2D;
+
+    private static final Double DEFAULT_THIRD_BASE_COST = 1D;
+    private static final Double UPDATED_THIRD_BASE_COST = 2D;
+
     private static final Double DEFAULT_ADDITIONAL_WT = 1D;
     private static final Double UPDATED_ADDITIONAL_WT = 2D;
 
@@ -149,6 +155,8 @@ public class CourierPricingEngineResourceIntTest {
             .firstBaseCost(DEFAULT_FIRST_BASE_COST)
             .secondBaseWt(DEFAULT_SECOND_BASE_WT)
             .secondBaseCost(DEFAULT_SECOND_BASE_COST)
+            .thirdBaseWt(DEFAULT_THIRD_BASE_WT)
+            .thirdBaseCost(DEFAULT_THIRD_BASE_COST)
             .additionalWt(DEFAULT_ADDITIONAL_WT)
             .additionalCost(DEFAULT_ADDITIONAL_COST)
             .fuelSurcharge(DEFAULT_FUEL_SURCHARGE)
@@ -185,6 +193,8 @@ public class CourierPricingEngineResourceIntTest {
         assertThat(testCourierPricingEngine.getFirstBaseCost()).isEqualTo(DEFAULT_FIRST_BASE_COST);
         assertThat(testCourierPricingEngine.getSecondBaseWt()).isEqualTo(DEFAULT_SECOND_BASE_WT);
         assertThat(testCourierPricingEngine.getSecondBaseCost()).isEqualTo(DEFAULT_SECOND_BASE_COST);
+        assertThat(testCourierPricingEngine.getThirdBaseWt()).isEqualTo(DEFAULT_THIRD_BASE_WT);
+        assertThat(testCourierPricingEngine.getThirdBaseCost()).isEqualTo(DEFAULT_THIRD_BASE_COST);
         assertThat(testCourierPricingEngine.getAdditionalWt()).isEqualTo(DEFAULT_ADDITIONAL_WT);
         assertThat(testCourierPricingEngine.getAdditionalCost()).isEqualTo(DEFAULT_ADDITIONAL_COST);
         assertThat(testCourierPricingEngine.getFuelSurcharge()).isEqualTo(DEFAULT_FUEL_SURCHARGE);
@@ -312,6 +322,8 @@ public class CourierPricingEngineResourceIntTest {
             .andExpect(jsonPath("$.[*].firstBaseCost").value(hasItem(DEFAULT_FIRST_BASE_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].secondBaseWt").value(hasItem(DEFAULT_SECOND_BASE_WT.doubleValue())))
             .andExpect(jsonPath("$.[*].secondBaseCost").value(hasItem(DEFAULT_SECOND_BASE_COST.doubleValue())))
+            .andExpect(jsonPath("$.[*].thirdBaseWt").value(hasItem(DEFAULT_THIRD_BASE_WT.doubleValue())))
+            .andExpect(jsonPath("$.[*].thirdBaseCost").value(hasItem(DEFAULT_THIRD_BASE_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].additionalWt").value(hasItem(DEFAULT_ADDITIONAL_WT.doubleValue())))
             .andExpect(jsonPath("$.[*].additionalCost").value(hasItem(DEFAULT_ADDITIONAL_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].fuelSurcharge").value(hasItem(DEFAULT_FUEL_SURCHARGE.doubleValue())))
@@ -338,6 +350,8 @@ public class CourierPricingEngineResourceIntTest {
             .andExpect(jsonPath("$.firstBaseCost").value(DEFAULT_FIRST_BASE_COST.doubleValue()))
             .andExpect(jsonPath("$.secondBaseWt").value(DEFAULT_SECOND_BASE_WT.doubleValue()))
             .andExpect(jsonPath("$.secondBaseCost").value(DEFAULT_SECOND_BASE_COST.doubleValue()))
+            .andExpect(jsonPath("$.thirdBaseWt").value(DEFAULT_THIRD_BASE_WT.doubleValue()))
+            .andExpect(jsonPath("$.thirdBaseCost").value(DEFAULT_THIRD_BASE_COST.doubleValue()))
             .andExpect(jsonPath("$.additionalWt").value(DEFAULT_ADDITIONAL_WT.doubleValue()))
             .andExpect(jsonPath("$.additionalCost").value(DEFAULT_ADDITIONAL_COST.doubleValue()))
             .andExpect(jsonPath("$.fuelSurcharge").value(DEFAULT_FUEL_SURCHARGE.doubleValue()))
@@ -502,6 +516,84 @@ public class CourierPricingEngineResourceIntTest {
 
         // Get all the courierPricingEngineList where secondBaseCost is null
         defaultCourierPricingEngineShouldNotBeFound("secondBaseCost.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllCourierPricingEnginesByThirdBaseWtIsEqualToSomething() throws Exception {
+        // Initialize the database
+        courierPricingEngineRepository.saveAndFlush(courierPricingEngine);
+
+        // Get all the courierPricingEngineList where thirdBaseWt equals to DEFAULT_THIRD_BASE_WT
+        defaultCourierPricingEngineShouldBeFound("thirdBaseWt.equals=" + DEFAULT_THIRD_BASE_WT);
+
+        // Get all the courierPricingEngineList where thirdBaseWt equals to UPDATED_THIRD_BASE_WT
+        defaultCourierPricingEngineShouldNotBeFound("thirdBaseWt.equals=" + UPDATED_THIRD_BASE_WT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCourierPricingEnginesByThirdBaseWtIsInShouldWork() throws Exception {
+        // Initialize the database
+        courierPricingEngineRepository.saveAndFlush(courierPricingEngine);
+
+        // Get all the courierPricingEngineList where thirdBaseWt in DEFAULT_THIRD_BASE_WT or UPDATED_THIRD_BASE_WT
+        defaultCourierPricingEngineShouldBeFound("thirdBaseWt.in=" + DEFAULT_THIRD_BASE_WT + "," + UPDATED_THIRD_BASE_WT);
+
+        // Get all the courierPricingEngineList where thirdBaseWt equals to UPDATED_THIRD_BASE_WT
+        defaultCourierPricingEngineShouldNotBeFound("thirdBaseWt.in=" + UPDATED_THIRD_BASE_WT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCourierPricingEnginesByThirdBaseWtIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        courierPricingEngineRepository.saveAndFlush(courierPricingEngine);
+
+        // Get all the courierPricingEngineList where thirdBaseWt is not null
+        defaultCourierPricingEngineShouldBeFound("thirdBaseWt.specified=true");
+
+        // Get all the courierPricingEngineList where thirdBaseWt is null
+        defaultCourierPricingEngineShouldNotBeFound("thirdBaseWt.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllCourierPricingEnginesByThirdBaseCostIsEqualToSomething() throws Exception {
+        // Initialize the database
+        courierPricingEngineRepository.saveAndFlush(courierPricingEngine);
+
+        // Get all the courierPricingEngineList where thirdBaseCost equals to DEFAULT_THIRD_BASE_COST
+        defaultCourierPricingEngineShouldBeFound("thirdBaseCost.equals=" + DEFAULT_THIRD_BASE_COST);
+
+        // Get all the courierPricingEngineList where thirdBaseCost equals to UPDATED_THIRD_BASE_COST
+        defaultCourierPricingEngineShouldNotBeFound("thirdBaseCost.equals=" + UPDATED_THIRD_BASE_COST);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCourierPricingEnginesByThirdBaseCostIsInShouldWork() throws Exception {
+        // Initialize the database
+        courierPricingEngineRepository.saveAndFlush(courierPricingEngine);
+
+        // Get all the courierPricingEngineList where thirdBaseCost in DEFAULT_THIRD_BASE_COST or UPDATED_THIRD_BASE_COST
+        defaultCourierPricingEngineShouldBeFound("thirdBaseCost.in=" + DEFAULT_THIRD_BASE_COST + "," + UPDATED_THIRD_BASE_COST);
+
+        // Get all the courierPricingEngineList where thirdBaseCost equals to UPDATED_THIRD_BASE_COST
+        defaultCourierPricingEngineShouldNotBeFound("thirdBaseCost.in=" + UPDATED_THIRD_BASE_COST);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCourierPricingEnginesByThirdBaseCostIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        courierPricingEngineRepository.saveAndFlush(courierPricingEngine);
+
+        // Get all the courierPricingEngineList where thirdBaseCost is not null
+        defaultCourierPricingEngineShouldBeFound("thirdBaseCost.specified=true");
+
+        // Get all the courierPricingEngineList where thirdBaseCost is null
+        defaultCourierPricingEngineShouldNotBeFound("thirdBaseCost.specified=false");
     }
 
     @Test
@@ -892,6 +984,8 @@ public class CourierPricingEngineResourceIntTest {
             .andExpect(jsonPath("$.[*].firstBaseCost").value(hasItem(DEFAULT_FIRST_BASE_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].secondBaseWt").value(hasItem(DEFAULT_SECOND_BASE_WT.doubleValue())))
             .andExpect(jsonPath("$.[*].secondBaseCost").value(hasItem(DEFAULT_SECOND_BASE_COST.doubleValue())))
+            .andExpect(jsonPath("$.[*].thirdBaseWt").value(hasItem(DEFAULT_THIRD_BASE_WT.doubleValue())))
+            .andExpect(jsonPath("$.[*].thirdBaseCost").value(hasItem(DEFAULT_THIRD_BASE_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].additionalWt").value(hasItem(DEFAULT_ADDITIONAL_WT.doubleValue())))
             .andExpect(jsonPath("$.[*].additionalCost").value(hasItem(DEFAULT_ADDITIONAL_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].fuelSurcharge").value(hasItem(DEFAULT_FUEL_SURCHARGE.doubleValue())))
@@ -938,6 +1032,8 @@ public class CourierPricingEngineResourceIntTest {
             .firstBaseCost(UPDATED_FIRST_BASE_COST)
             .secondBaseWt(UPDATED_SECOND_BASE_WT)
             .secondBaseCost(UPDATED_SECOND_BASE_COST)
+            .thirdBaseWt(UPDATED_THIRD_BASE_WT)
+            .thirdBaseCost(UPDATED_THIRD_BASE_COST)
             .additionalWt(UPDATED_ADDITIONAL_WT)
             .additionalCost(UPDATED_ADDITIONAL_COST)
             .fuelSurcharge(UPDATED_FUEL_SURCHARGE)
@@ -961,6 +1057,8 @@ public class CourierPricingEngineResourceIntTest {
         assertThat(testCourierPricingEngine.getFirstBaseCost()).isEqualTo(UPDATED_FIRST_BASE_COST);
         assertThat(testCourierPricingEngine.getSecondBaseWt()).isEqualTo(UPDATED_SECOND_BASE_WT);
         assertThat(testCourierPricingEngine.getSecondBaseCost()).isEqualTo(UPDATED_SECOND_BASE_COST);
+        assertThat(testCourierPricingEngine.getThirdBaseWt()).isEqualTo(UPDATED_THIRD_BASE_WT);
+        assertThat(testCourierPricingEngine.getThirdBaseCost()).isEqualTo(UPDATED_THIRD_BASE_COST);
         assertThat(testCourierPricingEngine.getAdditionalWt()).isEqualTo(UPDATED_ADDITIONAL_WT);
         assertThat(testCourierPricingEngine.getAdditionalCost()).isEqualTo(UPDATED_ADDITIONAL_COST);
         assertThat(testCourierPricingEngine.getFuelSurcharge()).isEqualTo(UPDATED_FUEL_SURCHARGE);
@@ -1033,6 +1131,8 @@ public class CourierPricingEngineResourceIntTest {
             .andExpect(jsonPath("$.[*].firstBaseCost").value(hasItem(DEFAULT_FIRST_BASE_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].secondBaseWt").value(hasItem(DEFAULT_SECOND_BASE_WT.doubleValue())))
             .andExpect(jsonPath("$.[*].secondBaseCost").value(hasItem(DEFAULT_SECOND_BASE_COST.doubleValue())))
+            .andExpect(jsonPath("$.[*].thirdBaseWt").value(hasItem(DEFAULT_THIRD_BASE_WT.doubleValue())))
+            .andExpect(jsonPath("$.[*].thirdBaseCost").value(hasItem(DEFAULT_THIRD_BASE_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].additionalWt").value(hasItem(DEFAULT_ADDITIONAL_WT.doubleValue())))
             .andExpect(jsonPath("$.[*].additionalCost").value(hasItem(DEFAULT_ADDITIONAL_COST.doubleValue())))
             .andExpect(jsonPath("$.[*].fuelSurcharge").value(hasItem(DEFAULT_FUEL_SURCHARGE.doubleValue())))

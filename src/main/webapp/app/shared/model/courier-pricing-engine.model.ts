@@ -6,6 +6,8 @@ export interface ICourierPricingEngine {
     firstBaseCost?: number;
     secondBaseWt?: number;
     secondBaseCost?: number;
+    thirdBaseWt?: number;
+    thirdBaseCost?: number;
     additionalWt?: number;
     additionalCost?: number;
     fuelSurcharge?: number;
@@ -27,6 +29,8 @@ export class CourierPricingEngine implements ICourierPricingEngine {
         public firstBaseCost?: number,
         public secondBaseWt?: number,
         public secondBaseCost?: number,
+        public thirdBaseWt?: number,
+        public thirdBaseCost?: number,
         public additionalWt?: number,
         public additionalCost?: number,
         public fuelSurcharge?: number,

@@ -41,12 +41,6 @@ public class Courier implements Serializable {
     @Column(name = "active", nullable = false)
     private Boolean active;
 
-    @Column(name = "tracking_parameter")
-    private String trackingParameter;
-
-    @Column(name = "tracking_url")
-    private String trackingUrl;
-
     @Column(name = "parent_courier_id")
     private Long parentCourierId;
 
@@ -113,32 +107,6 @@ public class Courier implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public String getTrackingParameter() {
-        return trackingParameter;
-    }
-
-    public Courier trackingParameter(String trackingParameter) {
-        this.trackingParameter = trackingParameter;
-        return this;
-    }
-
-    public void setTrackingParameter(String trackingParameter) {
-        this.trackingParameter = trackingParameter;
-    }
-
-    public String getTrackingUrl() {
-        return trackingUrl;
-    }
-
-    public Courier trackingUrl(String trackingUrl) {
-        this.trackingUrl = trackingUrl;
-        return this;
-    }
-
-    public void setTrackingUrl(String trackingUrl) {
-        this.trackingUrl = trackingUrl;
     }
 
     public Long getParentCourierId() {
@@ -259,8 +227,6 @@ public class Courier implements Serializable {
             ", name='" + getName() + "'" +
             ", shortCode='" + getShortCode() + "'" +
             ", active='" + isActive() + "'" +
-            ", trackingParameter='" + getTrackingParameter() + "'" +
-            ", trackingUrl='" + getTrackingUrl() + "'" +
             ", parentCourierId=" + getParentCourierId() +
             ", hkShipping='" + isHkShipping() + "'" +
             ", vendorShipping='" + isVendorShipping() + "'" +

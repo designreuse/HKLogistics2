@@ -6,8 +6,6 @@ import { JhiAlertService } from 'ng-jhipster';
 
 import { IPincodeCourierMapping } from 'app/shared/model/pincode-courier-mapping.model';
 import { PincodeCourierMappingService } from './pincode-courier-mapping.service';
-import { IPincode } from 'app/shared/model/pincode.model';
-import { PincodeService } from 'app/entities/pincode';
 import { IVendorWHCourierMapping } from 'app/shared/model/vendor-wh-courier-mapping.model';
 import { VendorWHCourierMappingService } from 'app/entities/vendor-wh-courier-mapping';
 import { ISourceDestinationMapping } from 'app/shared/model/source-destination-mapping.model';
@@ -21,8 +19,6 @@ export class PincodeCourierMappingUpdateComponent implements OnInit {
     private _pincodeCourierMapping: IPincodeCourierMapping;
     isSaving: boolean;
 
-    pincodes: IPincode[];
-
     vendorwhcouriermappings: IVendorWHCourierMapping[];
 
     sourcedestinationmappings: ISourceDestinationMapping[];
@@ -30,7 +26,6 @@ export class PincodeCourierMappingUpdateComponent implements OnInit {
     constructor(
         private jhiAlertService: JhiAlertService,
         private pincodeCourierMappingService: PincodeCourierMappingService,
-        private pincodeService: PincodeService,
         private vendorWHCourierMappingService: VendorWHCourierMappingService,
         private sourceDestinationMappingService: SourceDestinationMappingService,
         private activatedRoute: ActivatedRoute
@@ -41,12 +36,6 @@ export class PincodeCourierMappingUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ pincodeCourierMapping }) => {
             this.pincodeCourierMapping = pincodeCourierMapping;
         });
-        this.pincodeService.query().subscribe(
-            (res: HttpResponse<IPincode[]>) => {
-                this.pincodes = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
         this.vendorWHCourierMappingService.query().subscribe(
             (res: HttpResponse<IVendorWHCourierMapping[]>) => {
                 this.vendorwhcouriermappings = res.body;
@@ -92,10 +81,6 @@ export class PincodeCourierMappingUpdateComponent implements OnInit {
 
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
-    }
-
-    trackPincodeById(index: number, item: IPincode) {
-        return item.id;
     }
 
     trackVendorWHCourierMappingById(index: number, item: IVendorWHCourierMapping) {

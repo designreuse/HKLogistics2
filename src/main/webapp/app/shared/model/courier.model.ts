@@ -5,8 +5,6 @@ export interface ICourier {
     name?: string;
     shortCode?: string;
     active?: boolean;
-    trackingParameter?: string;
-    trackingUrl?: string;
     parentCourierId?: number;
     hkShipping?: boolean;
     vendorShipping?: boolean;
@@ -22,8 +20,6 @@ export class Courier implements ICourier {
         public name?: string,
         public shortCode?: string,
         public active?: boolean,
-        public trackingParameter?: string,
-        public trackingUrl?: string,
         public parentCourierId?: number,
         public hkShipping?: boolean,
         public vendorShipping?: boolean,

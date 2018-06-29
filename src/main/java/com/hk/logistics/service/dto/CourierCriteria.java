@@ -34,10 +34,6 @@ public class CourierCriteria implements Serializable {
 
     private BooleanFilter active;
 
-    private StringFilter trackingParameter;
-
-    private StringFilter trackingUrl;
-
     private LongFilter parentCourierId;
 
     private BooleanFilter hkShipping;
@@ -83,22 +79,6 @@ public class CourierCriteria implements Serializable {
 
     public void setActive(BooleanFilter active) {
         this.active = active;
-    }
-
-    public StringFilter getTrackingParameter() {
-        return trackingParameter;
-    }
-
-    public void setTrackingParameter(StringFilter trackingParameter) {
-        this.trackingParameter = trackingParameter;
-    }
-
-    public StringFilter getTrackingUrl() {
-        return trackingUrl;
-    }
-
-    public void setTrackingUrl(StringFilter trackingUrl) {
-        this.trackingUrl = trackingUrl;
     }
 
     public LongFilter getParentCourierId() {
@@ -156,8 +136,6 @@ public class CourierCriteria implements Serializable {
                 (name != null ? "name=" + name + ", " : "") +
                 (shortCode != null ? "shortCode=" + shortCode + ", " : "") +
                 (active != null ? "active=" + active + ", " : "") +
-                (trackingParameter != null ? "trackingParameter=" + trackingParameter + ", " : "") +
-                (trackingUrl != null ? "trackingUrl=" + trackingUrl + ", " : "") +
                 (parentCourierId != null ? "parentCourierId=" + parentCourierId + ", " : "") +
                 (hkShipping != null ? "hkShipping=" + hkShipping + ", " : "") +
                 (vendorShipping != null ? "vendorShipping=" + vendorShipping + ", " : "") +

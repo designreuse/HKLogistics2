@@ -61,12 +61,6 @@ public class CourierResourceIntTest {
     private static final Boolean DEFAULT_ACTIVE = false;
     private static final Boolean UPDATED_ACTIVE = true;
 
-    private static final String DEFAULT_TRACKING_PARAMETER = "AAAAAAAAAA";
-    private static final String UPDATED_TRACKING_PARAMETER = "BBBBBBBBBB";
-
-    private static final String DEFAULT_TRACKING_URL = "AAAAAAAAAA";
-    private static final String UPDATED_TRACKING_URL = "BBBBBBBBBB";
-
     private static final Long DEFAULT_PARENT_COURIER_ID = 1L;
     private static final Long UPDATED_PARENT_COURIER_ID = 2L;
 
@@ -139,8 +133,6 @@ public class CourierResourceIntTest {
             .name(DEFAULT_NAME)
             .shortCode(DEFAULT_SHORT_CODE)
             .active(DEFAULT_ACTIVE)
-            .trackingParameter(DEFAULT_TRACKING_PARAMETER)
-            .trackingUrl(DEFAULT_TRACKING_URL)
             .parentCourierId(DEFAULT_PARENT_COURIER_ID)
             .hkShipping(DEFAULT_HK_SHIPPING)
             .vendorShipping(DEFAULT_VENDOR_SHIPPING)
@@ -172,8 +164,6 @@ public class CourierResourceIntTest {
         assertThat(testCourier.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCourier.getShortCode()).isEqualTo(DEFAULT_SHORT_CODE);
         assertThat(testCourier.isActive()).isEqualTo(DEFAULT_ACTIVE);
-        assertThat(testCourier.getTrackingParameter()).isEqualTo(DEFAULT_TRACKING_PARAMETER);
-        assertThat(testCourier.getTrackingUrl()).isEqualTo(DEFAULT_TRACKING_URL);
         assertThat(testCourier.getParentCourierId()).isEqualTo(DEFAULT_PARENT_COURIER_ID);
         assertThat(testCourier.isHkShipping()).isEqualTo(DEFAULT_HK_SHIPPING);
         assertThat(testCourier.isVendorShipping()).isEqualTo(DEFAULT_VENDOR_SHIPPING);
@@ -277,8 +267,6 @@ public class CourierResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].shortCode").value(hasItem(DEFAULT_SHORT_CODE.toString())))
             .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())))
-            .andExpect(jsonPath("$.[*].trackingParameter").value(hasItem(DEFAULT_TRACKING_PARAMETER.toString())))
-            .andExpect(jsonPath("$.[*].trackingUrl").value(hasItem(DEFAULT_TRACKING_URL.toString())))
             .andExpect(jsonPath("$.[*].parentCourierId").value(hasItem(DEFAULT_PARENT_COURIER_ID.intValue())))
             .andExpect(jsonPath("$.[*].hkShipping").value(hasItem(DEFAULT_HK_SHIPPING.booleanValue())))
             .andExpect(jsonPath("$.[*].vendorShipping").value(hasItem(DEFAULT_VENDOR_SHIPPING.booleanValue())))
@@ -300,8 +288,6 @@ public class CourierResourceIntTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.shortCode").value(DEFAULT_SHORT_CODE.toString()))
             .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()))
-            .andExpect(jsonPath("$.trackingParameter").value(DEFAULT_TRACKING_PARAMETER.toString()))
-            .andExpect(jsonPath("$.trackingUrl").value(DEFAULT_TRACKING_URL.toString()))
             .andExpect(jsonPath("$.parentCourierId").value(DEFAULT_PARENT_COURIER_ID.intValue()))
             .andExpect(jsonPath("$.hkShipping").value(DEFAULT_HK_SHIPPING.booleanValue()))
             .andExpect(jsonPath("$.vendorShipping").value(DEFAULT_VENDOR_SHIPPING.booleanValue()))
@@ -423,84 +409,6 @@ public class CourierResourceIntTest {
 
         // Get all the courierList where active is null
         defaultCourierShouldNotBeFound("active.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllCouriersByTrackingParameterIsEqualToSomething() throws Exception {
-        // Initialize the database
-        courierRepository.saveAndFlush(courier);
-
-        // Get all the courierList where trackingParameter equals to DEFAULT_TRACKING_PARAMETER
-        defaultCourierShouldBeFound("trackingParameter.equals=" + DEFAULT_TRACKING_PARAMETER);
-
-        // Get all the courierList where trackingParameter equals to UPDATED_TRACKING_PARAMETER
-        defaultCourierShouldNotBeFound("trackingParameter.equals=" + UPDATED_TRACKING_PARAMETER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllCouriersByTrackingParameterIsInShouldWork() throws Exception {
-        // Initialize the database
-        courierRepository.saveAndFlush(courier);
-
-        // Get all the courierList where trackingParameter in DEFAULT_TRACKING_PARAMETER or UPDATED_TRACKING_PARAMETER
-        defaultCourierShouldBeFound("trackingParameter.in=" + DEFAULT_TRACKING_PARAMETER + "," + UPDATED_TRACKING_PARAMETER);
-
-        // Get all the courierList where trackingParameter equals to UPDATED_TRACKING_PARAMETER
-        defaultCourierShouldNotBeFound("trackingParameter.in=" + UPDATED_TRACKING_PARAMETER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllCouriersByTrackingParameterIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        courierRepository.saveAndFlush(courier);
-
-        // Get all the courierList where trackingParameter is not null
-        defaultCourierShouldBeFound("trackingParameter.specified=true");
-
-        // Get all the courierList where trackingParameter is null
-        defaultCourierShouldNotBeFound("trackingParameter.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllCouriersByTrackingUrlIsEqualToSomething() throws Exception {
-        // Initialize the database
-        courierRepository.saveAndFlush(courier);
-
-        // Get all the courierList where trackingUrl equals to DEFAULT_TRACKING_URL
-        defaultCourierShouldBeFound("trackingUrl.equals=" + DEFAULT_TRACKING_URL);
-
-        // Get all the courierList where trackingUrl equals to UPDATED_TRACKING_URL
-        defaultCourierShouldNotBeFound("trackingUrl.equals=" + UPDATED_TRACKING_URL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllCouriersByTrackingUrlIsInShouldWork() throws Exception {
-        // Initialize the database
-        courierRepository.saveAndFlush(courier);
-
-        // Get all the courierList where trackingUrl in DEFAULT_TRACKING_URL or UPDATED_TRACKING_URL
-        defaultCourierShouldBeFound("trackingUrl.in=" + DEFAULT_TRACKING_URL + "," + UPDATED_TRACKING_URL);
-
-        // Get all the courierList where trackingUrl equals to UPDATED_TRACKING_URL
-        defaultCourierShouldNotBeFound("trackingUrl.in=" + UPDATED_TRACKING_URL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllCouriersByTrackingUrlIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        courierRepository.saveAndFlush(courier);
-
-        // Get all the courierList where trackingUrl is not null
-        defaultCourierShouldBeFound("trackingUrl.specified=true");
-
-        // Get all the courierList where trackingUrl is null
-        defaultCourierShouldNotBeFound("trackingUrl.specified=false");
     }
 
     @Test
@@ -734,8 +642,6 @@ public class CourierResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].shortCode").value(hasItem(DEFAULT_SHORT_CODE.toString())))
             .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())))
-            .andExpect(jsonPath("$.[*].trackingParameter").value(hasItem(DEFAULT_TRACKING_PARAMETER.toString())))
-            .andExpect(jsonPath("$.[*].trackingUrl").value(hasItem(DEFAULT_TRACKING_URL.toString())))
             .andExpect(jsonPath("$.[*].parentCourierId").value(hasItem(DEFAULT_PARENT_COURIER_ID.intValue())))
             .andExpect(jsonPath("$.[*].hkShipping").value(hasItem(DEFAULT_HK_SHIPPING.booleanValue())))
             .andExpect(jsonPath("$.[*].vendorShipping").value(hasItem(DEFAULT_VENDOR_SHIPPING.booleanValue())))
@@ -777,8 +683,6 @@ public class CourierResourceIntTest {
             .name(UPDATED_NAME)
             .shortCode(UPDATED_SHORT_CODE)
             .active(UPDATED_ACTIVE)
-            .trackingParameter(UPDATED_TRACKING_PARAMETER)
-            .trackingUrl(UPDATED_TRACKING_URL)
             .parentCourierId(UPDATED_PARENT_COURIER_ID)
             .hkShipping(UPDATED_HK_SHIPPING)
             .vendorShipping(UPDATED_VENDOR_SHIPPING)
@@ -797,8 +701,6 @@ public class CourierResourceIntTest {
         assertThat(testCourier.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCourier.getShortCode()).isEqualTo(UPDATED_SHORT_CODE);
         assertThat(testCourier.isActive()).isEqualTo(UPDATED_ACTIVE);
-        assertThat(testCourier.getTrackingParameter()).isEqualTo(UPDATED_TRACKING_PARAMETER);
-        assertThat(testCourier.getTrackingUrl()).isEqualTo(UPDATED_TRACKING_URL);
         assertThat(testCourier.getParentCourierId()).isEqualTo(UPDATED_PARENT_COURIER_ID);
         assertThat(testCourier.isHkShipping()).isEqualTo(UPDATED_HK_SHIPPING);
         assertThat(testCourier.isVendorShipping()).isEqualTo(UPDATED_VENDOR_SHIPPING);
@@ -866,8 +768,6 @@ public class CourierResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].shortCode").value(hasItem(DEFAULT_SHORT_CODE.toString())))
             .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())))
-            .andExpect(jsonPath("$.[*].trackingParameter").value(hasItem(DEFAULT_TRACKING_PARAMETER.toString())))
-            .andExpect(jsonPath("$.[*].trackingUrl").value(hasItem(DEFAULT_TRACKING_URL.toString())))
             .andExpect(jsonPath("$.[*].parentCourierId").value(hasItem(DEFAULT_PARENT_COURIER_ID.intValue())))
             .andExpect(jsonPath("$.[*].hkShipping").value(hasItem(DEFAULT_HK_SHIPPING.booleanValue())))
             .andExpect(jsonPath("$.[*].vendorShipping").value(hasItem(DEFAULT_VENDOR_SHIPPING.booleanValue())))

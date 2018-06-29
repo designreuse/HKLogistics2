@@ -3,7 +3,6 @@ package com.hk.logistics.web.rest;
 import com.hk.logistics.HkLogisticsApp;
 
 import com.hk.logistics.domain.PincodeCourierMapping;
-import com.hk.logistics.domain.Pincode;
 import com.hk.logistics.domain.VendorWHCourierMapping;
 import com.hk.logistics.domain.SourceDestinationMapping;
 import com.hk.logistics.repository.PincodeCourierMappingRepository;
@@ -1020,25 +1019,6 @@ public class PincodeCourierMappingResourceIntTest {
         // Get all the pincodeCourierMappingList where deliveryTypeTwo is null
         defaultPincodeCourierMappingShouldNotBeFound("deliveryTypeTwo.specified=false");
     }
-
-    @Test
-    @Transactional
-    public void getAllPincodeCourierMappingsByPincodeIsEqualToSomething() throws Exception {
-        // Initialize the database
-        Pincode pincode = PincodeResourceIntTest.createEntity(em);
-        em.persist(pincode);
-        em.flush();
-        pincodeCourierMapping.setPincode(pincode);
-        pincodeCourierMappingRepository.saveAndFlush(pincodeCourierMapping);
-        Long pincodeId = pincode.getId();
-
-        // Get all the pincodeCourierMappingList where pincode equals to pincodeId
-        defaultPincodeCourierMappingShouldBeFound("pincodeId.equals=" + pincodeId);
-
-        // Get all the pincodeCourierMappingList where pincode equals to pincodeId + 1
-        defaultPincodeCourierMappingShouldNotBeFound("pincodeId.equals=" + (pincodeId + 1));
-    }
-
 
     @Test
     @Transactional

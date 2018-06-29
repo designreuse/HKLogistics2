@@ -36,6 +36,10 @@ public class CourierPricingEngineCriteria implements Serializable {
 
     private DoubleFilter secondBaseCost;
 
+    private DoubleFilter thirdBaseWt;
+
+    private DoubleFilter thirdBaseCost;
+
     private DoubleFilter additionalWt;
 
     private DoubleFilter additionalCost;
@@ -97,6 +101,22 @@ public class CourierPricingEngineCriteria implements Serializable {
 
     public void setSecondBaseCost(DoubleFilter secondBaseCost) {
         this.secondBaseCost = secondBaseCost;
+    }
+
+    public DoubleFilter getThirdBaseWt() {
+        return thirdBaseWt;
+    }
+
+    public void setThirdBaseWt(DoubleFilter thirdBaseWt) {
+        this.thirdBaseWt = thirdBaseWt;
+    }
+
+    public DoubleFilter getThirdBaseCost() {
+        return thirdBaseCost;
+    }
+
+    public void setThirdBaseCost(DoubleFilter thirdBaseCost) {
+        this.thirdBaseCost = thirdBaseCost;
     }
 
     public DoubleFilter getAdditionalWt() {
@@ -187,6 +207,8 @@ public class CourierPricingEngineCriteria implements Serializable {
                 (firstBaseCost != null ? "firstBaseCost=" + firstBaseCost + ", " : "") +
                 (secondBaseWt != null ? "secondBaseWt=" + secondBaseWt + ", " : "") +
                 (secondBaseCost != null ? "secondBaseCost=" + secondBaseCost + ", " : "") +
+                (thirdBaseWt != null ? "thirdBaseWt=" + thirdBaseWt + ", " : "") +
+                (thirdBaseCost != null ? "thirdBaseCost=" + thirdBaseCost + ", " : "") +
                 (additionalWt != null ? "additionalWt=" + additionalWt + ", " : "") +
                 (additionalCost != null ? "additionalCost=" + additionalCost + ", " : "") +
                 (fuelSurcharge != null ? "fuelSurcharge=" + fuelSurcharge + ", " : "") +

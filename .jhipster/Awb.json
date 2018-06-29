@@ -38,13 +38,6 @@
             "fieldType": "String"
         },
         {
-            "fieldName": "isBrightAwb",
-            "fieldType": "Boolean",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
             "fieldName": "trackingLink",
             "fieldType": "String"
         }

@@ -98,9 +98,6 @@ public class AwbQueryService extends QueryService<Awb> {
             if (criteria.getReturnAwbBarCode() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getReturnAwbBarCode(), Awb_.returnAwbBarCode));
             }
-            if (criteria.getIsBrightAwb() != null) {
-                specification = specification.and(buildSpecification(criteria.getIsBrightAwb(), Awb_.isBrightAwb));
-            }
             if (criteria.getTrackingLink() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTrackingLink(), Awb_.trackingLink));
             }

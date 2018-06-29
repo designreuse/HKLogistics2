@@ -44,7 +44,6 @@
             <th><span>Card On Delivery Ground</span></th>
             <th><span>Delivery Type One</span></th>
             <th><span>Delivery Type Two</span></th>
-            <th><span>Pincode</span></th>
             <th><span>Vendor WH Courier Mapping</span></th>
             <th><span>Source Destination Mapping</span></th>
             <th></th>
@@ -67,11 +66,6 @@
                 <td>{{pincodeCourierMapping.cardOnDeliveryGround}}</td>
                 <td>{{pincodeCourierMapping.deliveryTypeOne}}</td>
                 <td>{{pincodeCourierMapping.deliveryTypeTwo}}</td>
-                <td>
-                    <div *ngIf="pincodeCourierMapping.pincodeId">
-                        <a [routerLink]="['../pincode', pincodeCourierMapping.pincodeId , 'view' ]" >{{pincodeCourierMapping.pincodeId}}</a>
-                    </div>
-                </td>
                 <td>
                     <div *ngIf="pincodeCourierMapping.vendorWHCourierMappingId">
                         <a [routerLink]="['../vendor-wh-courier-mapping', pincodeCourierMapping.vendorWHCourierMappingId , 'view' ]" >{{pincodeCourierMapping.vendorWHCourierMappingId}}</a>

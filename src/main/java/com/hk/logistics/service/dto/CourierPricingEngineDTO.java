@@ -22,6 +22,10 @@ public class CourierPricingEngineDTO implements Serializable {
 
     private Double secondBaseCost;
 
+    private Double thirdBaseWt;
+
+    private Double thirdBaseCost;
+
     @NotNull
     private Double additionalWt;
 
@@ -86,6 +90,22 @@ public class CourierPricingEngineDTO implements Serializable {
 
     public void setSecondBaseCost(Double secondBaseCost) {
         this.secondBaseCost = secondBaseCost;
+    }
+
+    public Double getThirdBaseWt() {
+        return thirdBaseWt;
+    }
+
+    public void setThirdBaseWt(Double thirdBaseWt) {
+        this.thirdBaseWt = thirdBaseWt;
+    }
+
+    public Double getThirdBaseCost() {
+        return thirdBaseCost;
+    }
+
+    public void setThirdBaseCost(Double thirdBaseCost) {
+        this.thirdBaseCost = thirdBaseCost;
     }
 
     public Double getAdditionalWt() {
@@ -213,6 +233,8 @@ public class CourierPricingEngineDTO implements Serializable {
             ", firstBaseCost=" + getFirstBaseCost() +
             ", secondBaseWt=" + getSecondBaseWt() +
             ", secondBaseCost=" + getSecondBaseCost() +
+            ", thirdBaseWt=" + getThirdBaseWt() +
+            ", thirdBaseCost=" + getThirdBaseCost() +
             ", additionalWt=" + getAdditionalWt() +
             ", additionalCost=" + getAdditionalCost() +
             ", fuelSurcharge=" + getFuelSurcharge() +

@@ -80,10 +80,6 @@ public class PincodeCourierMapping implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("")
-    private Pincode pincode;
-
-    @ManyToOne
-    @JsonIgnoreProperties("")
     private VendorWHCourierMapping vendorWHCourierMapping;
 
     @ManyToOne
@@ -279,19 +275,6 @@ public class PincodeCourierMapping implements Serializable {
 
     public void setDeliveryTypeTwo(Boolean deliveryTypeTwo) {
         this.deliveryTypeTwo = deliveryTypeTwo;
-    }
-
-    public Pincode getPincode() {
-        return pincode;
-    }
-
-    public PincodeCourierMapping pincode(Pincode pincode) {
-        this.pincode = pincode;
-        return this;
-    }
-
-    public void setPincode(Pincode pincode) {
-        this.pincode = pincode;
     }
 
     public VendorWHCourierMapping getVendorWHCourierMapping() {

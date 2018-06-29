@@ -78,10 +78,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="pincode_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="vendorwhcourier_mapping_id" type="bigint">
                 <constraints nullable="true" />
             </column>

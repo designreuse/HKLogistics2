@@ -46,10 +46,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="is_bright_awb" type="bit">
-                <constraints nullable="false" />
-            </column>
-
             <column name="tracking_link" type="varchar(255)">
                 <constraints nullable="true" />
             </column>

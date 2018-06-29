@@ -28,9 +28,6 @@ public class AwbDTO implements Serializable {
 
     private String returnAwbBarCode;
 
-    @NotNull
-    private Boolean isBrightAwb;
-
     private String trackingLink;
 
     private Long channelId;
@@ -97,14 +94,6 @@ public class AwbDTO implements Serializable {
 
     public void setReturnAwbBarCode(String returnAwbBarCode) {
         this.returnAwbBarCode = returnAwbBarCode;
-    }
-
-    public Boolean isIsBrightAwb() {
-        return isBrightAwb;
-    }
-
-    public void setIsBrightAwb(Boolean isBrightAwb) {
-        this.isBrightAwb = isBrightAwb;
     }
 
     public String getTrackingLink() {
@@ -186,7 +175,6 @@ public class AwbDTO implements Serializable {
             ", createDate='" + getCreateDate() + "'" +
             ", returnAwbNumber='" + getReturnAwbNumber() + "'" +
             ", returnAwbBarCode='" + getReturnAwbBarCode() + "'" +
-            ", isBrightAwb='" + isIsBrightAwb() + "'" +
             ", trackingLink='" + getTrackingLink() + "'" +
             ", channel=" + getChannelId() +
             ", channel='" + getChannelName() + "'" +

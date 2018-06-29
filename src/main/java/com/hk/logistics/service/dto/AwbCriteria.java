@@ -40,8 +40,6 @@ public class AwbCriteria implements Serializable {
 
     private StringFilter returnAwbBarCode;
 
-    private BooleanFilter isBrightAwb;
-
     private StringFilter trackingLink;
 
     private LongFilter channelId;
@@ -109,14 +107,6 @@ public class AwbCriteria implements Serializable {
         this.returnAwbBarCode = returnAwbBarCode;
     }
 
-    public BooleanFilter getIsBrightAwb() {
-        return isBrightAwb;
-    }
-
-    public void setIsBrightAwb(BooleanFilter isBrightAwb) {
-        this.isBrightAwb = isBrightAwb;
-    }
-
     public StringFilter getTrackingLink() {
         return trackingLink;
     }
@@ -159,7 +149,6 @@ public class AwbCriteria implements Serializable {
                 (createDate != null ? "createDate=" + createDate + ", " : "") +
                 (returnAwbNumber != null ? "returnAwbNumber=" + returnAwbNumber + ", " : "") +
                 (returnAwbBarCode != null ? "returnAwbBarCode=" + returnAwbBarCode + ", " : "") +
-                (isBrightAwb != null ? "isBrightAwb=" + isBrightAwb + ", " : "") +
                 (trackingLink != null ? "trackingLink=" + trackingLink + ", " : "") +
                 (channelId != null ? "channelId=" + channelId + ", " : "") +
                 (vendorWHCourierMappingId != null ? "vendorWHCourierMappingId=" + vendorWHCourierMappingId + ", " : "") +

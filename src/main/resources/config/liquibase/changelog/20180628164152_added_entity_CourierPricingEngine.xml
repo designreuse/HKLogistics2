@@ -38,6 +38,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="third_base_wt" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="third_base_cost" type="double">
+                <constraints nullable="true" />
+            </column>
+
             <column name="additional_wt" type="double">
                 <constraints nullable="false" />
             </column>

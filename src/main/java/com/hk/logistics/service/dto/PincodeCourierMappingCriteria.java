@@ -56,8 +56,6 @@ public class PincodeCourierMappingCriteria implements Serializable {
 
     private BooleanFilter deliveryTypeTwo;
 
-    private LongFilter pincodeId;
-
     private LongFilter vendorWHCourierMappingId;
 
     private LongFilter sourceDestinationMappingId;
@@ -185,14 +183,6 @@ public class PincodeCourierMappingCriteria implements Serializable {
         this.deliveryTypeTwo = deliveryTypeTwo;
     }
 
-    public LongFilter getPincodeId() {
-        return pincodeId;
-    }
-
-    public void setPincodeId(LongFilter pincodeId) {
-        this.pincodeId = pincodeId;
-    }
-
     public LongFilter getVendorWHCourierMappingId() {
         return vendorWHCourierMappingId;
     }
@@ -227,7 +217,6 @@ public class PincodeCourierMappingCriteria implements Serializable {
                 (cardOnDeliveryGround != null ? "cardOnDeliveryGround=" + cardOnDeliveryGround + ", " : "") +
                 (deliveryTypeOne != null ? "deliveryTypeOne=" + deliveryTypeOne + ", " : "") +
                 (deliveryTypeTwo != null ? "deliveryTypeTwo=" + deliveryTypeTwo + ", " : "") +
-                (pincodeId != null ? "pincodeId=" + pincodeId + ", " : "") +
                 (vendorWHCourierMappingId != null ? "vendorWHCourierMappingId=" + vendorWHCourierMappingId + ", " : "") +
                 (sourceDestinationMappingId != null ? "sourceDestinationMappingId=" + sourceDestinationMappingId + ", " : "") +
             "}";

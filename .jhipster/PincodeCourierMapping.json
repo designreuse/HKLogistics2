@@ -91,12 +91,6 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "pincode",
-            "otherEntityName": "pincode",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
             "relationshipName": "vendorWHCourierMapping",
             "otherEntityName": "vendorWHCourierMapping",
             "otherEntityField": "id"
