@@ -14,8 +14,6 @@ entity Courier{
 	name String required,
 	shortCode String required,
 	active Boolean required,
-	trackingParameter String,
-    trackingUrl String,
     parentCourierId Long,
     hkShipping Boolean,
     vendorShipping Boolean,
@@ -33,6 +31,8 @@ entity CourierPricingEngine {
 	firstBaseCost Double required,
     secondBaseWt Double,
     secondBaseCost Double,
+    thirdBaseWt Double,
+    thirdBaseCost Double,
     additionalWt Double required,
     additionalCost Double required,
     fuelSurcharge Double,
@@ -77,7 +77,6 @@ entity Awb {
     createDate LocalDate required,
     returnAwbNumber String,
     returnAwbBarCode String,
-    isBrightAwb Boolean required,
 	trackingLink String
 }
 entity City {
@@ -140,7 +139,6 @@ relationship ManyToOne {
     Pincode{state(name)} to State,
     Pincode{zone(name)} to Zone,
     Pincode{hub(name)} to Hub{pinCode},
-    PincodeCourierMapping{pincode} to Pincode,
 	//new relationship
 	PincodeCourierMapping{vendorWHCourierMapping} to VendorWHCourierMapping,
 	PincodeCourierMapping{sourceDestinationMapping} to SourceDestinationMapping,
