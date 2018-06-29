@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
@@ -55,6 +56,7 @@ import com.hk.logistics.service.dto.VariantServiceabilityRequest;
 import com.hk.logistics.service.mapper.AwbMapper;
 
 @RestController
+@RequestMapping("/rest/api")
 public class GenericResource {
 
 	private final Logger log = LoggerFactory.getLogger(GenericResource.class);
