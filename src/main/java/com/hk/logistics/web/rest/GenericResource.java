@@ -260,7 +260,7 @@ public class GenericResource {
     	AwbResponse awbResponse=new AwbResponse();
     	awbResponse.setAwbBarCode(awb.getAwbBarCode());
     	awbResponse.setAwbNumber(awb.getAwbNumber());
-    	Courier courier=awb.getVendorWHCourierMapping().getCourierChannel().getCourier();
+    	Courier courier=awb.getVendorWHCourierMapping().getCourier();
     	awbResponse.setCourierShortCode(courier.getShortCode());
     	awbResponse.setCourierName(courier.getName());
     	awbResponse.setTrackingLink(awb.getTrackingLink());
@@ -275,7 +275,7 @@ public class GenericResource {
 		AwbResponse awbResponse=new AwbResponse();
     	awbResponse.setAwbBarCode(awb.getAwbBarCode());
     	awbResponse.setAwbNumber(awb.getAwbNumber());
-    	Courier courier=awb.getVendorWHCourierMapping().getCourierChannel().getCourier();
+    	Courier courier=awb.getVendorWHCourierMapping().getCourier();
     	awbResponse.setCourierShortCode(courier.getShortCode());
     	awbResponse.setCourierName(courier.getName());
     	awbResponse.setTrackingLink(awb.getTrackingLink());

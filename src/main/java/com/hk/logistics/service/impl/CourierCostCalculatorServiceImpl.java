@@ -92,7 +92,7 @@ public class CourierCostCalculatorServiceImpl implements CourierCostCalculatorSe
 		List<PincodeCourierMapping> pincodeCourierMappings = pincodeCourierService.getPincodeCourierMappingList(warehouses, channel, sourceDestinationMappings, vendor, null, null, null);
 		List<Courier> courierList=new ArrayList<Courier>();
 		for(PincodeCourierMapping pincodeCourierMapping:pincodeCourierMappings){
-			Courier courier=pincodeCourierMapping.getVendorWHCourierMapping().getCourierChannel().getCourier();
+			Courier courier=pincodeCourierMapping.getVendorWHCourierMapping().getCourier();
 			if(channel.equals(EnumChannel.MP.getName())){
 				if(courier.isVendorShipping()){
 					courierList.add(courier);
