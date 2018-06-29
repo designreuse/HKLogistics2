@@ -42,6 +42,8 @@ public class CourierCriteria implements Serializable {
 
     private BooleanFilter reversePickup;
 
+    private LongFilter vendorWHCourierMappingId;
+
     private LongFilter courierChannelId;
 
     private LongFilter courierGroupId;
@@ -113,6 +115,14 @@ public class CourierCriteria implements Serializable {
         this.reversePickup = reversePickup;
     }
 
+    public LongFilter getVendorWHCourierMappingId() {
+        return vendorWHCourierMappingId;
+    }
+
+    public void setVendorWHCourierMappingId(LongFilter vendorWHCourierMappingId) {
+        this.vendorWHCourierMappingId = vendorWHCourierMappingId;
+    }
+
     public LongFilter getCourierChannelId() {
         return courierChannelId;
     }
@@ -140,6 +150,7 @@ public class CourierCriteria implements Serializable {
                 (hkShipping != null ? "hkShipping=" + hkShipping + ", " : "") +
                 (vendorShipping != null ? "vendorShipping=" + vendorShipping + ", " : "") +
                 (reversePickup != null ? "reversePickup=" + reversePickup + ", " : "") +
+                (vendorWHCourierMappingId != null ? "vendorWHCourierMappingId=" + vendorWHCourierMappingId + ", " : "") +
                 (courierChannelId != null ? "courierChannelId=" + courierChannelId + ", " : "") +
                 (courierGroupId != null ? "courierGroupId=" + courierGroupId + ", " : "") +
             "}";

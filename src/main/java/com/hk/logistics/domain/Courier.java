@@ -55,6 +55,10 @@ public class Courier implements Serializable {
 
     @OneToMany(mappedBy = "courier")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<VendorWHCourierMapping> vendorWHCourierMappings = new HashSet<>();
+
+    @OneToMany(mappedBy = "courier")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CourierChannel> courierChannels = new HashSet<>();
 
     @ManyToOne
@@ -159,6 +163,31 @@ public class Courier implements Serializable {
 
     public void setReversePickup(Boolean reversePickup) {
         this.reversePickup = reversePickup;
+    }
+
+    public Set<VendorWHCourierMapping> getVendorWHCourierMappings() {
+        return vendorWHCourierMappings;
+    }
+
+    public Courier vendorWHCourierMappings(Set<VendorWHCourierMapping> vendorWHCourierMappings) {
+        this.vendorWHCourierMappings = vendorWHCourierMappings;
+        return this;
+    }
+
+    public Courier addVendorWHCourierMapping(VendorWHCourierMapping vendorWHCourierMapping) {
+        this.vendorWHCourierMappings.add(vendorWHCourierMapping);
+        vendorWHCourierMapping.setCourier(this);
+        return this;
+    }
+
+    public Courier removeVendorWHCourierMapping(VendorWHCourierMapping vendorWHCourierMapping) {
+        this.vendorWHCourierMappings.remove(vendorWHCourierMapping);
+        vendorWHCourierMapping.setCourier(null);
+        return this;
+    }
+
+    public void setVendorWHCourierMappings(Set<VendorWHCourierMapping> vendorWHCourierMappings) {
+        this.vendorWHCourierMappings = vendorWHCourierMappings;
     }
 
     public Set<CourierChannel> getCourierChannels() {

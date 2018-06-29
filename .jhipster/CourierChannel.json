@@ -3,12 +3,6 @@
     "fields": [],
     "relationships": [
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "vendorWHCourierMapping",
-            "otherEntityName": "vendorWHCourierMapping",
-            "otherEntityRelationshipName": "courierChannel"
-        },
-        {
             "relationshipType": "many-to-one",
             "relationshipName": "channel",
             "otherEntityName": "channel",

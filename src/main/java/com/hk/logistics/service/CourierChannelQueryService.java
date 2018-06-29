@@ -80,9 +80,6 @@ public class CourierChannelQueryService extends QueryService<CourierChannel> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildSpecification(criteria.getId(), CourierChannel_.id));
             }
-            if (criteria.getVendorWHCourierMappingId() != null) {
-                specification = specification.and(buildReferringEntitySpecification(criteria.getVendorWHCourierMappingId(), CourierChannel_.vendorWHCourierMappings, VendorWHCourierMapping_.id));
-            }
             if (criteria.getChannelId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getChannelId(), CourierChannel_.channel, Channel_.id));
             }

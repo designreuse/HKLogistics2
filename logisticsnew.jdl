@@ -127,7 +127,7 @@ entity PincodeRegionZone {
 
 relationship OneToMany {
   //new relationship
-	CourierChannel{vendorWHCourierMapping} to VendorWHCourierMapping{courierChannel},
+	Courier{vendorWHCourierMapping} to VendorWHCourierMapping{courier(name)},
 	Channel{courierChannel} to CourierChannel{channel(name)}
 	Courier{courierChannel} to CourierChannel{courier(name)}
 }

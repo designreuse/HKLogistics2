@@ -34,7 +34,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="courier_channel_id" type="bigint">
+            <column name="courier_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

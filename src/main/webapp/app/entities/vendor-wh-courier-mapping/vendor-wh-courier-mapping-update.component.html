@@ -32,10 +32,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" for="field_courierChannel">Courier Channel</label>
-                    <select class="form-control" id="field_courierChannel" name="courierChannel" [(ngModel)]="vendorWHCourierMapping.courierChannelId" >
+                    <label class="form-control-label" for="field_courier">Courier</label>
+                    <select class="form-control" id="field_courier" name="courier" [(ngModel)]="vendorWHCourierMapping.courierId" >
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="courierChannelOption.id" *ngFor="let courierChannelOption of courierchannels; trackBy: trackCourierChannelById">{{courierChannelOption.id}}</option>
+                        <option [ngValue]="courierOption.id" *ngFor="let courierOption of couriers; trackBy: trackCourierById">{{courierOption.name}}</option>
                     </select>
                 </div>
             </div>

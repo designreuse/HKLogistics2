@@ -63,6 +63,7 @@ public class CacheConfiguration {
             cm.createCache(com.hk.logistics.domain.PincodeCourierMapping.class.getName(), jcacheConfiguration);
             cm.createCache(com.hk.logistics.domain.PincodeRegionZone.class.getName(), jcacheConfiguration);
             cm.createCache(com.hk.logistics.domain.ShipmentServiceType.class.getName(), jcacheConfiguration);
+            cm.createCache(com.hk.logistics.domain.Courier.class.getName() + ".vendorWHCourierMappings", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

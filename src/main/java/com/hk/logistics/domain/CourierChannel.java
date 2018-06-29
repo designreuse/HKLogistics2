@@ -1,6 +1,5 @@
 package com.hk.logistics.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -9,8 +8,6 @@ import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -28,10 +25,6 @@ public class CourierChannel implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "courierChannel")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<VendorWHCourierMapping> vendorWHCourierMappings = new HashSet<>();
-
     @ManyToOne
     @JsonIgnoreProperties("courierChannels")
     private Channel channel;
@@ -47,31 +40,6 @@ public class CourierChannel implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Set<VendorWHCourierMapping> getVendorWHCourierMappings() {
-        return vendorWHCourierMappings;
-    }
-
-    public CourierChannel vendorWHCourierMappings(Set<VendorWHCourierMapping> vendorWHCourierMappings) {
-        this.vendorWHCourierMappings = vendorWHCourierMappings;
-        return this;
-    }
-
-    public CourierChannel addVendorWHCourierMapping(VendorWHCourierMapping vendorWHCourierMapping) {
-        this.vendorWHCourierMappings.add(vendorWHCourierMapping);
-        vendorWHCourierMapping.setCourierChannel(this);
-        return this;
-    }
-
-    public CourierChannel removeVendorWHCourierMapping(VendorWHCourierMapping vendorWHCourierMapping) {
-        this.vendorWHCourierMappings.remove(vendorWHCourierMapping);
-        vendorWHCourierMapping.setCourierChannel(null);
-        return this;
-    }
-
-    public void setVendorWHCourierMappings(Set<VendorWHCourierMapping> vendorWHCourierMappings) {
-        this.vendorWHCourierMappings = vendorWHCourierMappings;
     }
 
     public Channel getChannel() {

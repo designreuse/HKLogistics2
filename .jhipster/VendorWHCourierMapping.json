@@ -20,9 +20,9 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "courierChannel",
-            "otherEntityName": "courierChannel",
-            "otherEntityField": "id"
+            "relationshipName": "courier",
+            "otherEntityName": "courier",
+            "otherEntityField": "name"
         }
     ],
     "changelogDate": "20180628164156",

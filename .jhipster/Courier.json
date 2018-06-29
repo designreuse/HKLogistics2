@@ -42,6 +42,12 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
+            "relationshipName": "vendorWHCourierMapping",
+            "otherEntityName": "vendorWHCourierMapping",
+            "otherEntityRelationshipName": "courier"
+        },
+        {
+            "relationshipType": "one-to-many",
             "relationshipName": "courierChannel",
             "otherEntityName": "courierChannel",
             "otherEntityRelationshipName": "courier"

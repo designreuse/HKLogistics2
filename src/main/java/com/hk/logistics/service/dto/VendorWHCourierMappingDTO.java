@@ -18,7 +18,9 @@ public class VendorWHCourierMappingDTO implements Serializable {
 
     private Long warehouse;
 
-    private Long courierChannelId;
+    private Long courierId;
+
+    private String courierName;
 
     public Long getId() {
         return id;
@@ -52,12 +54,20 @@ public class VendorWHCourierMappingDTO implements Serializable {
         this.warehouse = warehouse;
     }
 
-    public Long getCourierChannelId() {
-        return courierChannelId;
+    public Long getCourierId() {
+        return courierId;
     }
 
-    public void setCourierChannelId(Long courierChannelId) {
-        this.courierChannelId = courierChannelId;
+    public void setCourierId(Long courierId) {
+        this.courierId = courierId;
+    }
+
+    public String getCourierName() {
+        return courierName;
+    }
+
+    public void setCourierName(String courierName) {
+        this.courierName = courierName;
     }
 
     @Override
@@ -88,7 +98,8 @@ public class VendorWHCourierMappingDTO implements Serializable {
             ", active='" + isActive() + "'" +
             ", vendor='" + getVendor() + "'" +
             ", warehouse=" + getWarehouse() +
-            ", courierChannel=" + getCourierChannelId() +
+            ", courier=" + getCourierId() +
+            ", courier='" + getCourierName() + "'" +
             "}";
     }
 }

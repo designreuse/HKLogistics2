@@ -33,7 +33,7 @@
             <th><span>Active</span></th>
             <th><span>Vendor</span></th>
             <th><span>Warehouse</span></th>
-            <th><span>Courier Channel</span></th>
+            <th><span>Courier</span></th>
             <th></th>
             </tr>
             </thead>
@@ -44,8 +44,8 @@
                 <td>{{vendorWHCourierMapping.vendor}}</td>
                 <td>{{vendorWHCourierMapping.warehouse}}</td>
                 <td>
-                    <div *ngIf="vendorWHCourierMapping.courierChannelId">
-                        <a [routerLink]="['../courier-channel', vendorWHCourierMapping.courierChannelId , 'view' ]" >{{vendorWHCourierMapping.courierChannelId}}</a>
+                    <div *ngIf="vendorWHCourierMapping.courierId">
+                        <a [routerLink]="['../courier', vendorWHCourierMapping.courierId , 'view' ]" >{{vendorWHCourierMapping.courierName}}</a>
                     </div>
                 </td>
                 <td class="text-right">

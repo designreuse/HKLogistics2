@@ -8,13 +8,14 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity VendorWHCourierMapping and its DTO VendorWHCourierMappingDTO.
  */
-@Mapper(componentModel = "spring", uses = {CourierChannelMapper.class})
+@Mapper(componentModel = "spring", uses = {CourierMapper.class})
 public interface VendorWHCourierMappingMapper extends EntityMapper<VendorWHCourierMappingDTO, VendorWHCourierMapping> {
 
-    @Mapping(source = "courierChannel.id", target = "courierChannelId")
+    @Mapping(source = "courier.id", target = "courierId")
+    @Mapping(source = "courier.name", target = "courierName")
     VendorWHCourierMappingDTO toDto(VendorWHCourierMapping vendorWHCourierMapping);
 
-    @Mapping(source = "courierChannelId", target = "courierChannel")
+    @Mapping(source = "courierId", target = "courier")
     VendorWHCourierMapping toEntity(VendorWHCourierMappingDTO vendorWHCourierMappingDTO);
 
     default VendorWHCourierMapping fromId(Long id) {

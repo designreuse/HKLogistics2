@@ -6,8 +6,8 @@ import { JhiAlertService } from 'ng-jhipster';
 
 import { IVendorWHCourierMapping } from 'app/shared/model/vendor-wh-courier-mapping.model';
 import { VendorWHCourierMappingService } from './vendor-wh-courier-mapping.service';
-import { ICourierChannel } from 'app/shared/model/courier-channel.model';
-import { CourierChannelService } from 'app/entities/courier-channel';
+import { ICourier } from 'app/shared/model/courier.model';
+import { CourierService } from 'app/entities/courier';
 
 @Component({
     selector: 'jhi-vendor-wh-courier-mapping-update',
@@ -17,12 +17,12 @@ export class VendorWHCourierMappingUpdateComponent implements OnInit {
     private _vendorWHCourierMapping: IVendorWHCourierMapping;
     isSaving: boolean;
 
-    courierchannels: ICourierChannel[];
+    couriers: ICourier[];
 
     constructor(
         private jhiAlertService: JhiAlertService,
         private vendorWHCourierMappingService: VendorWHCourierMappingService,
-        private courierChannelService: CourierChannelService,
+        private courierService: CourierService,
         private activatedRoute: ActivatedRoute
     ) {}
 
@@ -31,9 +31,9 @@ export class VendorWHCourierMappingUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ vendorWHCourierMapping }) => {
             this.vendorWHCourierMapping = vendorWHCourierMapping;
         });
-        this.courierChannelService.query().subscribe(
-            (res: HttpResponse<ICourierChannel[]>) => {
-                this.courierchannels = res.body;
+        this.courierService.query().subscribe(
+            (res: HttpResponse<ICourier[]>) => {
+                this.couriers = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
@@ -72,7 +72,7 @@ export class VendorWHCourierMappingUpdateComponent implements OnInit {
         this.jhiAlertService.error(errorMessage, null, null);
     }
 
-    trackCourierChannelById(index: number, item: ICourierChannel) {
+    trackCourierById(index: number, item: ICourier) {
         return item.id;
     }
     get vendorWHCourierMapping() {

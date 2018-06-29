@@ -38,7 +38,7 @@ public class VendorWHCourierMapping implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("vendorWHCourierMappings")
-    private CourierChannel courierChannel;
+    private Courier courier;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -88,17 +88,17 @@ public class VendorWHCourierMapping implements Serializable {
         this.warehouse = warehouse;
     }
 
-    public CourierChannel getCourierChannel() {
-        return courierChannel;
+    public Courier getCourier() {
+        return courier;
     }
 
-    public VendorWHCourierMapping courierChannel(CourierChannel courierChannel) {
-        this.courierChannel = courierChannel;
+    public VendorWHCourierMapping courier(Courier courier) {
+        this.courier = courier;
         return this;
     }
 
-    public void setCourierChannel(CourierChannel courierChannel) {
-        this.courierChannel = courierChannel;
+    public void setCourier(Courier courier) {
+        this.courier = courier;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

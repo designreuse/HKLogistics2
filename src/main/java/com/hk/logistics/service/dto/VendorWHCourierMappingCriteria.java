@@ -34,7 +34,7 @@ public class VendorWHCourierMappingCriteria implements Serializable {
 
     private LongFilter warehouse;
 
-    private LongFilter courierChannelId;
+    private LongFilter courierId;
 
     public VendorWHCourierMappingCriteria() {
     }
@@ -71,12 +71,12 @@ public class VendorWHCourierMappingCriteria implements Serializable {
         this.warehouse = warehouse;
     }
 
-    public LongFilter getCourierChannelId() {
-        return courierChannelId;
+    public LongFilter getCourierId() {
+        return courierId;
     }
 
-    public void setCourierChannelId(LongFilter courierChannelId) {
-        this.courierChannelId = courierChannelId;
+    public void setCourierId(LongFilter courierId) {
+        this.courierId = courierId;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class VendorWHCourierMappingCriteria implements Serializable {
                 (active != null ? "active=" + active + ", " : "") +
                 (vendor != null ? "vendor=" + vendor + ", " : "") +
                 (warehouse != null ? "warehouse=" + warehouse + ", " : "") +
-                (courierChannelId != null ? "courierChannelId=" + courierChannelId + ", " : "") +
+                (courierId != null ? "courierId=" + courierId + ", " : "") +
             "}";
     }
 

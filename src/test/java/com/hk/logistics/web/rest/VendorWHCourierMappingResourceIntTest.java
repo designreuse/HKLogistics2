@@ -3,7 +3,7 @@ package com.hk.logistics.web.rest;
 import com.hk.logistics.HkLogisticsApp;
 
 import com.hk.logistics.domain.VendorWHCourierMapping;
-import com.hk.logistics.domain.CourierChannel;
+import com.hk.logistics.domain.Courier;
 import com.hk.logistics.repository.VendorWHCourierMappingRepository;
 import com.hk.logistics.repository.search.VendorWHCourierMappingSearchRepository;
 import com.hk.logistics.service.VendorWHCourierMappingService;
@@ -371,20 +371,20 @@ public class VendorWHCourierMappingResourceIntTest {
 
     @Test
     @Transactional
-    public void getAllVendorWHCourierMappingsByCourierChannelIsEqualToSomething() throws Exception {
+    public void getAllVendorWHCourierMappingsByCourierIsEqualToSomething() throws Exception {
         // Initialize the database
-        CourierChannel courierChannel = CourierChannelResourceIntTest.createEntity(em);
-        em.persist(courierChannel);
+        Courier courier = CourierResourceIntTest.createEntity(em);
+        em.persist(courier);
         em.flush();
-        vendorWHCourierMapping.setCourierChannel(courierChannel);
+        vendorWHCourierMapping.setCourier(courier);
         vendorWHCourierMappingRepository.saveAndFlush(vendorWHCourierMapping);
-        Long courierChannelId = courierChannel.getId();
+        Long courierId = courier.getId();
 
-        // Get all the vendorWHCourierMappingList where courierChannel equals to courierChannelId
-        defaultVendorWHCourierMappingShouldBeFound("courierChannelId.equals=" + courierChannelId);
+        // Get all the vendorWHCourierMappingList where courier equals to courierId
+        defaultVendorWHCourierMappingShouldBeFound("courierId.equals=" + courierId);
 
-        // Get all the vendorWHCourierMappingList where courierChannel equals to courierChannelId + 1
-        defaultVendorWHCourierMappingShouldNotBeFound("courierChannelId.equals=" + (courierChannelId + 1));
+        // Get all the vendorWHCourierMappingList where courier equals to courierId + 1
+        defaultVendorWHCourierMappingShouldNotBeFound("courierId.equals=" + (courierId + 1));
     }
 
     /**

@@ -15,6 +15,7 @@ public interface CourierMapper extends EntityMapper<CourierDTO, Courier> {
     @Mapping(source = "courierGroup.name", target = "courierGroupName")
     CourierDTO toDto(Courier courier);
 
+    @Mapping(target = "vendorWHCourierMappings", ignore = true)
     @Mapping(target = "courierChannels", ignore = true)
     @Mapping(source = "courierGroupId", target = "courierGroup")
     Courier toEntity(CourierDTO courierDTO);

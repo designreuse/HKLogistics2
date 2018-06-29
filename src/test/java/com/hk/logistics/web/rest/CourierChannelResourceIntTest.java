@@ -3,7 +3,6 @@ package com.hk.logistics.web.rest;
 import com.hk.logistics.HkLogisticsApp;
 
 import com.hk.logistics.domain.CourierChannel;
-import com.hk.logistics.domain.VendorWHCourierMapping;
 import com.hk.logistics.domain.Channel;
 import com.hk.logistics.domain.Courier;
 import com.hk.logistics.repository.CourierChannelRepository;
@@ -186,25 +185,6 @@ public class CourierChannelResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(courierChannel.getId().intValue()));
     }
-
-    @Test
-    @Transactional
-    public void getAllCourierChannelsByVendorWHCourierMappingIsEqualToSomething() throws Exception {
-        // Initialize the database
-        VendorWHCourierMapping vendorWHCourierMapping = VendorWHCourierMappingResourceIntTest.createEntity(em);
-        em.persist(vendorWHCourierMapping);
-        em.flush();
-        courierChannel.addVendorWHCourierMapping(vendorWHCourierMapping);
-        courierChannelRepository.saveAndFlush(courierChannel);
-        Long vendorWHCourierMappingId = vendorWHCourierMapping.getId();
-
-        // Get all the courierChannelList where vendorWHCourierMapping equals to vendorWHCourierMappingId
-        defaultCourierChannelShouldBeFound("vendorWHCourierMappingId.equals=" + vendorWHCourierMappingId);
-
-        // Get all the courierChannelList where vendorWHCourierMapping equals to vendorWHCourierMappingId + 1
-        defaultCourierChannelShouldNotBeFound("vendorWHCourierMappingId.equals=" + (vendorWHCourierMappingId + 1));
-    }
-
 
     @Test
     @Transactional

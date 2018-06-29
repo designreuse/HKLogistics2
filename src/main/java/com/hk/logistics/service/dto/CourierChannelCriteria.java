@@ -28,8 +28,6 @@ public class CourierChannelCriteria implements Serializable {
 
     private LongFilter id;
 
-    private LongFilter vendorWHCourierMappingId;
-
     private LongFilter channelId;
 
     private LongFilter courierId;
@@ -43,14 +41,6 @@ public class CourierChannelCriteria implements Serializable {
 
     public void setId(LongFilter id) {
         this.id = id;
-    }
-
-    public LongFilter getVendorWHCourierMappingId() {
-        return vendorWHCourierMappingId;
-    }
-
-    public void setVendorWHCourierMappingId(LongFilter vendorWHCourierMappingId) {
-        this.vendorWHCourierMappingId = vendorWHCourierMappingId;
     }
 
     public LongFilter getChannelId() {
@@ -73,7 +63,6 @@ public class CourierChannelCriteria implements Serializable {
     public String toString() {
         return "CourierChannelCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
-                (vendorWHCourierMappingId != null ? "vendorWHCourierMappingId=" + vendorWHCourierMappingId + ", " : "") +
                 (channelId != null ? "channelId=" + channelId + ", " : "") +
                 (courierId != null ? "courierId=" + courierId + ", " : "") +
             "}";

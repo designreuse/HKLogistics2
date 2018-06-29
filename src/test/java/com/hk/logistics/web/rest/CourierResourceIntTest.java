@@ -3,6 +3,7 @@ package com.hk.logistics.web.rest;
 import com.hk.logistics.HkLogisticsApp;
 
 import com.hk.logistics.domain.Courier;
+import com.hk.logistics.domain.VendorWHCourierMapping;
 import com.hk.logistics.domain.CourierChannel;
 import com.hk.logistics.domain.CourierGroup;
 import com.hk.logistics.repository.CourierRepository;
@@ -593,6 +594,25 @@ public class CourierResourceIntTest {
         // Get all the courierList where reversePickup is null
         defaultCourierShouldNotBeFound("reversePickup.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllCouriersByVendorWHCourierMappingIsEqualToSomething() throws Exception {
+        // Initialize the database
+        VendorWHCourierMapping vendorWHCourierMapping = VendorWHCourierMappingResourceIntTest.createEntity(em);
+        em.persist(vendorWHCourierMapping);
+        em.flush();
+        courier.addVendorWHCourierMapping(vendorWHCourierMapping);
+        courierRepository.saveAndFlush(courier);
+        Long vendorWHCourierMappingId = vendorWHCourierMapping.getId();
+
+        // Get all the courierList where vendorWHCourierMapping equals to vendorWHCourierMappingId
+        defaultCourierShouldBeFound("vendorWHCourierMappingId.equals=" + vendorWHCourierMappingId);
+
+        // Get all the courierList where vendorWHCourierMapping equals to vendorWHCourierMappingId + 1
+        defaultCourierShouldNotBeFound("vendorWHCourierMappingId.equals=" + (vendorWHCourierMappingId + 1));
+    }
+
 
     @Test
     @Transactional

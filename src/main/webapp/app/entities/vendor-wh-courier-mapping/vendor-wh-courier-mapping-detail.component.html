@@ -17,10 +17,10 @@
                 <dd>
                     <span>{{vendorWHCourierMapping.warehouse}}</span>
                 </dd>
-                <dt><span>Courier Channel</span></dt>
+                <dt><span>Courier</span></dt>
                 <dd>
-                    <div *ngIf="vendorWHCourierMapping.courierChannelId">
-                        <a [routerLink]="['/courier-channel', vendorWHCourierMapping.courierChannelId, 'view']">{{vendorWHCourierMapping.courierChannelId}}</a>
+                    <div *ngIf="vendorWHCourierMapping.courierId">
+                        <a [routerLink]="['/courier', vendorWHCourierMapping.courierId, 'view']">{{vendorWHCourierMapping.courierName}}</a>
                     </div>
                 </dd>
             </dl>

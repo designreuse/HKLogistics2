@@ -3,7 +3,8 @@ export interface IVendorWHCourierMapping {
     active?: boolean;
     vendor?: string;
     warehouse?: number;
-    courierChannelId?: number;
+    courierName?: string;
+    courierId?: number;
 }
 
 export class VendorWHCourierMapping implements IVendorWHCourierMapping {
@@ -12,7 +13,8 @@ export class VendorWHCourierMapping implements IVendorWHCourierMapping {
         public active?: boolean,
         public vendor?: string,
         public warehouse?: number,
-        public courierChannelId?: number
+        public courierName?: string,
+        public courierId?: number
     ) {
         this.active = false;
     }

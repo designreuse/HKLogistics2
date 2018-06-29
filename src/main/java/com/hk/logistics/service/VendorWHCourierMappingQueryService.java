@@ -89,8 +89,8 @@ public class VendorWHCourierMappingQueryService extends QueryService<VendorWHCou
             if (criteria.getWarehouse() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getWarehouse(), VendorWHCourierMapping_.warehouse));
             }
-            if (criteria.getCourierChannelId() != null) {
-                specification = specification.and(buildReferringEntitySpecification(criteria.getCourierChannelId(), VendorWHCourierMapping_.courierChannel, CourierChannel_.id));
+            if (criteria.getCourierId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getCourierId(), VendorWHCourierMapping_.courier, Courier_.id));
             }
         }
         return specification;
