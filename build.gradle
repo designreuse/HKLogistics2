@@ -231,6 +231,7 @@ task wrapper(type: Wrapper) {
 
 task stage(dependsOn: 'bootWar') {
 }
+tasks.withType(JavaExec) { if (System.getProperty('DEBUG', 'false') == 'true') { jvmArgs '-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9099' } }
 
 if (project.hasProperty('nodeInstall')) {
     node {

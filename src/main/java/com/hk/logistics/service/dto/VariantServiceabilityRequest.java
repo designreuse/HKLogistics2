@@ -9,8 +9,8 @@ public class VariantServiceabilityRequest {
 	String destinationPincode;
 	String vendorCode;
 	List<Long> warehouseList;
-	boolean isGroundShipped ;
-	boolean isHkFulfilled;
+	boolean groundShipped ;
+	boolean hkFulfilled;
 	String store;
 
 	public StoreVariantAPIObj getSvObj() {
@@ -44,16 +44,16 @@ public class VariantServiceabilityRequest {
 		this.warehouseList = warehouseList;
 	}
 	public boolean isGroundShipped() {
-		return isGroundShipped;
+		return groundShipped;
 	}
-	public void setGroundShipped(boolean isGroundShipped) {
-		this.isGroundShipped = isGroundShipped;
+	public void setGroundShipped(boolean groundShipped) {
+		this.groundShipped = groundShipped;
 	}
 	public boolean isHkFulfilled() {
-		return isHkFulfilled;
+		return hkFulfilled;
 	}
-	public void setHkFulfilled(boolean isHkFulfilled) {
-		this.isHkFulfilled = isHkFulfilled;
+	public void setHkFulfilled(boolean hkFulfilled) {
+		this.hkFulfilled = hkFulfilled;
 	}
 	public String getStore() {
 		return store;

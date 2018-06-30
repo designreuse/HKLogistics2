@@ -9,5 +9,9 @@ import java.util.Map;
 public class VendorService{
 
 	public static volatile Map<String,String> vendorShortCodes=new HashMap<>();
+	
+	public VendorService(){
+		vendorShortCodes.put("SHVH", "122002");
+	}
 
 }

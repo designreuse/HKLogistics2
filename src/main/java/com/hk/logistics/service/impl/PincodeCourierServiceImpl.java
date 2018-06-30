@@ -64,7 +64,7 @@ public class PincodeCourierServiceImpl implements PincodeCourierService {
 	@Override
 	public List<PincodeCourierMapping> getPincodeCourierMappingList(List<Long> warehouses, String channel,
                                                                     List<SourceDestinationMapping> sourceDestinationMapping, String vendor, String store, List<ShipmentServiceType> shipmentServiceTypes, Boolean isHkFulfilled){
-		if(vendor!=null){
+		if(vendor!=null || warehouses!=null){
 			Channel channel1=channelRepository.findByNameAndStore(channel, store);
 			List<CourierChannel> courierChannels=courierChannelRepository.findByChannel(channel1);
 			List<Courier> couriers=new ArrayList<>();
@@ -121,7 +121,7 @@ public class PincodeCourierServiceImpl implements PincodeCourierService {
 				PincodeCourierSpecification pincodeCourierSpecification4=new PincodeCourierSpecification(new SearchCriteria(shipmentServiceType.get(1).getName(),":",true));
 				PincodeCourierSpecification pincodeCourierSpecification5=new PincodeCourierSpecification(new SearchCriteria(shipmentServiceType.get(2).getName(),":",true));
 				List<PincodeCourierMapping> pincodeCourierMappings=pincodeCourierMappingRepository.findAll(Specification.where(pincodeCourierSpecification1).and(pincodeCourierSpecification2).
-						and(pincodeCourierSpecification3).and(pincodeCourierSpecification4).and(pincodeCourierSpecification5));
+						or(pincodeCourierSpecification3).or(pincodeCourierSpecification4).or(pincodeCourierSpecification5));
 				return pincodeCourierMappings;
 			}
 		}

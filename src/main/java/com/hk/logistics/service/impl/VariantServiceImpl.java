@@ -20,25 +20,25 @@ public class VariantServiceImpl implements VariantService {
 
 
 	@Autowired
-    PincodeRepository pincodeRepository;
+	PincodeRepository pincodeRepository;
 	@Autowired
-    VendorService vendorService;
+	VendorService vendorService;
 	@Autowired
-    CourierChannelRepository courierChannelRepository;
+	CourierChannelRepository courierChannelRepository;
 	@Autowired
-    VendorWHCourierMappingRepository vendorWhCourierMappingRepository;
+	VendorWHCourierMappingRepository vendorWhCourierMappingRepository;
 	@Autowired
-    SourceDestinationMappingRepository sourceDestinationMappingRepository;
+	SourceDestinationMappingRepository sourceDestinationMappingRepository;
 	@Autowired
-    PincodeCourierMappingRepository pincodeCourierMappingRepository;
+	PincodeCourierMappingRepository pincodeCourierMappingRepository;
 	@Autowired
-    PincodeCourierService pincodeCourierService;
+	PincodeCourierService pincodeCourierService;
 	@Autowired
-    WarehouseService warehouseService;
+	WarehouseService warehouseService;
 	@Autowired
-    ChannelRepository channelRepository;
+	ChannelRepository channelRepository;
 	@Autowired
-    ProductVariantRepository productVariantRepository;
+	ProductVariantRepository productVariantRepository;
 
 	public static volatile Map<String, ProductVariantDTO> productVariantMap=new HashMap<>();
 
@@ -66,25 +66,31 @@ public class VariantServiceImpl implements VariantService {
 		}
 
 		ServiceabilityApiDTO svapiObj=pincodeDeliveryInfoRequest.getSvApiObj();
+		String vendor=svapiObj.getVendorShortCode();
 		List<String> finalsourcePincodesList=new ArrayList<String>();
 		List<Long> warehouses=new ArrayList<>();
-		if(svapiObj.isHkFulfilled()){
-			for(String locationCode:svapiObj.getFulfillmentCentreCodes()){
-				WarehouseDTO warehouseDTO=warehouseService.getWarehouseDTOByFulfillmentCentreCode(locationCode);
-				if(warehouseDTO!=null){
-					if (svapiObj.getLocationCodes().contains(warehouseDTO.getId())) {
-						warehouses.add(Long.parseLong(locationCode));
-					}
-					String pincode=warehouseDTO.getPincode();
-					Boolean checkSourceServiceability=checkIfProductIsServiceableAtSourcePincode(warehouseDTO.getPincode(),svapiObj.getProductVariantId());
-					if(checkSourceServiceability){
-						finalsourcePincodesList.add(pincode);
+		if (destinationPincode != null && (vendor!=null || (svapiObj.getFulfillmentCentreCodes() != null && svapiObj.getFulfillmentCentreCodes().size() > 0))) {
+			String vendorPincode= VendorService.vendorShortCodes.get(vendor);
+			if(svapiObj.isHkFulfilled()){
+				for(String locationCode:svapiObj.getFulfillmentCentreCodes()){
+					WarehouseDTO warehouseDTO=warehouseService.getWarehouseDTOByFulfillmentCentreCode(locationCode);
+					if(warehouseDTO!=null){
+						if (svapiObj.getLocationCodes().contains(warehouseDTO.getId())) {
+							warehouses.add(Long.parseLong(locationCode));
+						}
+						String pincode=warehouseDTO.getPincode();
+						Boolean checkSourceServiceability=checkIfProductIsServiceableAtSourcePincode(warehouseDTO.getPincode(),svapiObj.getProductVariantId());
+						if(checkSourceServiceability){
+							finalsourcePincodesList.add(pincode);
+						}
 					}
 				}
 			}
+			else{
+				finalsourcePincodesList.add(vendorPincode);
+			}
 		}
 		List<SourceDestinationMapping> sourceDestinationMapping=sourceDestinationMappingRepository.findBySourcePincodeInAndDestinationPincode(finalsourcePincodesList, destinationPincode.getPincode());
-		String vendor= VendorService.vendorShortCodes.get(svapiObj.getVendorShortCode())!=null?svapiObj.getVendorShortCode():null;
 
 		String store=pincodeDeliveryInfoRequest.getStoreId().toString();
 		List<ShipmentServiceType> shipmentServiceTypes=pincodeCourierService.getShipmentServiceTypes(svapiObj.isGroundShipped(),false,false,false);
@@ -95,10 +101,11 @@ public class VariantServiceImpl implements VariantService {
 			pincodeDeliveryInfoResponse.addMessage(MessageConstants.COURIER_SERVICE_NOT_AVAILABLE);
 			pincodeDeliveryInfoResponse.setException(true);
 		}
-		shipmentServiceTypes.clear();
+		shipmentServiceTypes=null;
 		shipmentServiceTypes=pincodeCourierService.getShipmentServiceTypes(svapiObj.isGroundShipped(),true,false,false);//To check Cod
-		List<PincodeCourierMapping> pincodeCourierMappings=pincodeCourierService.getPincodeCourierMappingListOnShipmentServiceTypes(svapiObj.getCourierChannel(),sourceDestinationMapping, vendor,
-				shipmentServiceTypes, warehouses, svapiObj.isHkFulfilled());
+		List<PincodeCourierMapping> pincodeCourierMappings=pincodeCourierService.getPincodeCourierMappingList(warehouses,svapiObj.getCourierChannel(),
+				sourceDestinationMapping, vendor,store,
+				shipmentServiceTypes, svapiObj.isHkFulfilled());
 		if(pincodeCourierMappings!=null){
 			pincodeDeliveryInfoResponse.setEstmDeliveryDays(estimatedDeliveryDays);
 			pincodeDeliveryInfoResponse.setCodAllowed(true);
@@ -113,7 +120,7 @@ public class VariantServiceImpl implements VariantService {
 
 
 	public PincodeDeliveryInfoResponse validateDestinationPincode(PincodeDeliveryInfoResponse pincodeDeliveryInfoResponse,
-                                                                  Pincode destinationPincode) {
+			Pincode destinationPincode) {
 		if(destinationPincode==null){
 			pincodeDeliveryInfoResponse.addMessage(MessageConstants.SERVICE_NOT_AVAILABLE_ON_PINCODE);
 			pincodeDeliveryInfoResponse.setException(true);
@@ -150,11 +157,12 @@ public class VariantServiceImpl implements VariantService {
 		StoreVariantAPIObj svObj=variantServiceabilityRequest.getSvObj();
 		String channel=variantServiceabilityRequest.getChannel();
 		Pincode destinationPincode=pincodeRepository.findByPincode(variantServiceabilityRequest.getDestinationPincode());
-		String vendorCode=variantServiceabilityRequest.getVendorCode();
+		String vendor=variantServiceabilityRequest.getVendorCode();
 		List<Long> warehouseList=variantServiceabilityRequest.getWarehouseList();
 		boolean isGroundShipped =variantServiceabilityRequest.isGroundShipped();
 		List<String> finalsourcePincodesList=new ArrayList<>();
-		if (destinationPincode != null && (vendorCode!=null || (warehouseList != null && warehouseList.size() > 0))) {
+		if (destinationPincode != null && (vendor!=null || (warehouseList != null && warehouseList.size() > 0))) {
+			String vendorPincode= VendorService.vendorShortCodes.get(svObj.getVendorShortCode());
 			boolean shippable = false;
 			if(variantServiceabilityRequest.isHkFulfilled()){
 				for(Long locationCode:warehouseList){
@@ -169,10 +177,13 @@ public class VariantServiceImpl implements VariantService {
 					}
 				}
 			}
+			else{
+				finalsourcePincodesList.add(vendorPincode);
+			}
 			List<SourceDestinationMapping> sourceDestinationMapping=sourceDestinationMappingRepository.findBySourcePincodeInAndDestinationPincode(finalsourcePincodesList, destinationPincode.getPincode());
-			String vendor= VendorService.vendorShortCodes.get(svObj.getVendorShortCode())!=null?svObj.getVendorShortCode():null;
 
-			List<ShipmentServiceType> shipmentServiceTypes=pincodeCourierService.getShipmentServiceTypes(isGroundShipped,true,false,false);//To check Cod
+
+			List<ShipmentServiceType> shipmentServiceTypes=pincodeCourierService.getShipmentServiceTypes(isGroundShipped,false,false,false);//To check Cod
 			List<PincodeCourierMapping> pincodeCourierMappings=pincodeCourierService.getPincodeCourierMappingList(warehouseList,variantServiceabilityRequest.getChannel(),sourceDestinationMapping, vendor,
 					variantServiceabilityRequest.getStore(),shipmentServiceTypes, variantServiceabilityRequest.isHkFulfilled());
 			if(pincodeCourierMappings!=null && pincodeCourierMappings.size()>0){
@@ -182,10 +193,10 @@ public class VariantServiceImpl implements VariantService {
 			svObj.setShippable(shippable);
 			// Checking cod
 			boolean isCodAllowed = false;
-			shipmentServiceTypes.clear();
+			shipmentServiceTypes=null;
 			shipmentServiceTypes=pincodeCourierService.getShipmentServiceTypes(isGroundShipped,true,false,false);
-			List<PincodeCourierMapping> pincodeCourierMappingsForCOD=pincodeCourierService.getPincodeCourierMappingListOnShipmentServiceTypes(channel,sourceDestinationMapping, vendor,shipmentServiceTypes,
-					null, variantServiceabilityRequest.isHkFulfilled());
+			List<PincodeCourierMapping> pincodeCourierMappingsForCOD=pincodeCourierService.getPincodeCourierMappingList(warehouseList,variantServiceabilityRequest.getChannel(),sourceDestinationMapping, vendor,
+					variantServiceabilityRequest.getStore(),shipmentServiceTypes, variantServiceabilityRequest.isHkFulfilled());
 			if(pincodeCourierMappingsForCOD!=null && pincodeCourierMappingsForCOD.size()>0){
 				isCodAllowed=true;
 			}
@@ -197,12 +208,12 @@ public class VariantServiceImpl implements VariantService {
 			svObj.setCodAllowed(isCodAllowed);
 
 			// Checking cardOnDelivery
-			if(!variantServiceabilityRequest.isHkFulfilled()) {
+			if(variantServiceabilityRequest.isHkFulfilled()) {
 				//serviceTypeList = pincodeCourierService.getShipmentServiceType(isGroundShipped, false, false, true);
-				shipmentServiceTypes.clear();
+				shipmentServiceTypes=null;
 				shipmentServiceTypes=pincodeCourierService.getShipmentServiceTypes(isGroundShipped,false,false,true);
-				List<PincodeCourierMapping> pincodeCourierMappingsForCardOnDelivery=pincodeCourierService.getPincodeCourierMappingListOnShipmentServiceTypes(channel,sourceDestinationMapping,
-						vendor,shipmentServiceTypes, null, null);
+				List<PincodeCourierMapping> pincodeCourierMappingsForCardOnDelivery=pincodeCourierService.getPincodeCourierMappingList(warehouseList,variantServiceabilityRequest.getChannel(),sourceDestinationMapping, vendor,
+						variantServiceabilityRequest.getStore(),shipmentServiceTypes, variantServiceabilityRequest.isHkFulfilled());
 				if(pincodeCourierMappingsForCardOnDelivery!=null && pincodeCourierMappingsForCardOnDelivery.size()!=0)
 					svObj.setCardOnDeliveryAllowed(true);
 			}
