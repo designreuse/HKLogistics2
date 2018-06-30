@@ -10,6 +10,14 @@ import java.util.Map;
 public class WarehouseService{
 
 	public static volatile Map<Long, WarehouseDTO> warehouseMap=new HashMap<>();
+	
+	public WarehouseService(){
+		WarehouseDTO warehouseDTO=new WarehouseDTO();
+		warehouseDTO.setFulfilmentCenterCode("701");
+		warehouseDTO.setId(701L);
+		warehouseDTO.setPincode("122002");
+		warehouseMap.put(701L, warehouseDTO);
+	}
 
 	public Long getWarehouseCodeByFulfillmentCentreCode(String fulfillmentCentreCode){
 		Map<Long, WarehouseDTO> warehouseMapLocal=new HashMap<>();

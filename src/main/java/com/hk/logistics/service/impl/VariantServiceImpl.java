@@ -153,9 +153,23 @@ public class VariantServiceImpl implements VariantService {
 		String vendorCode=variantServiceabilityRequest.getVendorCode();
 		List<Long> warehouseList=variantServiceabilityRequest.getWarehouseList();
 		boolean isGroundShipped =variantServiceabilityRequest.isGroundShipped();
+		List<String> finalsourcePincodesList=new ArrayList<>();
 		if (destinationPincode != null && (vendorCode!=null || (warehouseList != null && warehouseList.size() > 0))) {
 			boolean shippable = false;
-			List<SourceDestinationMapping> sourceDestinationMapping=sourceDestinationMappingRepository.findBySourcePincodeInAndDestinationPincode(null, destinationPincode.getPincode());
+			if(variantServiceabilityRequest.isHkFulfilled()){
+				for(Long locationCode:warehouseList){
+					WarehouseDTO warehouseDTO=WarehouseService.warehouseMap.get(locationCode); 
+					if(warehouseDTO!=null){
+						String pincode=warehouseDTO.getPincode();
+						Boolean checkSourceServiceability=checkIfProductIsServiceableAtSourcePincode(warehouseDTO.getPincode(),
+								svObj.getVariantId());
+						if(checkSourceServiceability){
+							finalsourcePincodesList.add(pincode);
+						}
+					}
+				}
+			}
+			List<SourceDestinationMapping> sourceDestinationMapping=sourceDestinationMappingRepository.findBySourcePincodeInAndDestinationPincode(finalsourcePincodesList, destinationPincode.getPincode());
 			String vendor= VendorService.vendorShortCodes.get(svObj.getVendorShortCode())!=null?svObj.getVendorShortCode():null;
 
 			List<ShipmentServiceType> shipmentServiceTypes=pincodeCourierService.getShipmentServiceTypes(isGroundShipped,true,false,false);//To check Cod
