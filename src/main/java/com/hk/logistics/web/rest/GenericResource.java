@@ -227,7 +227,7 @@ public class GenericResource {
     }
 
     @PostMapping("/storeOrder/availability")
-    public StoreVariantAPIObj getVariantServiceabilityDetails(VariantServiceabilityRequest variantServiceabilityRequest) {
+    public StoreVariantAPIObj getVariantServiceabilityDetails(@Valid @RequestBody VariantServiceabilityRequest variantServiceabilityRequest) {
     	StoreVariantAPIObj storeVariantAPIObj=variantService.getVariantServiceabilityDetails(variantServiceabilityRequest);
     	return storeVariantAPIObj;
     }
