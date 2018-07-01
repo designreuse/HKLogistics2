@@ -2,6 +2,7 @@ package com.hk.logistics.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class AwbCourierRequest {
@@ -16,7 +17,7 @@ public class AwbCourierRequest {
 	@JsonProperty(DtoJsonConstants.VENDOR_PINCODE)
 	private String sourcePincode;
 	private String fulfilmentCenterCode;
-	private Date orderDate;
+	private LocalDate orderDate;
 	@JsonProperty(DtoJsonConstants.STORE_ID)
 	private Long storeId;
 	private String channel;// :TODO Added channel
@@ -100,11 +101,11 @@ public class AwbCourierRequest {
 		this.fulfilmentCenterCode = fulfilmentCenterCode;
 	}
 
-	public Date getOrderDate() {
+	public LocalDate getOrderDate() {
 		return orderDate;
 	}
 
-	public void setOrderDate(Date orderDate) {
+	public void setOrderDate(LocalDate orderDate) {
 		this.orderDate = orderDate;
 	}
 

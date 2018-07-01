@@ -41,7 +41,7 @@ public class ShipmentPricingEngine {
 		if (courierPricingEngine == null) {
 			return 0D;
 		}
-		String costParamters=courierPricingEngine.getCostParameters();
+		/*String costParamters=courierPricingEngine.getCostParameters();
 		Map<String, Double> pricingParamtersMap=new HashMap<>();
 		try {
 			JSONObject jsonObject=new JSONObject(costParamters);
@@ -63,10 +63,17 @@ public class ShipmentPricingEngine {
 				baseCost += pricingParamtersMap.get(EnumCostParamter.BASE_COST.getName()+i);
 				weightLeft-=baseweight;
 			}
-		}
+		}*/
+		Double weightLeft=courierPricingEngine.getFirstBaseWt()+courierPricingEngine.getSecondBaseWt()+courierPricingEngine.getThirdBaseWt();
 		Double additionalWeight = weight - (weightLeft);
 		Double remainder = 0D;
-
+		Double baseCost = courierPricingEngine.getFirstBaseCost();
+        if (weight > courierPricingEngine.getFirstBaseWt()) {
+            baseCost += courierPricingEngine.getSecondBaseCost();
+            if(weight>courierPricingEngine.getFirstBaseWt()+courierPricingEngine.getSecondBaseWt()){
+            	baseCost += courierPricingEngine.getThirdBaseCost();
+            }
+        }
 		if (additionalWeight > 0) {
 			remainder = additionalWeight % courierPricingEngine.getAdditionalWt();
 		}

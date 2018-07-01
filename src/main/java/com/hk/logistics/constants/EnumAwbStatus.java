@@ -8,9 +8,9 @@ import com.hk.logistics.domain.AwbStatus;
 
 public enum EnumAwbStatus {
 
-    Unused(10L, "Unused"),
-    Attach(20L, "Attach"),
-    Used(40L, "Used");
+    Unused(2L, "Unused"),
+    Attach(1L, "Attach"),
+    Used(3L, "Used");
 
     private Long id;
     private String status;

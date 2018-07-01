@@ -56,7 +56,7 @@ public interface AwbService {
     Awb attachAwbForShipment(Courier suggestedCourier, CourierChannel courierChannel,
                              VendorWHCourierMapping vendorWHCourierMapping, Boolean cod);
 
-    Awb attachAwb(AwbAttachAPIDto awbAttachAPIDto);
+    AwbResponse attachAwb(AwbAttachAPIDto awbAttachAPIDto);
 
     AwbCourierResponse getAwbCourierResponse(AwbCourierRequest awbCourierRequest);
 

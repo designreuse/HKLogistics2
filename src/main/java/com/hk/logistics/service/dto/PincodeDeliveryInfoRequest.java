@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PincodeDeliveryInfoRequest {
 
-	@JsonProperty(DtoJsonConstants.STORE_ID)
+	@JsonProperty(DtoJsonConstants.DESTINATION_PINCODE)
 	private String destinationPincode;
 	@JsonProperty(DtoJsonConstants.STORE_ID)
 	private Long storeId;

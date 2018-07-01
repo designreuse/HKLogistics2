@@ -6,6 +6,7 @@ import com.hk.logistics.domain.RegionType;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -16,6 +17,6 @@ import java.util.Date;
 @Repository
 public interface CourierPricingEngineRepository extends JpaRepository<CourierPricingEngine, Long>, JpaSpecificationExecutor<CourierPricingEngine> {
 
-    CourierPricingEngine findByCourierAndRegionTypeAndValidUpto(Courier courier, RegionType regionType, Date shipmentDate);
+    CourierPricingEngine findByCourierAndRegionTypeAndValidUpto(Courier courier, RegionType regionType, LocalDate shipmentDate);
 
 }

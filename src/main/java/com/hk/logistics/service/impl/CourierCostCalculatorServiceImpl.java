@@ -1,15 +1,22 @@
 package com.hk.logistics.service.impl;
 
 import com.hk.logistics.constants.EnumAwbStatus;
+import com.hk.logistics.criteria.SearchCriteria;
 import com.hk.logistics.domain.*;
 import com.hk.logistics.enums.EnumChannel;
 import com.hk.logistics.repository.*;
 import com.hk.logistics.service.*;
+import com.hk.logistics.service.dto.CourierPricingEngineCriteria;
+import com.hk.logistics.specification.CourierPricingSpecification;
+import com.hk.logistics.specification.PincodeCourierSpecification;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -51,15 +58,15 @@ public class CourierCostCalculatorServiceImpl implements CourierCostCalculatorSe
 
 	@Override
 	public List<Courier> getBestAvailableCourierList(String destinationPincode, String sourcePincode, boolean cod, Long srcWarehouse, Double amount, Double weight,
-                                                     boolean ground, boolean cardOnDelivery, String channel, String vendor, String productVariantId, String store) {
+                                                     boolean ground, boolean cardOnDelivery, String channel, String vendor, String productVariantId, String store, LocalDate orderPlacedDate, Boolean isHKFulfilled) {
 
-		TreeMap<Courier, Long> courierCostingMap = getCourierCostingMap(destinationPincode,sourcePincode, cod, srcWarehouse, amount, weight, ground, null, true, cardOnDelivery, channel,vendor, productVariantId,store);
+		Map<Courier, Long> courierCostingMap = getCourierCostingMap(destinationPincode,sourcePincode, cod, srcWarehouse, amount, weight, ground, orderPlacedDate, true, cardOnDelivery, channel,vendor, productVariantId,store, isHKFulfilled);
 
-		Map<Courier, Long> sortedMap = courierCostingMap.descendingMap();
+		//Map<Courier, Long> sortedMap = courierCostingMap.descendingMap();
 
 		List<Courier> cheapestCourierList = new ArrayList<Courier>();
 
-		for (Entry<Courier, Long> entry : sortedMap.entrySet()) {// :TODO Get reviewed
+		for (Entry<Courier, Long> entry : courierCostingMap.entrySet()) {// :TODO Get reviewed
 			/*if (EnumCourier.Speedpost.getId().equals(entry.getKey().getId())) {
 				if (courierCostingMap.size() <= 1) {
 					cheapestCourierList.add(entry.getKey());
@@ -73,10 +80,10 @@ public class CourierCostCalculatorServiceImpl implements CourierCostCalculatorSe
 	}
 
 
-	public TreeMap<Courier, Long> getCourierCostingMap(String destinationPincode, String sourcePincode, boolean cod, Long srcWarehouse, Double amount,
-                                                       Double weight, boolean ground, Date shipmentDate, boolean onlyCheapestCourierApplicable, boolean cardOnDelivery, String channel, String vendor, String productVariantId, String store) {
+	public Map<Courier, Long> getCourierCostingMap(String destinationPincode, String sourcePincode, boolean cod, Long srcWarehouse, Double amount,
+                                                       Double weight, boolean ground, LocalDate shipmentDate, boolean onlyCheapestCourierApplicable, boolean cardOnDelivery, String channel, String vendor, String productVariantId, String store, Boolean isHkFulfilled) {
 		Pincode pincodeObj = pincodeRepository.findByPincode(destinationPincode);
-		if(org.apache.commons.lang3.StringUtils.isEmpty(sourcePincode) && srcWarehouse!=null){
+		if(!channel.equals(EnumChannel.MP.getName()) && org.apache.commons.lang3.StringUtils.isEmpty(sourcePincode) && srcWarehouse!=null){
 			sourcePincode=warehouseService.getPincodeByWarehouse(srcWarehouse);
 		}
 		List<String> sourcePincodes=new ArrayList<>(Arrays.asList(sourcePincode));
@@ -87,14 +94,15 @@ public class CourierCostCalculatorServiceImpl implements CourierCostCalculatorSe
 				finalsourcePincodesList.add(sourcePincode);
 			}
 		}
+		List<ShipmentServiceType> shipmentServiceTypes=pincodeCourierService.getShipmentServiceTypes(ground,cod,false,cardOnDelivery);
 		List<SourceDestinationMapping> sourceDestinationMappings=sourceDestinationMappingRepository.findBySourcePincodeInAndDestinationPincode(finalsourcePincodesList, destinationPincode);
 		List<Long> warehouses=new ArrayList<>(Arrays.asList(srcWarehouse));
-		List<PincodeCourierMapping> pincodeCourierMappings = pincodeCourierService.getPincodeCourierMappingList(warehouses, channel, sourceDestinationMappings, vendor, null, null, null);
+		List<PincodeCourierMapping> pincodeCourierMappings = pincodeCourierService.getPincodeCourierMappingList(warehouses, channel, sourceDestinationMappings, vendor, store, shipmentServiceTypes, isHkFulfilled);
 		List<Courier> courierList=new ArrayList<Courier>();
 		for(PincodeCourierMapping pincodeCourierMapping:pincodeCourierMappings){
 			Courier courier=pincodeCourierMapping.getVendorWHCourierMapping().getCourier();
 			if(channel.equals(EnumChannel.MP.getName())){
-				if(courier.isVendorShipping()){
+				if(!courier.isVendorShipping()){
 					courierList.add(courier);
 				}
 			}
@@ -106,8 +114,8 @@ public class CourierCostCalculatorServiceImpl implements CourierCostCalculatorSe
 		return getCourierCostingMap(pincodeObj,courierList, destinationPincode, cod, srcWarehouse, amount, weight, ground, shipmentDate);
 	}
 
-	private TreeMap<Courier, Long> getCourierCostingMap(Pincode pincodeObj, List<Courier> applicableCourierList, String pincode, boolean cod, Long srcWarehouse, Double amount,
-                                                        Double weight, boolean ground, Date shipmentDate) {
+	private Map<Courier, Long> getCourierCostingMap(Pincode pincodeObj, List<Courier> applicableCourierList, String pincode, boolean cod, Long srcWarehouse, Double amount,
+                                                        Double weight, boolean ground, LocalDate shipmentDate) {
 		Double totalCost = 0D;
 
 		if (pincodeObj == null || applicableCourierList == null || applicableCourierList.isEmpty()) {
@@ -126,14 +134,18 @@ public class CourierCostCalculatorServiceImpl implements CourierCostCalculatorSe
 		Map<Courier, Long> courierCostingMap = new HashMap<Courier, Long>();
 		for (PincodeRegionZone pincodeRegionZone : sortedApplicableZoneList) {
 			for (Courier courier : applicableCourierList) {
-				CourierPricingEngine courierPricingInfo = courierPricingEngineRepository.findByCourierAndRegionTypeAndValidUpto(courier,
-						pincodeRegionZone.getRegionType(), shipmentDate);
-				if (courierPricingInfo == null) {
+				CourierPricingSpecification courierPricingEngineCriteria1=new CourierPricingSpecification(new SearchCriteria("courier",":",courier));
+				CourierPricingSpecification courierPricingEngineCriteria2=new CourierPricingSpecification(new SearchCriteria("regionType",":",pincodeRegionZone.getRegionType()));
+				CourierPricingSpecification courierPricingEngineCriteria3=new CourierPricingSpecification(new SearchCriteria("validUpto",":",shipmentDate));
+				List<CourierPricingEngine> courierPricingInfoList = courierPricingEngineRepository.findAll(Specification.where
+						(courierPricingEngineCriteria1).and(courierPricingEngineCriteria2).
+						or(courierPricingEngineCriteria3));
+				if (courierPricingInfoList == null) {
 					continue;
 				}
-				totalCost = shipmentPricingEngine.calculateShipmentCost(courierPricingInfo, weight);
+				totalCost = shipmentPricingEngine.calculateShipmentCost(courierPricingInfoList.get(0), weight);
 				if (cod) {
-					totalCost += shipmentPricingEngine.calculateReconciliationCost(courierPricingInfo, amount, cod);
+					totalCost += shipmentPricingEngine.calculateReconciliationCost(courierPricingInfoList.get(0), amount, cod);
 				}
 				logger.debug("courier " + courier.getName() + "totalCost " + totalCost);
 				courierCostingMap.put(courier, Math.round(totalCost));
@@ -147,21 +159,21 @@ public class CourierCostCalculatorServiceImpl implements CourierCostCalculatorSe
 		for(Entry<Courier, Long> entry:list){
 			sortedMap.put(entry.getKey(), entry.getValue());
 		}
-		sortedCourierCostingTreeMap.putAll(courierCostingMap);
+		//sortedCourierCostingTreeMap.putAll(sortedMap);
 
-		return sortedCourierCostingTreeMap;
+		return sortedMap;
 	}
 
 	@Override
 	public Map<Courier, Awb> getCourierAwbMap(String destinationPincode, String sourcePincode, Long warehouse, boolean groundShipped, boolean cod, Double amount, Double weight,
-                                              String vendorCode, Date orderPlacedDate, String channel, String variantId, Long storeId) {
+                                              String vendorCode, LocalDate orderPlacedDate, String channel, String variantId, Long storeId, Boolean isHkFulfilled) {
 		Map<Courier, Awb> courierAwbMap = new HashMap<Courier, Awb>();
 
 		Boolean checkSourceServiceability=variantService.checkIfProductIsServiceableAtSourcePincode(sourcePincode,variantId);
 		if(!checkSourceServiceability){
 			return null;
 		}
-		List<Courier> couriers=getBestAvailableCourierList( destinationPincode, sourcePincode, cod, warehouse, amount, weight, groundShipped, false, channel,vendorCode, null, null);
+		List<Courier> couriers=getBestAvailableCourierList( destinationPincode, sourcePincode, cod, warehouse, amount, weight, groundShipped, false, channel,vendorCode, variantId, storeId.toString(), orderPlacedDate, isHkFulfilled);
 		if (couriers == null || couriers.isEmpty()){
 			return courierAwbMap;
 		}

@@ -22,19 +22,19 @@ import java.util.List;
 public class PincodeCourierServiceImpl implements PincodeCourierService {
 
 	@Autowired
-    CourierChannelRepository courierChannelRepository;
+	CourierChannelRepository courierChannelRepository;
 	@Autowired
-    VendorWHCourierMappingRepository vendorWHCourierMappingRepository;
+	VendorWHCourierMappingRepository vendorWHCourierMappingRepository;
 	@Autowired
-    PincodeCourierMappingRepository pincodeCourierMappingRepository;
+	PincodeCourierMappingRepository pincodeCourierMappingRepository;
 	@Autowired
-    PincodeCourierService pincodeCourierService;
+	PincodeCourierService pincodeCourierService;
 	@Autowired
-    ChannelRepository channelRepository;
+	ChannelRepository channelRepository;
 	@Autowired
-    SourceDestinationMappingRepository sourceDestinationMappingRepository;
+	SourceDestinationMappingRepository sourceDestinationMappingRepository;
 	@Autowired
-    CourierRepository courierRepository;
+	CourierRepository courierRepository;
 
 	@Override
 	public Integer getEstimatedDeliveryDays(List<PincodeCourierMapping> pincodeCourierMappings) {
@@ -51,7 +51,7 @@ public class PincodeCourierServiceImpl implements PincodeCourierService {
 
 	@Override
 	public Integer getEstimatedDeliveryDaysInfo(PincodeDeliveryInfoResponse pincodeDeliveryInfoResponse, List<SourceDestinationMapping> sourceDestinationMapping, String vendor,
-                                                List<Long> warehouses, String channel, String store, Boolean isHkFulfilled) {
+			List<Long> warehouses, String channel, String store, Boolean isHkFulfilled) {
 		List<PincodeCourierMapping> pincodeCourierMappings=getPincodeCourierMappingList(warehouses,channel,sourceDestinationMapping,
 				vendor, null, null, null);
 		if(pincodeCourierMappings!=null && pincodeCourierMappings.size()>0){
@@ -63,7 +63,7 @@ public class PincodeCourierServiceImpl implements PincodeCourierService {
 
 	@Override
 	public List<PincodeCourierMapping> getPincodeCourierMappingList(List<Long> warehouses, String channel,
-                                                                    List<SourceDestinationMapping> sourceDestinationMapping, String vendor, String store, List<ShipmentServiceType> shipmentServiceTypes, Boolean isHkFulfilled){
+			List<SourceDestinationMapping> sourceDestinationMapping, String vendor, String store, List<ShipmentServiceType> shipmentServiceTypes, Boolean isHkFulfilled){
 		if(vendor!=null || warehouses!=null){
 			Channel channel1=channelRepository.findByNameAndStore(channel, store);
 			List<CourierChannel> courierChannels=courierChannelRepository.findByChannel(channel1);
@@ -74,10 +74,8 @@ public class PincodeCourierServiceImpl implements PincodeCourierService {
 			if(courierChannels!=null){
 				List<VendorWHCourierMapping> vendorWHCourierMappings=getVendorWHMappings(warehouses,vendor,couriers, isHkFulfilled);
 				if(vendorWHCourierMappings!=null){
-					if(vendorWHCourierMappings!=null){
-						List<PincodeCourierMapping> pincodeCourierMappings=getListOfPincodeCourierMappingOnShipmentServiceType(shipmentServiceTypes,sourceDestinationMapping,vendorWHCourierMappings);
-						return pincodeCourierMappings;
-					}
+					List<PincodeCourierMapping> pincodeCourierMappings=getListOfPincodeCourierMappingOnShipmentServiceType(shipmentServiceTypes,sourceDestinationMapping,vendorWHCourierMappings);
+					return pincodeCourierMappings;
 				}
 			}
 		}
@@ -105,7 +103,7 @@ public class PincodeCourierServiceImpl implements PincodeCourierService {
 	}
 
 	public List<PincodeCourierMapping> getListOfPincodeCourierMappingOnShipmentServiceType(List<ShipmentServiceType> shipmentServiceType, List<SourceDestinationMapping> sourceDestinationMapping,
-                                                                                           List<VendorWHCourierMapping> vendorWHCourierMappings) {
+			List<VendorWHCourierMapping> vendorWHCourierMappings) {
 
 		PincodeCourierSpecification pincodeCourierSpecification1=new PincodeCourierSpecification(new SearchCriteria("sourceDestinationMapping",":",sourceDestinationMapping));
 		PincodeCourierSpecification pincodeCourierSpecification2=new PincodeCourierSpecification(new SearchCriteria("vendorWHCourierMapping",":",vendorWHCourierMappings));
