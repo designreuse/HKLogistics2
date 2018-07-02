@@ -1,0 +1,29 @@
+<div>
+    <form [formGroup]="formGroup">
+        Create WH Courier
+        <div class="form-group">
+            <md-input-container [ngClass]="{'error': formGroup.controls['warehouse'].errors && formGroup.controls['warehouse'].touched}"
+                dividerColor="{{formGroup.controls['warehouse'].errors && formGroup.controls['warehouse'].touched ? 'warn' : 'primary'}}">
+
+                <label for="warehouse">Warehouse</label>
+                <input mdInput formControlName="warehouse" type="text" class="form-control" id="warehouse" placeholder="Warehouse">
+                <div *ngIf="formGroup.controls['warehouse'].errors && formGroup.controls['warehouse'].touched" class="error">
+                    <div *ngIf="formGroup.controls['warehouse'].errors.required">Warehouse is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <div class="form-group">
+            <md-input-container [ngClass]="{'error': formGroup.controls['courierChannel'].errors && formGroup.controls['courierChannel'].touched}"
+                dividerColor="{{formGroup.controls['courierChannel'].errors && formGroup.controls['courierChannel'].touched ? 'warn' : 'primary'}}">
+
+                <label for="courierChannel">Courier Channel</label>
+                <input mdInput formControlName="courierChannel" type="text" class="form-control" id="courierChannel" placeholder="Courier Channel">
+                <div *ngIf="formGroup.controls['courierChannel'].errors && formGroup.controls['courierChannel'].touched" class="error">
+                    <div *ngIf="formGroup.controls['courierChannel'].errors.required">Courier Channel is required.</div>
+                </div>
+            </md-input-container>
+        </div>
+        <button (click)="createNew()" class="btn btn-primary">Save</button>
+        </fieldset>
+    </form>
+</div>

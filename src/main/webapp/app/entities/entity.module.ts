@@ -20,6 +20,8 @@ import { HkLogisticsHubModule } from './hub/hub.module';
 import { HkLogisticsPincodeCourierMappingModule } from './pincode-courier-mapping/pincode-courier-mapping.module';
 import { HkLogisticsPincodeRegionZoneModule } from './pincode-region-zone/pincode-region-zone.module';
 import { HkLogisticsShipmentServiceTypeModule } from './shipment-service-type/shipment-service-type.module';
+import { HkLogisticsShipmentModule } from './shipment/shipment.module';
+import {HkLogisticsCourierWHMappingModule} from './courier-wh-mapping/courier-wh-mapping.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -45,6 +47,8 @@ import { HkLogisticsShipmentServiceTypeModule } from './shipment-service-type/sh
         HkLogisticsPincodeCourierMappingModule,
         HkLogisticsPincodeRegionZoneModule,
         HkLogisticsShipmentServiceTypeModule,
+        HkLogisticsShipmentModule,
+        HkLogisticsCourierWHMappingModule
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

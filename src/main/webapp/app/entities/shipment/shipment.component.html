@@ -1,0 +1,91 @@
+<div class="row">
+    <div class="col-sm-6">
+        <form [formGroup]="formGroup1">
+            <fieldset class="form-group">
+                <legend>Enter Details</legend>
+
+                <div class="form-group">
+                    <md-input-container [ngClass]="{'error': formGroup1.controls['inputPinCode'].errors && formGroup1.controls['inputPinCode'].touched}"
+                        dividerColor="{{formGroup1.controls['inputPinCode'].errors && formGroup1.controls['inputPinCode'].touched ? 'warn' : 'primary'}}">
+
+                        <label for="inputPinCode">Pin Code (Valid Dest)</label>
+                        <input mdInput formControlName="inputPinCode" type="text" class="form-control" id="inputPinCode" placeholder="Pin Code">
+                        <div *ngIf="formGroup1.controls['inputPinCode'].errors && formGroup1.controls['inputPinCode'].touched" class="error">
+                            <div *ngIf="formGroup1.controls['inputPinCode'].errors.required">Pin Code is required.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="form-group">
+                    <label for="inputWeight">Weight (gm)</label>
+                    <input type="text" formControlName="inputWeight" class="form-control" id="inputWeight" placeholder="Weight (gm)">
+                </div>
+                <div class="form-group">
+                    <label for="inputAmount">Amount (SO Payment Ammount)</label>
+                    <input type="text" formControlName="inputAmount" class="form-control" id="inputAmount" placeholder="Amount">
+                </div>
+
+                <div class="form-group">
+                    <label for="sourceWarehouse">Source Warehouse</label>
+                    <select class="form-control" formControlName="sourceWarehouse" id="sourceWarehouse">
+                        <option value="null" disabled selected>Select Warehouse</option>
+                        <option *ngFor="let warehouse of warehouses" [ngValue]="warehouse">{{warehouse.displayName}}</option>
+                    </select>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" formControlName="getCost" class="form-check-input"> COD ?
+                    </label>
+                </div>
+                <button (click)="getShipmentCost()" class="btn btn-primary">Get Possible Shipping Cost</button>
+            </fieldset>
+        </form>
+    </div>
+    <div class="col-sm-6">
+        <form [formGroup]="formGroup2">
+            <fieldset class="form-group">
+                <legend>Enter Details</legend>
+
+                <div class="form-group">
+                    <label for="soOrderId">So Order ID</label>
+                    <input type="text" formControlName="soOrderId" class="form-control" id="soOrderId" placeholder="So Order ID">
+                </div>
+                <div class="form-group">
+                    <label for="startShipDate">Start Ship Date</label>
+                    <input name="date1s" formControlName="sdateTime" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Start Ship Date">
+                    <owl-date-time #dt1></owl-date-time>
+                </div>
+                <div class="form-group">
+                    <label for="endShipDate">End Ship Date</label>
+                    <input name="date1s" formControlName="edateTime" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" placeholder="End Ship Date">
+                    <owl-date-time #dt2></owl-date-time>
+                </div>
+                <div class="form-group">
+                    <label for="weightKGId">Weight (KG)</label>
+                    <input type="text" formControlName="weightkg" class="form-control" id="weightKGId" aria-describedby="weightHelp" placeholder="Weight (KG)">
+                    <small id="weightHelp" class="form-text text-muted">if system weight needs to be updated.</small>
+                </div>
+                <div class="form-group">
+                    <label for="courierGroup">Courier</label>
+                    <select class="form-control" formControlName="courierGroup" id="courierGroup">
+                        <option value="null" disabled selected>Select Courier</option>
+                        <option *ngFor="let courier of couriers" [ngValue]="courier">{{courier.displayName}}</option>
+                    </select>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" formControlName="overrideCost" class="form-check-input"> Override Historical Shipment Cost ?
+                    </label>
+                </div>
+                <div class="form-group">
+                    <button type="submit" (click)="calculateShipmentCost()" class="btn btn-primary">Calculate Shipment Cost</button>
+                </div>
+                <div class="form-group">
+                    <button type="submit" (click)="saveShipingCostByDate()" class="btn btn-primary">saveShiping Cost (By Date)</button>
+                </div>
+                <div class="form-group">
+                    <button type="submit" (click)="saveShipingCostSingleSO()" class="btn btn-primary">saveShiping Cost (Single SO)</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
