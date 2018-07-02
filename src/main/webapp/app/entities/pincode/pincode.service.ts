@@ -41,4 +41,43 @@ export class PincodeService {
         const options = createRequestOption(req);
         return this.http.get<IPincode[]>(this.resourceSearchUrl + '/name', { params: options, observe: 'response' });
     }
+
+    downloadFile() {
+        const finalUrl = this.resourceUrl + '/download';
+        const fileType = '.xls';
+        const filename = 'pincodes' + fileType;
+        console.log('downloadFile Service Called ' + finalUrl);
+        return this.http
+            .get(finalUrl, {
+                responseType: 'blob'
+            })
+            .map(res => {
+                return {
+                    filename: filename,
+                    data: res
+                };
+            })
+            .subscribe(res => {
+                const url = window.URL.createObjectURL(res.data);
+                const a = document.createElement('a');
+                document.body.appendChild(a);
+                a.setAttribute('style', 'display: none');
+                a.href = url;
+                a.download = res.filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove(); // remove the element
+            }, error => {
+                console.log(error);
+                alert(error.message);
+            }, () => {
+                console.log('Completed file download.');
+            });
+    }
+
+    public uploadFile(fileToUpload: File) {
+        const _formData = new FormData();
+        _formData.append('file', fileToUpload, fileToUpload.name);
+        return this.http.post<IPincode>(this.resourceUrl + '/upload', _formData, { observe: 'response' });
+    }
 }

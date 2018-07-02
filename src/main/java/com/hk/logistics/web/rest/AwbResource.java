@@ -189,7 +189,7 @@ public class AwbResource {
 			FileInputStream file = awbExcelUtil.createExcel(pojoList);
 
 			// Set the content type and attachment header.
-			response.addHeader("Content-disposition", "attachment;filename=Sample-File.xlsx");
+			response.addHeader("Content-disposition", "attachment;filename=Sample-File.xls");
 			response.setContentType("application/vnd.ms-excel");
 
 			// get your file as InputStream

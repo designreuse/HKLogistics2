@@ -1,9 +1,11 @@
 package com.hk.logistics.service.impl;
 
 import com.hk.logistics.service.PincodeService;
+import com.hk.logistics.domain.Awb;
 import com.hk.logistics.domain.Pincode;
 import com.hk.logistics.repository.PincodeRepository;
 import com.hk.logistics.repository.search.PincodeSearchRepository;
+import com.hk.logistics.service.dto.AwbDTO;
 import com.hk.logistics.service.dto.PincodeDTO;
 import com.hk.logistics.service.mapper.PincodeMapper;
 import org.slf4j.Logger;
@@ -129,4 +131,17 @@ public class PincodeServiceImpl implements PincodeService {
             .map(pincodeMapper::toDto)
             .collect(Collectors.toList());
     }
+    
+    @Override
+	@Transactional
+	public List<PincodeDTO> upload(List<PincodeDTO> batch) {
+		log.debug("Request to upload Pincode : {}", batch);
+		List<Pincode> inList = batch.parallelStream().map(dto -> pincodeMapper.toEntity(dto))
+				.collect(Collectors.toList());
+		List<Pincode> outList = pincodeRepository.saveAll(inList);
+		List<PincodeDTO> result = outList.parallelStream().map(pincode -> pincodeMapper.toDto(pincode))
+				.collect(Collectors.toList());
+		pincodeSearchRepository.saveAll(inList);
+		return result;
+	}
 }

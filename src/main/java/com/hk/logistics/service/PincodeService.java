@@ -58,4 +58,6 @@ public interface PincodeService {
      * @return the list of entities
      */
     List<PincodeDTO> searchByPincode(String query);
+
+	List<PincodeDTO> upload(List<PincodeDTO> batch);
 }

@@ -89,4 +89,32 @@ export class PincodeComponent implements OnInit, OnDestroy {
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
     }
+
+    downloadFileFromServer() {
+        console.log( 'downloadFileFromServer' );
+        this.pincodeService.downloadFile();
+        return ;
+    }
+
+    upload(event) {
+        const elem = event.target;
+        if (elem.files.length > 0) {
+          const fileSelected: File = elem.files[0];
+          if (fileSelected.name.substring(fileSelected.name.lastIndexOf('.')) !== '.xls') {
+            return this.jhiAlertService.error('Please upload .xls file!', null, null);
+          }
+          this.pincodeService.uploadFile(fileSelected)
+             .subscribe( response => {
+          console.log('set any success actions...');
+          this.jhiAlertService.success('uploaded file please refresh after sometime', null, null);
+         // this.loadAll();
+          return response;
+    }.
+     error => {
+       console.log(error.message);
+       this.jhiAlertService.error(error.statusText, null, null);
+     });
+        event.target.value = null;
+        }
+    }
 }
