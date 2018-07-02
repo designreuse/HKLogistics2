@@ -17,10 +17,11 @@ import java.util.List;
 @Repository
 public interface AwbRepository extends JpaRepository<Awb, Long>, JpaSpecificationExecutor<Awb> {
 
-    List<Awb> findByVendorWHCourierMappingAndCodAndAwbStatus(VendorWHCourierMapping vendorWHCourierMapping, Boolean cod, AwbStatus awbStatus);
+    List<Awb> findByVendorWHCourierMappingAndCodAndAwbStatusAndChannel(VendorWHCourierMapping vendorWHCourierMapping, Boolean cod, AwbStatus awbStatus, Channel channel);
     Awb findByVendorWHCourierMappingAndAwbNumber(VendorWHCourierMapping vendorWHCourierMapping,String awbNumber);
     Awb findByVendorWHCourierMappingAndAwbNumberAndCod(VendorWHCourierMapping vendorWHCourierMapping,String awbNumber,Boolean isCod);
     Awb findByAwbNumber(String awbNumber);
     Awb findByChannelAndAwbNumber(Channel channel, String awbNumber);
+    Awb findByVendorWHCourierMappingAndAwbNumberAndCodAndChannel(VendorWHCourierMapping vendorWHCourierMapping,String awbNumber,Boolean isCod,Channel channel);
 
 }

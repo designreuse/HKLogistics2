@@ -50,8 +50,8 @@ public interface AwbService {
      * @return the list of entities
      */
     List<AwbDTO> search(String query);
-    Awb getAvailableAwbByVendorWHCourierMappingAndCodAndAwbStatus(VendorWHCourierMapping vendorWHCourierMapping,
-                                                                  Boolean cod, AwbStatus awbStatus);
+    Awb getAvailableAwbByVendorWHCourierMappingAndCodAndAwbStatusAndChannel(VendorWHCourierMapping vendorWHCourierMapping,
+                                                                  Boolean cod, AwbStatus awbStatus, Channel channel);
 
     Awb attachAwbForShipment(Courier suggestedCourier, CourierChannel courierChannel,
                              VendorWHCourierMapping vendorWHCourierMapping, Boolean cod);

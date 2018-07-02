@@ -143,8 +143,9 @@ public class AwbServiceImpl implements AwbService {
 
 
 	@Override
-	public Awb getAvailableAwbByVendorWHCourierMappingAndCodAndAwbStatus(VendorWHCourierMapping vendorWHCourierMapping, Boolean cod, AwbStatus awbStatus) {
-		List<Awb> awbList = awbRepository.findByVendorWHCourierMappingAndCodAndAwbStatus(vendorWHCourierMapping,cod,awbStatus);
+	public Awb getAvailableAwbByVendorWHCourierMappingAndCodAndAwbStatusAndChannel(VendorWHCourierMapping vendorWHCourierMapping, Boolean cod, AwbStatus awbStatus, Channel channel) {
+		List<Awb> awbList = awbRepository.findByVendorWHCourierMappingAndCodAndAwbStatusAndChannel(vendorWHCourierMapping,
+				cod,awbStatus, channel);
 		if (awbList != null && !awbList.isEmpty()) {
 			return awbList.get(0);
 		}
@@ -197,7 +198,7 @@ public Awb attachAwbForShipment(Courier suggestedCourier,CourierChannel courierC
 @Transactional
 private Awb fetchAwbForShipment(Courier suggestedCourier, VendorWHCourierMapping vendorWHCourierMapping, CourierChannel courierChannel,Boolean cod) {
 	Awb suggestedAwb;
-	suggestedAwb=awbService.getAvailableAwbByVendorWHCourierMappingAndCodAndAwbStatus(vendorWHCourierMapping,cod,EnumAwbStatus.Unused.getAsAwbStatus());
+	suggestedAwb=awbService.getAvailableAwbByVendorWHCourierMappingAndCodAndAwbStatusAndChannel(vendorWHCourierMapping,cod,EnumAwbStatus.Unused.getAsAwbStatus(), courierChannel.getChannel());
 	//suggestedAwb = awbService.getAvailableAwbForCourierAndChannelByWarehouseCodStatus(suggestedCourier, shippingOrder.getBaseOrder().getStore().getCourierChannel(), null, shippingOrder.getWarehouse(), isCod, EnumAwbStatus.Unused.getAsAwbStatus(), count, true);
 	return suggestedAwb;
 }
@@ -288,7 +289,7 @@ public Awb changeCourier(CourierChangeAPIDto awbChangeAPIDto) {
 	if (suggestedAwb != null) {
 		//shipment.setAwb(suggestedAwb);
 		//shipment = save(shipment);
-		Awb awb=awbRepository.findByAwbNumber(awbChangeAPIDto.getAwbNumber());
+		Awb awb=awbRepository.findByVendorWHCourierMappingAndAwbNumberAndCodAndChannel(vendorWHCourierMapping,awbChangeAPIDto.getAwbNumber(),awbChangeAPIDto.isCod(),channel);
 		awb.setAwbStatus(EnumAwbStatus.Used.getAsAwbStatus());
 		awbRepository.save(awb);
 		//getOprStatusSyncToApiService().updateShipmentAwbChanged(shipment);
@@ -302,16 +303,31 @@ public Awb changeAwbNumber(AwbChangeAPIDto awbChangeAPIDto) {
 	//ShippingOrder shippingOrder = shipment.getShippingOrder();
 	//Awb currentAwb = shipment.getAwb();
 	Channel channel=channelRepository.findByNameAndStore(awbChangeAPIDto.getChannel(), awbChangeAPIDto.getStore());
-	Courier courier=courierRepository.findByShortCode(awbChangeAPIDto.getCourierName());
+	Courier courier=courierRepository.findByShortCode(awbChangeAPIDto.getCourierShortCode());
 	CourierChannel courierChannel=courierChannelRepository.findByCourierAndChannel(courier, channel);
-	WarehouseDTO warehouse=WarehouseService.warehouseMap.get(awbChangeAPIDto.getWarehouseId());
-	VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierAndActive(null,warehouse.getId(), courierChannel.getCourier(), true);
-	Awb awb=awbRepository.findByChannelAndAwbNumber(channel,awbChangeAPIDto.getNewAwbNumber());
-	awb.setAwbStatus(EnumAwbStatus.Used.getAsAwbStatus());
-	awbRepository.save(awb);
-	Awb oldAwb=awbRepository.findByChannelAndAwbNumber(channel,awbChangeAPIDto.getNewAwbNumber());
+	Long warehouseId=Long.parseLong(awbChangeAPIDto.getWarehouseId());
+	WarehouseDTO warehouse=WarehouseService.warehouseMap.get(warehouseId);
+	VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierAndActive
+			(null,warehouse.getId(), courierChannel.getCourier(), true);
+	Awb oldAwb=awbRepository.findByVendorWHCourierMappingAndAwbNumberAndCodAndChannel(vendorWHCourierMapping,
+			awbChangeAPIDto.getOldAwbNumber(),awbChangeAPIDto.isCod(),channel);
+	Awb awb=awbRepository.findByVendorWHCourierMappingAndAwbNumberAndCodAndChannel(vendorWHCourierMapping,
+			awbChangeAPIDto.getNewAwbNumber(),awbChangeAPIDto.isCod(),channel);
+	if(awb==null){
+		awb=new Awb();
+		awb.setAwbBarCode(oldAwb.getAwbBarCode());
+		awb.setAwbNumber(oldAwb.getAwbNumber());
+		awb.setChannel(oldAwb.getChannel());
+		awb.setCod(oldAwb.isCod());
+		awb.setTrackingLink(oldAwb.getTrackingLink());
+		awb.setVendorWHCourierMapping(oldAwb.getVendorWHCourierMapping());
+		awb.setCreateDate(LocalDate.now());
+		awb.setAwbNumber(awbChangeAPIDto.getNewAwbNumber());
+		awb.setAwbStatus(EnumAwbStatus.Used.getAsAwbStatus());
+		awbRepository.save(awb);
+	}
 	oldAwb.setAwbStatus(EnumAwbStatus.Used.getAsAwbStatus());
-	return null;
+	return awb;
 }
 
 @Override

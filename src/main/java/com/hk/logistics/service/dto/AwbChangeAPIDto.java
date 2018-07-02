@@ -2,19 +2,20 @@ package com.hk.logistics.service.dto;
 
 public class AwbChangeAPIDto {
 
-	String courierName;
+	String courierShortCode;
 	String newAwbNumber;
 	String oldAwbNumber;
 	String channel;
 	String store;
 	String vendorCode;
 	String warehouseId;
+	boolean cod;
 	
-	public String getCourierName() {
-		return courierName;
+	public String getCourierShortCode() {
+		return courierShortCode;
 	}
-	public void setCourierName(String courierName) {
-		this.courierName = courierName;
+	public void setCourierShortCode(String courierShortCode) {
+		this.courierShortCode = courierShortCode;
 	}
 	public String getNewAwbNumber() {
 		return newAwbNumber;
@@ -51,5 +52,11 @@ public class AwbChangeAPIDto {
 	}
 	public void setWarehouseId(String warehouseId) {
 		this.warehouseId = warehouseId;
+	}
+	public boolean isCod() {
+		return cod;
+	}
+	public void setCod(boolean cod) {
+		this.cod = cod;
 	}
 }

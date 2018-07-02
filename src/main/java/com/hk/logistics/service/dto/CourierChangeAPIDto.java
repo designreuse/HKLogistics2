@@ -8,6 +8,7 @@ public class CourierChangeAPIDto {
 	String weight;
 	String awbNumber;
 	String store;
+	boolean cod;
 	
 	public String getCourierShortCode() {
 		return courierShortCode;
@@ -45,6 +46,11 @@ public class CourierChangeAPIDto {
 	public void setStore(String store) {
 		this.store = store;
 	}
-	
+	public boolean isCod() {
+		return cod;
+	}
+	public void setCod(boolean cod) {
+		this.cod = cod;
+	}
 
 }

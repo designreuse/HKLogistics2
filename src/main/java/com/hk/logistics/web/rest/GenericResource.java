@@ -301,8 +301,6 @@ public class GenericResource {
 
 	@PostMapping("/awb/change")
 	public AwbResponse changeAwbNumber(@Valid @RequestBody AwbChangeAPIDto awbChangeAPIDto) {
-		// ShippingOrder shippingOrder = shipment.getShippingOrder();
-		// Awb currentAwb = shipment.getAwb();
 		Awb awb = awbService.changeAwbNumber(awbChangeAPIDto);
 		AwbResponse awbResponse = new AwbResponse();
 		awbResponse.setAwbBarCode(awb.getAwbBarCode());
