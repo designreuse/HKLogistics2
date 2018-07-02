@@ -172,10 +172,10 @@ public class CourierResource {
     
     @GetMapping("/couriers/filter")
     @Timed
-    public ResponseEntity<List<CourierDTO>> filter(HttpServletResponse response, CourierCriteria criteria) {
+    public ResponseEntity<List<CourierDTO>> filter(HttpServletResponse response, CourierCriteria criteria, Pageable pageable) {
         log.debug("REST request to filter Couriers for criteria {}", criteria);
-        Page<CourierDTO> page = courierQueryService.findByCriteria(criteria, ne);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/couriers/name");
+        Page<CourierDTO> page = courierQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders("", page, "/api/_search/couriers/filter");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }

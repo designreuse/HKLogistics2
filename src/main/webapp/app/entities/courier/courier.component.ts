@@ -34,6 +34,8 @@ export class CourierComponent implements OnInit, OnDestroy {
     reverse: any;
     couriergroups: ICourierGroup[];
     courierGroup: ICourierGroup;
+    status: String;
+    operation: String;
 
     constructor(
         private courierService: CourierService,
@@ -59,13 +61,13 @@ export class CourierComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
-        if (this.currentSearchName) {
+        if (this.currentSearchName || this.courierGroup) {
             this.courierService
-                .searchName({
+                .filter(this.courierGroup, this.currentSearchName, this.status , this.operation {
                     page: this.page - 1,
-                    query: this.currentSearchName,
+                    // query: this.currentSearchName,
                     size: this.itemsPerPage,
-                    // sort: this.sort()
+                    sort: this.sort()
                 })
                 .subscribe(
                     (res: HttpResponse<ICourier[]>) => this.paginateCouriers(res.body, res.headers),
@@ -98,6 +100,9 @@ export class CourierComponent implements OnInit, OnDestroy {
                 page: this.page,
                 size: this.itemsPerPage,
                 searchName: this.currentSearchName,
+                courierGroup: this.courierGroup,
+                status: this.status,
+                operation: this.operation,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
             }
         });
@@ -107,6 +112,22 @@ export class CourierComponent implements OnInit, OnDestroy {
     clearName() {
         this.page = 0;
         this.currentSearchName = '';
+        this.router.navigate([
+            '/courier',
+            {
+                page: this.page,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        ]);
+        this.loadAll();
+    }
+
+    clearFilter() {
+        this.page = 0;
+        this.currentSearchName = '';
+        this.courierGroup = null;
+        this.status = '';
+        this.operation = '';
         this.router.navigate([
             '/courier',
             {
@@ -172,6 +193,7 @@ export class CourierComponent implements OnInit, OnDestroy {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.queryCount = this.totalItems;
+        console.log('data ->>>>', data)
         this.couriers = data;
     }
 
@@ -185,10 +207,18 @@ export class CourierComponent implements OnInit, OnDestroy {
 
     filter() {
         console.log(this.courierGroup);
-        if ( this.courierGroup == null) {
+        console.log(this.currentSearchName);
+        console.log(this.status);
+        console.log(this.operation);
+        let queryParamsFilters = {
+            page: this.page - 1,
+            size: this.itemsPerPage,
+            sort: this.sort()
+        }
+        if ( !this.courierGroup && !this.currentSearchName && !this.status && !this.operation) {
                 alert("Please Select Filters First");
         } else {
-                 this.courierService.filter(this.courierGroup).subscribe(
+                 this.courierService.filter(this.courierGroup, this.currentSearchName, this.status, this.operation, queryParamsFilters).subscribe(
                     (res: HttpResponse<ICourier[]>) => this.paginateCouriers(res.body, res.headers),
                     (res: HttpErrorResponse) => this.onError(res.message)
                 );

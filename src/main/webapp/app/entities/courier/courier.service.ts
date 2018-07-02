@@ -43,9 +43,27 @@ export class CourierService {
         return this.http.get<ICourier[]>(this.resourceSearchUrl + '/name' , { params: options, observe: 'response' });
     }
 
-    filter(courierGroup: ICourierGroup): Observable<HttpResponse<any>> {
+    filter(courierGroup: ICourierGroup, currentSearchName: String, status:String, operation: String, params:any): Observable<EntityArrayResponseType> {
         console.log('req.filter');
+        const options = createRequestOption(params);
         // const options = createRequestOption(req);
-        return this.http.get<any>(this.resourceUrl+ "/filter?courierGroupId.equals=" + courierGroup.id , { observe: 'response' });
+        let filterUrl = this.resourceUrl + '/filter?';
+        if(courierGroup)
+        {
+            filterUrl = filterUrl + 'courierGroupId.equals=' + courierGroup.id;
+        }
+        if(currentSearchName)
+        {
+            filterUrl = filterUrl + '&name.equals=' + currentSearchName;
+        }
+        if(status)
+        {
+            filterUrl = filterUrl + '&active.equals=' + status;
+        }
+        if(operation)
+        {
+            filterUrl = filterUrl + '&' + operation + '.equals=true';
+        }
+        return this.http.get<ICourier[]>( filterUrl, {  params: options, observe: 'response' });
     }
 }
