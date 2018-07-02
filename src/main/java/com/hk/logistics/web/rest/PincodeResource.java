@@ -6,6 +6,7 @@ import com.hk.logistics.web.rest.errors.BadRequestAlertException;
 import com.hk.logistics.web.rest.util.HeaderUtil;
 import com.hk.logistics.service.dto.PincodeDTO;
 import com.hk.logistics.service.dto.PincodeCriteria;
+import com.hk.logistics.service.CityService;
 import com.hk.logistics.service.PincodeQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -37,10 +38,13 @@ public class PincodeResource {
     private final PincodeService pincodeService;
 
     private final PincodeQueryService pincodeQueryService;
+    
+    private final CityService cityService;
 
-    public PincodeResource(PincodeService pincodeService, PincodeQueryService pincodeQueryService) {
+    public PincodeResource(PincodeService pincodeService, PincodeQueryService pincodeQueryService, CityService cityService) {
         this.pincodeService = pincodeService;
         this.pincodeQueryService = pincodeQueryService;
+        this.cityService = cityService;
     }
 
     /**
@@ -139,6 +143,27 @@ public class PincodeResource {
     public List<PincodeDTO> searchPincodes(@RequestParam String query) {
         log.debug("REST request to search Pincodes for query {}", query);
         return pincodeService.search(query);
+    }
+    
+    /**
+     * SEARCH  /_search/pincodes?query=:query : search for the pincode corresponding
+     * to the query.
+     *
+     * @param query the query of the pincode search
+     * @return the result of the search
+     */
+    @GetMapping("/_search/pincodes/name")
+    @Timed
+    public List<PincodeDTO> searchPincodesByName(@RequestParam String query) {
+        log.debug("REST request to search PincodesByName for query {}", query);
+        List<PincodeDTO> pincodes = pincodeService.searchByPincode(query);
+        pincodes.forEach(pincode -> {
+        	pincode.setCityName(cityService.findOne(pincode.getCityId()).get().getName());
+        	pincode.setStateName(cityService.findOne(pincode.getStateId()).get().getName());
+        	pincode.setZoneName(cityService.findOne(pincode.getZoneId()).get().getName());
+        	pincode.setHubName(cityService.findOne(pincode.getHubId()).get().getName());
+        });
+        return pincodes;
     }
 
 }

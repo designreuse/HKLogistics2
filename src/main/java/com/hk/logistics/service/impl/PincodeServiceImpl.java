@@ -113,4 +113,20 @@ public class PincodeServiceImpl implements PincodeService {
             .map(pincodeMapper::toDto)
             .collect(Collectors.toList());
     }
+    
+    /**
+     * Search for the pincode corresponding to the query.
+     *
+     * @param query the query of the searchByName
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<PincodeDTO> searchByPincode(String query) {
+        log.debug("Request to searchByName Pincodes for query {}", query);
+        return StreamSupport
+            .stream(pincodeSearchRepository.findByPincode(query).spliterator(), false)
+            .map(pincodeMapper::toDto)
+            .collect(Collectors.toList());
+    }
 }

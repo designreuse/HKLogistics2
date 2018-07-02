@@ -49,4 +49,13 @@ public interface PincodeService {
      * @return the list of entities
      */
     List<PincodeDTO> search(String query);
+    
+    /**
+     * Search for the pincode corresponding to the query.
+     *
+     * @param query the query of the searchByName
+     * 
+     * @return the list of entities
+     */
+    List<PincodeDTO> searchByPincode(String query);
 }

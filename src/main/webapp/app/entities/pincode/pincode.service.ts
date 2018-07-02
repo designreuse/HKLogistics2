@@ -37,8 +37,8 @@ export class PincodeService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    search(req?: any): Observable<EntityArrayResponseType> {
+    searchName(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<IPincode[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+        return this.http.get<IPincode[]>(this.resourceSearchUrl + '/name', { params: options, observe: 'response' });
     }
 }

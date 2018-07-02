@@ -16,7 +16,7 @@ export class PincodeComponent implements OnInit, OnDestroy {
     pincodes: IPincode[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
+    currentSearchName: string;
 
     constructor(
         private pincodeService: PincodeService,
@@ -25,43 +25,44 @@ export class PincodeComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {
-        this.currentSearch =
-            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
-                ? this.activatedRoute.snapshot.params['search']
+        this.currentSearchName =
+            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['searchName']
+                ? this.activatedRoute.snapshot.params['searchName']
                 : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
+        if (this.currentSearchName) {
             this.pincodeService
-                .search({
-                    query: this.currentSearch
+                .searchName({
+                    query: this.currentSearchName
                 })
                 .subscribe(
                     (res: HttpResponse<IPincode[]>) => (this.pincodes = res.body),
                     (res: HttpErrorResponse) => this.onError(res.message)
                 );
+            console.log('cityId' + this.pincodes[0].pincode);
             return;
         }
         this.pincodeService.query().subscribe(
             (res: HttpResponse<IPincode[]>) => {
                 this.pincodes = res.body;
-                this.currentSearch = '';
+                this.currentSearchName = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
+    searchName(query) {
         if (!query) {
             return this.clear();
         }
-        this.currentSearch = query;
+        this.currentSearchName = query;
         this.loadAll();
     }
 
     clear() {
-        this.currentSearch = '';
+        this.currentSearchName = '';
         this.loadAll();
     }
 

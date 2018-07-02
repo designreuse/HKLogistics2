@@ -12,12 +12,12 @@
     <div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query">
-                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                <div class="input-group w-100 mt-3">Search Pincode
+                    <input type="text" class="form-control" [(ngModel)]="currentSearchName" id="currentSearchName" name="currentSearchName" placeholder="Query">
+                    <button class="input-group-append btn btn-info" (click)="searchName(currentSearchName)">
                         <fa-icon [icon]="'search'"></fa-icon>
                     </button>
-                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearchName">
                         <fa-icon [icon]="'trash-alt'"></fa-icon>
                     </button>
                 </div>
