@@ -74,4 +74,12 @@ public class ShipmentPricingRequest {
 		this.courierShortCode = courierName;
 	}
 
+	public String getCourierShortCode() {
+		return courierShortCode;
+	}
+
+	public void setCourierShortCode(String courierShortCode) {
+		this.courierShortCode = courierShortCode;
+	}
+
 }

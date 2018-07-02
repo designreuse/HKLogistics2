@@ -103,7 +103,7 @@ public class ShipmentPricingEngine {
 
 		//input parameters from request
 		Double shipmentBoxWeight = shipmentPricingRequest.getShipmentBoxWeight();
-		Courier courier = courierRepository.findByShortCode(shipmentPricingRequest.getCourierName());
+		Courier courier = courierRepository.findByShortCode(shipmentPricingRequest.getCourierShortCode());
 		Pincode pincodeObj = pincodeRepository.findByPincode(shipmentPricingRequest.getPincode());
 		Long srcWarehouse = warehouseService.getWarehouseCodeByFulfillmentCentreCode(shipmentPricingRequest.getWarehouseFcCode());
 		Double shippingOrderAmount = shipmentPricingRequest.getShippingOrderAmount();
@@ -154,15 +154,12 @@ public class ShipmentPricingEngine {
 				if (EnumCourier.HK_Delivery.getId().equals(courier.getId())) {
 					reconciliationCost = 0D;
 				} else {
-					PincodeRegionZone pincodeRegionZone1 = pincodeRegionZoneRepository.findBySourceDestinationMappingAndCourierGroup(sourceDestinationMapping,courier.getCourierGroup());
-					CourierPricingEngine courierPricingInfo1 =
-							courierPricingEngineRepository.findByCourierAndRegionTypeAndValidUpto(courier, pincodeRegionZone1.getRegionType(),  null);
 					if (courierPricingInfo == null) {
 						reconciliationCost = null;
 					} else if (paymentModeId.equals(EnumPaymentMode.COD.getId())) {
-						reconciliationCost = calculateReconciliationCost(courierPricingInfo1, shippingOrderAmount, true);
+						reconciliationCost = calculateReconciliationCost(courierPricingInfo, shippingOrderAmount, true);
 					} else {
-						reconciliationCost = calculateReconciliationCost(courierPricingInfo1, shippingOrderAmount, true);
+						reconciliationCost = calculateReconciliationCost(courierPricingInfo, shippingOrderAmount, true);
 					}
 				}
 			} else {
