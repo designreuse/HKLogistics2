@@ -108,7 +108,7 @@ public class GenericResource {
 		return courierResponse;
 	}
 
-	@PostMapping("/pincode/courier/fetchCouriersNameAndShortCode/{st}/{channel}")
+	@PostMapping("/pincode/courier/fetchCouriersNameAndShortCode/{stId}/{channel}")
 	@Timed
 	public CourierDetailResponse getAllCouriersNameAndShortCode(@PathVariable(DtoJsonConstants.STORE_ID) String storeId,
 			@PathVariable(DtoJsonConstants.CHANNEL) String channel) {
@@ -120,7 +120,7 @@ public class GenericResource {
 		for (CourierChannel courierChannel : courierChannels) {
 			CourierNameAndShortCodeDto courierNameAndShortCodeDto = new CourierNameAndShortCodeDto();
 			courierNameAndShortCodeDto.setName(courierChannel.getCourier().getName());
-			courierNameAndShortCodeDto.setShortCode(courierNameAndShortCodeDto.getShortCode());
+			courierNameAndShortCodeDto.setShortCode(courierChannel.getCourier().getShortCode());
 			courierNameAndShortCodeDtos.add(courierNameAndShortCodeDto);
 		}
 		if (courierNameAndShortCodeDtos != null && courierNameAndShortCodeDtos.size() != 0) {
