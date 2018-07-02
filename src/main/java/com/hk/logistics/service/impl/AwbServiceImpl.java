@@ -290,6 +290,7 @@ public Awb changeCourier(CourierChangeAPIDto awbChangeAPIDto) {
 		//shipment = save(shipment);
 		Awb awb=awbRepository.findByAwbNumber(awbChangeAPIDto.getAwbNumber());
 		awb.setAwbStatus(EnumAwbStatus.Used.getAsAwbStatus());
+		awbRepository.save(awb);
 		//getOprStatusSyncToApiService().updateShipmentAwbChanged(shipment);
 		return suggestedAwb;
 	}
