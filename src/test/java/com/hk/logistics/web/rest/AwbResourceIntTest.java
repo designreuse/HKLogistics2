@@ -11,6 +11,7 @@ import com.hk.logistics.repository.search.AwbSearchRepository;
 import com.hk.logistics.service.AwbService;
 import com.hk.logistics.service.dto.AwbDTO;
 import com.hk.logistics.service.mapper.AwbMapper;
+import com.hk.logistics.util.AwbExcelUtil;
 import com.hk.logistics.web.rest.errors.ExceptionTranslator;
 import com.hk.logistics.service.dto.AwbCriteria;
 import com.hk.logistics.service.AwbQueryService;
@@ -107,6 +108,9 @@ public class AwbResourceIntTest {
 
     @Autowired
     private EntityManager em;
+    
+    @Autowired
+    private AwbExcelUtil awbExcelUtil;
 
     private MockMvc restAwbMockMvc;
 
@@ -115,7 +119,7 @@ public class AwbResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AwbResource awbResource = new AwbResource(awbService, awbQueryService);
+        final AwbResource awbResource = new AwbResource(awbService, awbQueryService, awbExcelUtil);
         this.restAwbMockMvc = MockMvcBuilders.standaloneSetup(awbResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

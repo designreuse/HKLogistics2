@@ -9,6 +9,8 @@ import { Principal } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { CourierService } from './courier.service';
+import { ICourierGroup } from 'app/shared/model/courier-group.model';
+import { CourierGroupService } from 'app/entities/courier-group';
 
 @Component({
     selector: 'jhi-courier',
@@ -20,7 +22,7 @@ export class CourierComponent implements OnInit, OnDestroy {
     error: any;
     success: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
+    currentSearchName: string;
     routeData: any;
     links: any;
     totalItems: any;
@@ -30,6 +32,8 @@ export class CourierComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
+    couriergroups: ICourierGroup[];
+    courierGroup: ICourierGroup;
 
     constructor(
         private courierService: CourierService,
@@ -38,7 +42,8 @@ export class CourierComponent implements OnInit, OnDestroy {
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private courierGroupService: CourierGroupService,
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe(data => {
@@ -47,20 +52,20 @@ export class CourierComponent implements OnInit, OnDestroy {
             this.reverse = data.pagingParams.ascending;
             this.predicate = data.pagingParams.predicate;
         });
-        this.currentSearch =
-            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
-                ? this.activatedRoute.snapshot.params['search']
+        this.currentSearchName =
+            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['searchName']
+                ? this.activatedRoute.snapshot.params['searchName']
                 : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
+        if (this.currentSearchName) {
             this.courierService
-                .search({
+                .searchName({
                     page: this.page - 1,
-                    query: this.currentSearch,
+                    query: this.currentSearchName,
                     size: this.itemsPerPage,
-                    sort: this.sort()
+                    // sort: this.sort()
                 })
                 .subscribe(
                     (res: HttpResponse<ICourier[]>) => this.paginateCouriers(res.body, res.headers),
@@ -92,16 +97,16 @@ export class CourierComponent implements OnInit, OnDestroy {
             queryParams: {
                 page: this.page,
                 size: this.itemsPerPage,
-                search: this.currentSearch,
+                searchName: this.currentSearchName,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
             }
         });
         this.loadAll();
     }
 
-    clear() {
+    clearName() {
         this.page = 0;
-        this.currentSearch = '';
+        this.currentSearchName = '';
         this.router.navigate([
             '/courier',
             {
@@ -112,16 +117,16 @@ export class CourierComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
 
-    search(query) {
+    searchName(query) {
         if (!query) {
-            return this.clear();
+            return this.clearName();
         }
         this.page = 0;
-        this.currentSearch = query;
+        this.currentSearchName = query;
         this.router.navigate([
             '/courier',
             {
-                search: this.currentSearch,
+                searchName: this.currentSearchName,
                 page: this.page,
                 sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
             }
@@ -130,6 +135,12 @@ export class CourierComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.courierGroupService.query().subscribe(
+            (res: HttpResponse<ICourierGroup[]>) => {
+                this.couriergroups = res.body;
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
         this.loadAll();
         this.principal.identity().then(account => {
             this.currentAccount = account;
@@ -166,5 +177,22 @@ export class CourierComponent implements OnInit, OnDestroy {
 
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
+    }
+
+    trackCourierGroupById(index: number, item: ICourierGroup) {
+        return item.id;
+    }
+
+    filter() {
+        console.log(this.courierGroup);
+        if ( this.courierGroup == null) {
+                alert("Please Select Filters First");
+        } else {
+                 this.courierService.filter(this.courierGroup).subscribe(
+                    (res: HttpResponse<ICourier[]>) => this.paginateCouriers(res.body, res.headers),
+                    (res: HttpErrorResponse) => this.onError(res.message)
+                );
+        }
+        return;
     }
 }

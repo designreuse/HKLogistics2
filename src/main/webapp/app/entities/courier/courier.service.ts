@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { ICourier } from 'app/shared/model/courier.model';
+import { ICourierGroup } from 'app/shared/model/courier-group.model';
 
 type EntityResponseType = HttpResponse<ICourier>;
 type EntityArrayResponseType = HttpResponse<ICourier[]>;
@@ -37,8 +38,14 @@ export class CourierService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    search(req?: any): Observable<EntityArrayResponseType> {
+    searchName(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<ICourier[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+        return this.http.get<ICourier[]>(this.resourceSearchUrl + '/name' , { params: options, observe: 'response' });
+    }
+
+    filter(courierGroup: ICourierGroup): Observable<HttpResponse<any>> {
+        console.log('req.filter');
+        // const options = createRequestOption(req);
+        return this.http.get<any>(this.resourceUrl+ "/filter?courierGroupId.equals=" + courierGroup.id , { observe: 'response' });
     }
 }

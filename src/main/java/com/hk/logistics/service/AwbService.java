@@ -74,4 +74,15 @@ public interface AwbService {
 
     Awb markAwbUnused(Courier courier, String awbNumber, String fulfillmentCentreCode, String store, String channelName,
                       String isCod);
+
+	List<AwbDTO> upload(List<AwbDTO> batch);
+
+	VendorWHCourierMappingDTO getVendorWHCourierMappingByCourierAndWHId(Long courierId, Long whId);
+
+	VendorWHCourierMappingDTO getVendorWHCourierMappingByCourierAndVendorShortCode(Long courierId,
+			String vendorShortCode);
+
+	List<AwbExcelPojo> getAwbsForExcelDownload(AwbCriteria criteria);
+
+	AwbDTO isAwbEligibleForDeletion(Long courierId, String awbNumber, Long whId, Boolean cod);
 }

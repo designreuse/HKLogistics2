@@ -80,14 +80,20 @@ export class AwbService {
         return res;
     }
 
-    downloadFile(courierGroup: ICourier, awbStatus: IAwbStatus) {
-        const finalUrl = this.downloadUrl+ "/?courierId.equals="+courierGroup.id+"&awbStatusId.equals="+awbStatus.id;
-        const fileType =".xlsx"
-        const filename ="courier-awb-status" + fileType;
+    downloadFile(courier: ICourier, awbStatus: IAwbStatus) {
+        let finalUrl = this.downloadUrl ;
+        if ( courier.id ) {
+            finalUrl = finalUrl + '/?courierId.equals=' + courier.id ;
+        }
+        if ( awbStatus.id ) {
+            finalUrl = finalUrl + '&awbStatusId.equals=' + awbStatus.id;
+        }
+        const fileType = '.xls';
+        const filename = 'courier-awb-status' + fileType;
         console.log('downloadFile Service Called ' + finalUrl);
         return this.http
             .get(finalUrl, {
-                responseType: "blob"
+                responseType: 'blob'
             })
             .map(res => {
                 return {
@@ -106,10 +112,10 @@ export class AwbService {
                 window.URL.revokeObjectURL(url);
                 a.remove(); // remove the element
             }, error => {
-                console.log(error)
+                console.log(error);
                 alert(error.message);
             }, () => {
-                console.log('Completed file download.')
+                console.log('Completed file download.');
             });
     }
 
@@ -118,5 +124,16 @@ export class AwbService {
         const options = createRequestOption(req);
         return this.http.get<any>(this.resourceUrl + '/download' , { params: options, observe: 'response' });
     }
-}
 
+    public uploadFile(fileToUpload: File) {
+        const _formData = new FormData();
+        _formData.append('file', fileToUpload, fileToUpload.name);
+        return this.http.post<IAwb>(this.resourceUrl + '/upload', _formData, { observe: 'response' });
+    }
+
+    public deleteBulk(fileToUpload: File) {
+        const _formData = new FormData();
+        _formData.append('file', fileToUpload, fileToUpload.name);
+        return this.http.post<IAwb>(this.resourceUrl + '/awbs/bulk-delete', _formData, { observe: 'response' });
+    }
+}

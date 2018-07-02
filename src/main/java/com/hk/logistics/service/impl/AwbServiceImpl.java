@@ -9,6 +9,12 @@ import com.hk.logistics.service.*;
 import com.hk.logistics.repository.search.AwbSearchRepository;
 import com.hk.logistics.service.dto.*;
 import com.hk.logistics.service.mapper.AwbMapper;
+
+import io.github.jhipster.service.filter.BooleanFilter;
+import io.github.jhipster.service.filter.LongFilter;
+import io.github.jhipster.service.filter.StringFilter;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -59,7 +66,11 @@ public class AwbServiceImpl implements AwbService {
     CourierRepository courierRepository;
     @Autowired
     VariantService variantService;
-
+    @Autowired
+    VendorWHCourierMappingQueryService vendorWHCourierMappingQueryService;
+    @Autowired
+    AwbQueryService awbQueryService;
+    
     public AwbServiceImpl(AwbRepository awbRepository, AwbMapper awbMapper, AwbSearchRepository awbSearchRepository) {
         this.awbRepository = awbRepository;
         this.awbMapper = awbMapper;
@@ -354,4 +365,161 @@ public class AwbServiceImpl implements AwbService {
         Awb awb = awbRepository.findByVendorWHCourierMappingAndAwbNumberAndCod(vendorWHCourierMapping,awbNumber, Boolean.parseBoolean(isCod));
         return awb;
     }
+    
+    @Override
+	@Transactional
+	public List<AwbDTO> upload(List<AwbDTO> batch) {
+		log.debug("Request to upload Awb : {}", batch);
+		List<Awb> inList = batch.parallelStream().map(dto -> awbMapper.toEntity(dto))
+				.collect(Collectors.toList());
+		List<Awb> outList = awbRepository.saveAll(inList);
+		List<AwbDTO> result = outList.parallelStream().map(awb -> awbMapper.toDto(awb))
+				.collect(Collectors.toList());
+		awbSearchRepository.saveAll(inList);
+		return result;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public VendorWHCourierMappingDTO getVendorWHCourierMappingByCourierAndWHId(Long courierId, Long whId) {
+		VendorWHCourierMappingCriteria vendorWHCourierMappingCriteria = new VendorWHCourierMappingCriteria();
+		LongFilter courierIdFilter = new LongFilter();
+		courierIdFilter.setEquals(courierId);
+
+		LongFilter whIdFilter = new LongFilter();
+		whIdFilter.setEquals(whId);
+
+		vendorWHCourierMappingCriteria.setCourierId(courierIdFilter);
+		vendorWHCourierMappingCriteria.setWarehouse(whIdFilter);
+
+		List<VendorWHCourierMappingDTO> list = vendorWHCourierMappingQueryService
+				.findByCriteria(vendorWHCourierMappingCriteria);
+
+		if (CollectionUtils.isNotEmpty(list))
+			return list.get(0);
+
+		return null;
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public VendorWHCourierMappingDTO getVendorWHCourierMappingByCourierAndVendorShortCode(Long courierId,
+			String vendorShortCode) {
+		VendorWHCourierMappingCriteria vendorWHCourierMappingCriteria = new VendorWHCourierMappingCriteria();
+		LongFilter courierIdFilter = new LongFilter();
+		courierIdFilter.setEquals(courierId);
+
+		StringFilter vendorFilter = new StringFilter();
+		vendorFilter.setEquals(vendorShortCode);
+
+		vendorWHCourierMappingCriteria.setCourierId(courierIdFilter);
+		vendorWHCourierMappingCriteria.setVendor(vendorFilter);
+
+		List<VendorWHCourierMappingDTO> list = vendorWHCourierMappingQueryService
+				.findByCriteria(vendorWHCourierMappingCriteria);
+
+		if (CollectionUtils.isNotEmpty(list))
+			return list.get(0);
+
+		return null;
+	}
+
+	@Override
+	public List<AwbExcelPojo> getAwbsForExcelDownload(AwbCriteria criteria) {
+		VendorWHCourierMappingCriteria vendorWHCourierMappingCriteria = new VendorWHCourierMappingCriteria();
+		vendorWHCourierMappingCriteria.setCourierId(criteria.getCourierId());
+		List<VendorWHCourierMappingDTO> vendorWHCourierMappingList = vendorWHCourierMappingQueryService
+				.findByCriteria(vendorWHCourierMappingCriteria);
+
+		List<AwbExcelPojo> awbExcelPojoList = new ArrayList<AwbExcelPojo>();
+		if (CollectionUtils.isNotEmpty(vendorWHCourierMappingList)) {
+			for (VendorWHCourierMappingDTO vendorWHCourierMapping : vendorWHCourierMappingList) {
+				LongFilter vendorWHCourierMappingFilter = new LongFilter();
+				vendorWHCourierMappingFilter.setEquals(vendorWHCourierMapping.getId());
+				criteria.setVendorWHCourierMappingId(vendorWHCourierMappingFilter);
+				criteria.setCourierId(null);
+
+				List<AwbDTO> dtoList = awbQueryService.findByCriteria(criteria);
+				if (CollectionUtils.isNotEmpty(dtoList)) {
+
+					awbExcelPojoList = mapToAwbExcelPojo(dtoList, vendorWHCourierMapping.getCourierId(),
+							vendorWHCourierMapping.getVendor(), vendorWHCourierMapping.getWarehouse());
+				}
+			}
+		}
+		return awbExcelPojoList;
+	}
+	
+	private List<AwbExcelPojo> mapToAwbExcelPojo(List<AwbDTO> dtoList, Long courierId, String vendorShortCode, Long whId) {
+		List<AwbExcelPojo> list = dtoList.parallelStream().map(dto -> convertToAwbExcelPojo(dto, courierId, vendorShortCode, whId))
+				.collect(Collectors.toList());
+		return list;
+	}
+	
+	private AwbExcelPojo convertToAwbExcelPojo(AwbDTO dto, Long courierId, String vendorShortCode, Long whId) {
+		AwbExcelPojo pojo = new AwbExcelPojo();
+		pojo.setAwbNumber(dto.getAwbNumber());
+		pojo.setCod(dto.isCod());
+		pojo.setAwbStatus(dto.getAwbStatusStatus());
+		pojo.setChannelName(dto.getChannelName());
+		pojo.setVendorShortCode(vendorShortCode);
+		pojo.setWhId(whId);
+
+		return pojo;
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public AwbDTO isAwbEligibleForDeletion(Long courierId, String awbNumber, Long whId, Boolean cod) {{
+		// :: TODO 
+	    List<AwbStatus> awbStatusList = Arrays.asList(EnumAwbStatus.Unused.getAsAwbStatus(), EnumAwbStatus.Used.getAsAwbStatus());
+	    
+	    VendorWHCourierMappingCriteria vendorWHCourierMappingCriteria = new VendorWHCourierMappingCriteria();
+	    
+	    LongFilter courierIdFilter = new LongFilter();
+	    courierIdFilter.equals(courierId);
+	    
+	    LongFilter whIdFilter = new LongFilter();
+	    whIdFilter.equals(whId);
+	    
+	    vendorWHCourierMappingCriteria.setCourierId(courierIdFilter);
+	    vendorWHCourierMappingCriteria.setWarehouse(whIdFilter);
+	    List<VendorWHCourierMappingDTO> vendorWHCourierMappingDTOList = vendorWHCourierMappingQueryService.findByCriteria(vendorWHCourierMappingCriteria);
+	    
+	    List<Long> vendorWHCourierMappingIds = new ArrayList<Long>();
+	    
+	    if(CollectionUtils.isNotEmpty(vendorWHCourierMappingDTOList))
+	    {
+	    	vendorWHCourierMappingDTOList.forEach(dto-> vendorWHCourierMappingIds.add(dto.getId()));
+	    }
+	    
+	    AwbCriteria awbCriteria = new AwbCriteria();
+	    LongFilter vendorWHCourierMappingIdFilter = new LongFilter();
+	    vendorWHCourierMappingIdFilter.setIn(vendorWHCourierMappingIds);
+	    
+	    StringFilter awbNumberFilter = new StringFilter();
+	    awbNumberFilter.setEquals(awbNumber);
+	    
+	    BooleanFilter codFilter = new BooleanFilter();
+	    codFilter.equals(cod);
+	    
+	    LongFilter awbStatusIdFilter = new LongFilter();
+	    awbStatusIdFilter.setIn(Arrays.asList(1L,2L));
+	    
+	    awbCriteria.setVendorWHCourierMappingId(vendorWHCourierMappingIdFilter);
+	    awbCriteria.setAwbStatusId(awbStatusIdFilter);
+	    awbCriteria.setAwbNumber(awbNumberFilter);
+	    awbCriteria.setCod(codFilter);
+	    AwbDTO awbFromDb = awbQueryService.findByCriteria(awbCriteria).get(0);
+	    if (awbFromDb != null) {
+	    	// ::TODO 
+	     //String shipmentQuery = " select  s.awb from Shipment s where s.awb.id = :awbId";
+	      //List<Awb> awbList = getCurrentSession().createQuery(shipmentQuery).setParameter("awbId", awbFromDb.getId()).list();
+	      //if (awbList == null || awbList.size() == 0) {
+	        return awbFromDb;
+	      //}
+	    }
+	    return null;
+	  }}
+
 }
