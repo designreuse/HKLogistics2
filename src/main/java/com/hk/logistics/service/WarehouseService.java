@@ -17,6 +17,10 @@ public class WarehouseService{
 		warehouseDTO.setId(701L);
 		warehouseDTO.setPincode("122002");
 		warehouseMap.put(701L, warehouseDTO);
+		WarehouseDTO warehouseDTO1=new WarehouseDTO();
+		warehouseDTO1.setFulfilmentCenterCode("GCFA-AB");
+		warehouseDTO1.setPincode("1223333");
+		warehouseMap.put(4033L, warehouseDTO1);
 	}
 
 	public Long getWarehouseCodeByFulfillmentCentreCode(String fulfillmentCentreCode){
