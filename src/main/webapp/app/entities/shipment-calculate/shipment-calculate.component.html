@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-sm-6">
+        <form [formGroup]="formGroup1">
+            <fieldset class="form-group">
+                <legend>Enter Details</legend>
+
+                <div class="form-group">
+                    <md-input-container [ngClass]="{'error': formGroup1.controls['inputPinCode'].errors && formGroup1.controls['inputPinCode'].touched}"
+                        dividerColor="{{formGroup1.controls['inputPinCode'].errors && formGroup1.controls['inputPinCode'].touched ? 'warn' : 'primary'}}">
+
+                        <label for="inputPinCode">Pin Code (Valid Dest)</label>
+                        <input mdInput formControlName="inputPinCode" type="text" class="form-control" id="inputPinCode" placeholder="Pin Code">
+                        <div *ngIf="formGroup1.controls['inputPinCode'].errors && formGroup1.controls['inputPinCode'].touched" class="error">
+                            <div *ngIf="formGroup1.controls['inputPinCode'].errors.required">Pin Code is required.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div class="form-group">
+                    <label for="inputWeight">Weight (gm)</label>
+                    <input type="text" formControlName="inputWeight" class="form-control" id="inputWeight" placeholder="Weight (gm)">
+                </div>
+                <div class="form-group">
+                    <label for="inputAmount">Amount (SO Payment Ammount)</label>
+                    <input type="text" formControlName="inputAmount" class="form-control" id="inputAmount" placeholder="Amount">
+                </div>
+
+                <div class="form-group">
+                    <label for="sourceWarehouse">Source Warehouse</label>
+                    <select class="form-control" formControlName="sourceWarehouse" id="sourceWarehouse">
+                        <option value="null" disabled selected>Select Warehouse</option>
+                        <option *ngFor="let warehouse of warehouses" [ngValue]="warehouse">{{warehouse.displayName}}</option>
+                    </select>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" formControlName="getCost" class="form-check-input"> COD ?
+                    </label>
+                </div>
+                <button (click)="getShipmentCost()" class="btn btn-primary">Get Possible Shipping Cost</button>
+            </fieldset>
+        </form>
+    </div>
+</div>

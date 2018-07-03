@@ -21,6 +21,7 @@ import { HkLogisticsPincodeCourierMappingModule } from './pincode-courier-mappin
 import { HkLogisticsPincodeRegionZoneModule } from './pincode-region-zone/pincode-region-zone.module';
 import { HkLogisticsShipmentServiceTypeModule } from './shipment-service-type/shipment-service-type.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
+import { HkLogisticsShipmentCalculateModule } from './shipment-calculate/shipment-calculate.module';
 
 @NgModule({
     // prettier-ignore
@@ -46,6 +47,7 @@ import { HkLogisticsShipmentServiceTypeModule } from './shipment-service-type/sh
         HkLogisticsPincodeRegionZoneModule,
         HkLogisticsShipmentServiceTypeModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
+		HkLogisticsShipmentCalculateModule,
     ],
     declarations: [],
     entryComponents: [],
