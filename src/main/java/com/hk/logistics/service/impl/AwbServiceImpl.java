@@ -340,8 +340,8 @@ public Awb attachAwbForBright(BrightChangeCourierRequest brightChangeCourierRequ
 	VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndWarehouseAndCourierAndActive(null,warehouse, courierChannel.getCourier(), true);
 	Awb awb=awbService.attachAwbForShipment(courier,courierChannel, vendorWHCourierMapping ,(Boolean)brightChangeCourierRequest.isCod());
 	if(brightChangeCourierRequest.getOldAwbNumberToPreserve()!=null){
-		Awb oldAwb=awbRepository.findByVendorWHCourierMappingAndAwbNumber(vendorWHCourierMapping, brightChangeCourierRequest.getOldAwbNumberToPreserve());
-		oldAwb.setAwbStatus(EnumAwbStatus.Unused.getAsAwbStatus());
+		Awb oldAwb=awbRepository.findByVendorWHCourierMappingAndAwbNumberAndCodAndChannel(vendorWHCourierMapping, brightChangeCourierRequest.getOldAwbNumberToPreserve(),brightChangeCourierRequest.isCod(),channel);
+		oldAwb.setAwbStatus(EnumAwbStatus.Used.getAsAwbStatus());
 		awbRepository.save(oldAwb);
 	}
 	return awb;
