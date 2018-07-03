@@ -7,6 +7,8 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { ICourierPricingEngine } from 'app/shared/model/courier-pricing-engine.model';
 import { Principal } from 'app/core';
 import { CourierPricingEngineService } from './courier-pricing-engine.service';
+import { ICourier } from 'app/shared/model/courier.model';
+import { CourierService } from 'app/entities/courier';
 
 @Component({
     selector: 'jhi-courier-pricing-engine',
@@ -17,13 +19,16 @@ export class CourierPricingEngineComponent implements OnInit, OnDestroy {
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
+    couriers: ICourier[];
+    courierId: number;
 
     constructor(
         private courierPricingEngineService: CourierPricingEngineService,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
-        private principal: Principal
+        private principal: Principal,
+        private courierService: CourierService,
     ) {
         this.currentSearch =
             this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
@@ -32,11 +37,9 @@ export class CourierPricingEngineComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
-        if (this.currentSearch) {
+        if (this.courierId) {
             this.courierPricingEngineService
-                .search({
-                    query: this.currentSearch
-                })
+            .filter(this.courierId)
                 .subscribe(
                     (res: HttpResponse<ICourierPricingEngine[]>) => (this.courierPricingEngines = res.body),
                     (res: HttpErrorResponse) => this.onError(res.message)
@@ -47,6 +50,7 @@ export class CourierPricingEngineComponent implements OnInit, OnDestroy {
             (res: HttpResponse<ICourierPricingEngine[]>) => {
                 this.courierPricingEngines = res.body;
                 this.currentSearch = '';
+                this.courierId = null;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
@@ -66,6 +70,12 @@ export class CourierPricingEngineComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.courierService.query().subscribe(
+            (res: HttpResponse<ICourier[]>) => {
+                this.couriers = res.body;
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
         this.loadAll();
         this.principal.identity().then(account => {
             this.currentAccount = account;
@@ -87,5 +97,28 @@ export class CourierPricingEngineComponent implements OnInit, OnDestroy {
 
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
+    }
+
+    filter() {
+        console.log(this.courierId);
+        if ( !this.courierId) {
+                alert("Please select filter");
+        } else {
+                 this.courierPricingEngineService.filter(this.courierId).subscribe(
+                    (res: HttpResponse<ICourierPricingEngine[]>) => (this.courierPricingEngines = res.body),
+                    (res: HttpErrorResponse) => this.onError(res.message)
+                );
+        }
+        return;
+    }
+
+    clearFilter() {
+        this.courierId = null;
+        this.loadAll();
+    }
+
+    
+    trackCourierById(index: number, item: ICourier) {
+        return item.id;
     }
 }
