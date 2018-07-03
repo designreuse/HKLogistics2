@@ -169,7 +169,7 @@ public class GenericResource {
 		return awbCourierResponse;
 	}
 
-	@GetMapping("awb/validateAwb/{courierShortCode}/{awbNumber}/{isCod}/{store}/{channel}/{fulfillmentCentreCode}")
+	@GetMapping("pincode/awb/validateAwb/{courierShortCode}/{awbNumber}/{isCod}/{store}/{channel}/{fulfillmentCentreCode}")
 	@Timed
 	public String validateAwb(@PathVariable(DtoJsonConstants.COURIER_SHORT_CODE) String courierShortCode,
 			@PathVariable(DtoJsonConstants.AWB_NO) String awbNumber,
@@ -217,7 +217,7 @@ public class GenericResource {
 		return new Gson().toJson(healthkartResponse);
 	}
 
-	@GetMapping("/awb/markAwbUsed/{courierShortCode}/{awbNumber}/{store}/{channel}/{fulfillmentCentreCode}")
+	@GetMapping("/pincode/awb/markAwbUsed/{courierShortCode}/{awbNumber}/{store}/{channel}/{fulfillmentCentreCode}")
 	public String markAwbUsed(@PathVariable(DtoJsonConstants.COURIER_SHORT_CODE) String courierShortCode,
 			@PathVariable(DtoJsonConstants.AWB_NO) String awbNumber, @PathParam(DtoJsonConstants.STORE) String store,
 			@PathVariable(DtoJsonConstants.CHANNEL) String channel,

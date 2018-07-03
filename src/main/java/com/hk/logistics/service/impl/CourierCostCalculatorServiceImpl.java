@@ -140,7 +140,7 @@ public class CourierCostCalculatorServiceImpl implements CourierCostCalculatorSe
 				List<CourierPricingEngine> courierPricingInfoList = courierPricingEngineRepository.findAll(Specification.where
 						(courierPricingEngineCriteria1).and(courierPricingEngineCriteria2).
 						or(courierPricingEngineCriteria3));
-				if (courierPricingInfoList == null) {
+				if (courierPricingInfoList == null || courierPricingInfoList.size()==0) {
 					continue;
 				}
 				totalCost = shipmentPricingEngine.calculateShipmentCost(courierPricingInfoList.get(0), weight);
