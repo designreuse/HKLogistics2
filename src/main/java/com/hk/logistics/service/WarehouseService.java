@@ -19,7 +19,7 @@ public class WarehouseService{
 		warehouseMap.put(701L, warehouseDTO);
 		WarehouseDTO warehouseDTO1=new WarehouseDTO();
 		warehouseDTO1.setFulfilmentCenterCode("GCFA-AB");
-		warehouseDTO.setId(4033L);
+		warehouseDTO1.setId(4033L);
 		warehouseDTO1.setPincode("1223333");
 		warehouseMap.put(4033L, warehouseDTO1);
 	}
