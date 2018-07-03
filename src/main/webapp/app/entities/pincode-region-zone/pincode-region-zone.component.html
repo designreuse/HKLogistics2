@@ -36,7 +36,8 @@
     <button class="input-group-append btn btn-info" (click)="filter()">
         <fa-icon [icon]="'search'"></fa-icon>
     </button>
-    <button class="input-group-append btn btn-danger" (click)="clearFilter()" *ngIf="courierGroup">
+    <button class="input-group-append btn btn-danger" (click)="clearFilter()" *ngIf="sourcePincode ||
+    destinationPincode || courierGroup || regionTypeId">
         <fa-icon [icon]="'trash-alt'"></fa-icon>
     </button>
     <br/>

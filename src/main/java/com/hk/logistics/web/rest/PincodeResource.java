@@ -228,10 +228,21 @@ public class PincodeResource {
         log.debug("REST request to search PincodesByName for query {}", query);
         List<PincodeDTO> pincodes = pincodeService.searchByPincode(query);
         pincodes.forEach(pincode -> {
-        	pincode.setCityName(cityService.findOne(pincode.getCityId()).get().getName());
-        	pincode.setStateName(cityService.findOne(pincode.getStateId()).get().getName());
-        	pincode.setZoneName(cityService.findOne(pincode.getZoneId()).get().getName());
-        	pincode.setHubName(cityService.findOne(pincode.getHubId()).get().getName());
+        	CityDTO cityDTO =  cityService.findOne(pincode.getCityId()).get();
+            if(cityDTO!=null)
+        	pincode.setCityName(cityDTO.getName());
+            
+            StateDTO stateDTO = stateService.findOne(pincode.getStateId()).get();
+            if(stateDTO != null)
+        	pincode.setStateName(stateDTO.getName());
+            
+            ZoneDTO zoneDTO = zoneService.findOne(pincode.getZoneId()).get();
+            if(zoneDTO!=null)
+        	pincode.setZoneName(zoneDTO.getName());
+            
+            HubDTO hubDTO = hubService.findOne(pincode.getHubId()).get();
+            if(hubDTO!=null)
+        	pincode.setHubName(hubDTO.getName());
         });
         return pincodes;
     }
