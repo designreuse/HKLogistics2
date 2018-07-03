@@ -3,6 +3,8 @@ package com.hk.logistics.service.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.poiji.annotation.ExcelCellName;
+
 /**
  * A DTO for the PincodeRegionZone entity.
  */
@@ -12,13 +14,21 @@ public class PincodeRegionZoneDTO implements Serializable {
 
     private Long regionTypeId;
 
+    @ExcelCellName("REGION_TYPE")
     private String regionTypeName;
 
     private Long courierGroupId;
 
+    @ExcelCellName("COURIER_GROUP")
     private String courierGroupName;
 
     private Long sourceDestinationMappingId;
+    
+    @ExcelCellName("SOURCE_PINCODE")
+    private String sourcePincode;
+    
+    @ExcelCellName("DESTINATION_PINCODE")
+    private String destinationPincode;
 
     public Long getId() {
         return id;
@@ -68,7 +78,23 @@ public class PincodeRegionZoneDTO implements Serializable {
         this.sourceDestinationMappingId = sourceDestinationMappingId;
     }
 
-    @Override
+    public String getSourcePincode() {
+		return sourcePincode;
+	}
+
+	public void setSourcePincode(String sourcePincode) {
+		this.sourcePincode = sourcePincode;
+	}
+
+	public String getDestinationPincode() {
+		return destinationPincode;
+	}
+
+	public void setDestinationPincode(String destinationPincode) {
+		this.destinationPincode = destinationPincode;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
