@@ -21,7 +21,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -152,6 +154,18 @@ public class CourierPricingEngineResource {
 		return courierPricingEngineQueryService.findByCriteria(criteria);
 		
 	}
+    
+    
+    @GetMapping("/courier-pricing-engines/calculateViaPincode")
+    @Timed
+	public Map<Integer,String> calculateViaPincode(HttpServletResponse response, @RequestParam String query) {
+		log.debug("REST request to filter courier-pricing-engines for criteria {}", query);
 
+		Map<Integer, String> m = new TreeMap<>();
+		m.put(1, "Delivery");
+		m.put(2, "Express");
+		return m;
+		
+	}
 
 }

@@ -30,6 +30,12 @@
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
                     <li>
+                        <a class="dropdown-item" routerLink="shipment-calculate" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
+                            <span>Calculate Shipment Cost</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="dropdown-item" routerLink="region-type" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon [icon]="'asterisk'" [fixedWidth]="true"></fa-icon>
                             <span>Region Type</span>
