@@ -42,7 +42,7 @@ public class CourierCostCalculatorServiceImpl implements CourierCostCalculatorSe
 	@Autowired
     ShipmentPricingEngine shipmentPricingEngine;
 	@Autowired
-    AwbService awbService;
+    CustomAwbService customAwbService;
 	@Autowired
     VendorWHCourierMappingRepository vendorWHCourierMappingRepository;
 	@Autowired
@@ -198,7 +198,7 @@ public class CourierCostCalculatorServiceImpl implements CourierCostCalculatorSe
 			String vendor= VendorService.vendorShortCodes.get(vendorCode)!=null?vendorCode:null;
 			CourierChannel courierChannel=courierChannelRepository.findByCourierAndChannel(courier,channel1);
 			VendorWHCourierMapping vendorWHCourierMapping=vendorWHCourierMappingRepository.findByVendorAndCourierAndActive(vendor, courierChannel.getCourier(), true);
-			Awb awb = awbService.getAvailableAwbByVendorWHCourierMappingAndCodAndAwbStatusAndChannel(vendorWHCourierMapping, cod, EnumAwbStatus.Unused.getAsAwbStatus(), channel1);
+			Awb awb = customAwbService.getAvailableAwbByVendorWHCourierMappingAndCodAndAwbStatusAndChannel(vendorWHCourierMapping, cod, EnumAwbStatus.Unused.getAsAwbStatus(), channel1);
 			if (awb != null) {
 				awb.setAwbStatus(EnumAwbStatus.Used.getAsAwbStatus());
 				courierAwbMap.put(courier, awb);

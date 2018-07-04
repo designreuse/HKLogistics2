@@ -30,6 +30,7 @@ import com.hk.logistics.repository.ChannelRepository;
 import com.hk.logistics.repository.CourierChannelRepository;
 import com.hk.logistics.repository.CourierRepository;
 import com.hk.logistics.service.AwbService;
+import com.hk.logistics.service.CustomAwbService;
 import com.hk.logistics.service.PincodeCourierService;
 import com.hk.logistics.service.ShipmentPricingEngine;
 import com.hk.logistics.service.VariantService;
@@ -66,7 +67,7 @@ public class GenericResource {
 	@Autowired
 	PincodeCourierService pincodeCourierService;
 	@Autowired
-	AwbService awbService;
+	CustomAwbService customAwbService;
 	@Autowired
 	ShipmentPricingEngine shipmentPricingEngine;
 	@Autowired
@@ -139,7 +140,7 @@ public class GenericResource {
 			log.error("Awb no or courier name cannot be null");
 			return null;
 		}
-		String msg = awbService.markAwbUnused(courierShortCode, awbNumber, store, channel, vendorCode, null);
+		String msg = customAwbService.markAwbUnused(courierShortCode, awbNumber, store, channel, vendorCode, null);
 		return new Gson().toJson(msg);
 	}
 
@@ -157,7 +158,7 @@ public class GenericResource {
 	public AwbCourierResponse attachAwbForBrightCourierChange(
 			@Valid @RequestBody BrightChangeCourierRequest brightChangeCourierRequest) throws URISyntaxException {
 		Courier courier = courierRepository.findByShortCode(brightChangeCourierRequest.getCourierShortCode());
-		Awb awb = awbService.attachAwbForBright(brightChangeCourierRequest, courier);
+		Awb awb = customAwbService.attachAwbForBright(brightChangeCourierRequest, courier);
 		AwbCourierResponse awbCourierResponse = new AwbCourierResponse();
 		awbCourierResponse.setAwbNumber(awb.getAwbNumber());
 		awbCourierResponse.setCourierId(courier.getId());
@@ -186,7 +187,7 @@ public class GenericResource {
 			} else {
 				Courier courier = courierRepository.findByShortCode(courierShortCode);
 				if (courier != null) {
-					Awb awb = awbService.validateAwb(courier, awbNumber, fulfillmentCentreCode, store, channel, isCod);
+					Awb awb = customAwbService.validateAwb(courier, awbNumber, fulfillmentCentreCode, store, channel, isCod);
 					if (awb != null) {
 						if (awb.getAwbStatus().equals(EnumAwbStatus.Used.getAsAwbStatus())) {
 							healthkartResponse = new HealthkartResponse(HealthkartResponse.STATUS_ERROR,
@@ -229,7 +230,7 @@ public class GenericResource {
 		} else {
 			Courier courier = courierRepository.findByShortCode(courierShortCode);
 			if (courier != null) {
-				Awb awb = awbService.markAwbUnused(courier, awbNumber, fulfillmentCentreCode, store, channel, null);
+				Awb awb = customAwbService.markAwbUnused(courier, awbNumber, fulfillmentCentreCode, store, channel, null);
 				if (awb != null) {
 					if (awb.getAwbStatus().equals(EnumAwbStatus.Attach.getAsAwbStatus())) {
 						healthkartResponse = new HealthkartResponse(HealthkartResponse.STATUS_ERROR,
@@ -275,20 +276,20 @@ public class GenericResource {
 	@Timed
 	public AwbCourierResponse getAwbCourierResponse(@Valid @RequestBody AwbCourierRequest awbCourierRequest)
 			throws URISyntaxException {
-		AwbCourierResponse awbCourierResponse = awbService.getAwbCourierResponse(awbCourierRequest);
+		AwbCourierResponse awbCourierResponse = customAwbService.getAwbCourierResponse(awbCourierRequest);
 		return awbCourierResponse;
 	}
 
 	@PostMapping("/opr/awb/attach")
 	@Timed
 	public AwbResponse attachAwbForCourier(@Valid @RequestBody AwbAttachAPIDto awbAttachAPIDto) throws URISyntaxException {
-		AwbResponse awb = awbService.attachAwb(awbAttachAPIDto);
+		AwbResponse awb = customAwbService.attachAwb(awbAttachAPIDto);
 		return awb;
 	}
 
 	@PostMapping("/courier/change")
 	public AwbResponse changeCourier(@Valid @RequestBody CourierChangeAPIDto courierChangeAPIDto) {
-		Awb awb = awbService.changeCourier(courierChangeAPIDto);
+		Awb awb = customAwbService.changeCourier(courierChangeAPIDto);
 		AwbResponse awbResponse = new AwbResponse();
 		awbResponse.setAwbBarCode(awb.getAwbBarCode());
 		awbResponse.setAwbNumber(awb.getAwbNumber());
@@ -301,7 +302,7 @@ public class GenericResource {
 
 	@PostMapping("/awb/change")
 	public AwbResponse changeAwbNumber(@Valid @RequestBody AwbChangeAPIDto awbChangeAPIDto) {
-		Awb awb = awbService.changeAwbNumber(awbChangeAPIDto);
+		Awb awb = customAwbService.changeAwbNumber(awbChangeAPIDto);
 		AwbResponse awbResponse = new AwbResponse();
 		awbResponse.setAwbBarCode(awb.getAwbBarCode());
 		awbResponse.setAwbNumber(awb.getAwbNumber());

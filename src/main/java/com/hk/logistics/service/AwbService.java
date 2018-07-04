@@ -50,28 +50,5 @@ public interface AwbService {
      * @return the list of entities
      */
     List<AwbDTO> search(String query);
-    Awb getAvailableAwbByVendorWHCourierMappingAndCodAndAwbStatusAndChannel(VendorWHCourierMapping vendorWHCourierMapping,
-                                                                  Boolean cod, AwbStatus awbStatus, Channel channel);
-
-    Awb attachAwbForShipment(Courier suggestedCourier, CourierChannel courierChannel,
-                             VendorWHCourierMapping vendorWHCourierMapping, Boolean cod);
-
-    AwbResponse attachAwb(AwbAttachAPIDto awbAttachAPIDto);
-
-    AwbCourierResponse getAwbCourierResponse(AwbCourierRequest awbCourierRequest);
-
-    Awb changeCourier(CourierChangeAPIDto awbChaneAPIDto);
-
-    Awb changeAwbNumber(AwbChangeAPIDto awbChangeAPIDto);
-
-    Awb attachAwbForBright(BrightChangeCourierRequest brightChangeCourierRequest, Courier courier);
-
-    String markAwbUnused(String courierShortCode, String awbNumber, String store, String channel, String vendorCode,
-                         Long warehouse);
-
-    Awb validateAwb(Courier courier, String awbNumber, String fulfillmentCentreCode, String store, String channelName,
-                    String isCod);
-
-    Awb markAwbUnused(Courier courier, String awbNumber, String fulfillmentCentreCode, String store, String channelName,
-                      String isCod);
+   
 }
