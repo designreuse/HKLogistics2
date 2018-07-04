@@ -77,4 +77,15 @@ export class CourierPricingEngineService {
         });
         return res;
     }
+
+    filter(courierId:number): Observable<EntityArrayResponseType> {
+        console.log('req.filter');
+        // const options = createRequestOption(req);
+        let filterUrl = this.resourceUrl + '/filter?';
+        if(courierId)
+        {
+            filterUrl = filterUrl + 'courierId.equals=' + courierId; 
+        }
+        return this.http.get<ICourierPricingEngine[]>( filterUrl, { observe: 'response' });
+    }
 }

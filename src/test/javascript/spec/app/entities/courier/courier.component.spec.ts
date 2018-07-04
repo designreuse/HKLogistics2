@@ -109,7 +109,7 @@ describe('Component Tests', () => {
 
             // WHEN
             comp.loadPage(1);
-            comp.clear();
+            comp.clearName();
 
             // THEN
             expect(comp.page).toEqual(0);

@@ -33,6 +33,10 @@ public class PincodeRegionZoneCriteria implements Serializable {
     private LongFilter courierGroupId;
 
     private LongFilter sourceDestinationMappingId;
+    
+    private StringFilter sourcePincode;
+    
+    private StringFilter destinationPincode;
 
     public PincodeRegionZoneCriteria() {
     }
@@ -69,7 +73,23 @@ public class PincodeRegionZoneCriteria implements Serializable {
         this.sourceDestinationMappingId = sourceDestinationMappingId;
     }
 
-    @Override
+	public StringFilter getSourcePincode() {
+		return sourcePincode;
+	}
+
+	public void setSourcePincode(StringFilter sourcePincode) {
+		this.sourcePincode = sourcePincode;
+	}
+
+	public StringFilter getDestinationPincode() {
+		return destinationPincode;
+	}
+
+	public void setDestinationPincode(StringFilter destinationPincode) {
+		this.destinationPincode = destinationPincode;
+	}
+
+	@Override
     public String toString() {
         return "PincodeRegionZoneCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +

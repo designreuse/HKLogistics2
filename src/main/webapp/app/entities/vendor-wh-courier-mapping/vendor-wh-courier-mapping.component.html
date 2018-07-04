@@ -12,18 +12,31 @@
     <div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query">
-                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <fa-icon [icon]="'search'"></fa-icon>
-                    </button>
-                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <fa-icon [icon]="'trash-alt'"></fa-icon>
-                    </button>
+                <div class="col-sm-6">Vendor Short Code
+                    <input type="text" class="form-control" [(ngModel)]="vendorShortCode" id="vendorShortCode" name="vendorShortCode">
                 </div>
             </form>
         </div>
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="col-sm-6">WareHouse Id
+                    <input type="text" class="form-control" [(ngModel)]="warehouse" id="warehouse" name="warehouse">
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-6">Courier
+            <select class="form-control" id="courierId" name="courierId" [(ngModel)]="courierId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="courierOption.id" *ngFor="let courierOption of couriers; trackBy: trackCourierById">{{courierOption.name}}</option>
+            </select>
+        </div>
     </div>
+    <button class="input-group-append btn btn-info" (click)="filter()">
+        <fa-icon [icon]="'search'"></fa-icon>
+    </button>
+    <button class="input-group-append btn btn-danger" (click)="clearFilter()" *ngIf="vendorShortCode || warehouse || courierId">
+        <fa-icon [icon]="'trash-alt'"></fa-icon>
+    </button>
     <br/>
     <div class="table-responsive" *ngIf="vendorWHCourierMappings">
         <table class="table table-striped">

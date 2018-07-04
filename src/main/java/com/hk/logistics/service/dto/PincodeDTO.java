@@ -1,6 +1,9 @@
 package com.hk.logistics.service.dto;
 
 import javax.validation.constraints.*;
+
+import com.poiji.annotation.ExcelCellName;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,30 +15,38 @@ public class PincodeDTO implements Serializable {
     private Long id;
 
     @NotNull
+    @ExcelCellName("PINCODE")
     private String pincode;
 
+    @ExcelCellName("REGION")
     private String region;
 
+    @ExcelCellName("LOCALITY")
     private String locality;
 
+    @ExcelCellName("CONVEYANCE_COST")
     private Double lastMileCost;
 
     private String tier;
 
     private Long cityId;
 
+    @ExcelCellName("CITY")
     private String cityName;
 
     private Long stateId;
 
+    @ExcelCellName("STATE")  
     private String stateName;
 
     private Long zoneId;
 
+    @ExcelCellName("ZONE")
     private String zoneName;
 
     private Long hubId;
 
+    @ExcelCellName("NEAREST_HUB")
     private String hubName;
 
     public Long getId() {

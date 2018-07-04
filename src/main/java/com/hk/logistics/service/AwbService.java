@@ -50,5 +50,4 @@ public interface AwbService {
      * @return the list of entities
      */
     List<AwbDTO> search(String query);
-   
 }

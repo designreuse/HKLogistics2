@@ -4,7 +4,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'com.moowork.node'
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-devtools"
+    // compile "org.springframework.boot:spring-boot-devtools"
 }
 
 def profiles = 'dev'

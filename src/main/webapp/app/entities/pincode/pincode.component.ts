@@ -16,7 +16,7 @@ export class PincodeComponent implements OnInit, OnDestroy {
     pincodes: IPincode[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
+    currentSearchName: string;
 
     constructor(
         private pincodeService: PincodeService,
@@ -25,43 +25,44 @@ export class PincodeComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {
-        this.currentSearch =
-            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search']
-                ? this.activatedRoute.snapshot.params['search']
+        this.currentSearchName =
+            this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['searchName']
+                ? this.activatedRoute.snapshot.params['searchName']
                 : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
+        if (this.currentSearchName) {
             this.pincodeService
-                .search({
-                    query: this.currentSearch
+                .searchName({
+                    query: this.currentSearchName
                 })
                 .subscribe(
                     (res: HttpResponse<IPincode[]>) => (this.pincodes = res.body),
                     (res: HttpErrorResponse) => this.onError(res.message)
                 );
+            console.log('cityId' + this.pincodes[0].pincode);
             return;
         }
         this.pincodeService.query().subscribe(
             (res: HttpResponse<IPincode[]>) => {
                 this.pincodes = res.body;
-                this.currentSearch = '';
+                this.currentSearchName = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
+    searchName(query) {
         if (!query) {
             return this.clear();
         }
-        this.currentSearch = query;
+        this.currentSearchName = query;
         this.loadAll();
     }
 
     clear() {
-        this.currentSearch = '';
+        this.currentSearchName = '';
         this.loadAll();
     }
 
@@ -87,5 +88,33 @@ export class PincodeComponent implements OnInit, OnDestroy {
 
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
+    }
+
+    downloadFileFromServer() {
+        console.log( 'downloadFileFromServer' );
+        this.pincodeService.downloadFile();
+        return ;
+    }
+
+    upload(event) {
+        const elem = event.target;
+        if (elem.files.length > 0) {
+          const fileSelected: File = elem.files[0];
+          if (fileSelected.name.substring(fileSelected.name.lastIndexOf('.')) !== '.xls') {
+            return this.jhiAlertService.error('Please upload .xls file!', null, null);
+          }
+          this.pincodeService.uploadFile(fileSelected)
+             .subscribe( response => {
+          console.log('set any success actions...');
+          this.jhiAlertService.success('uploaded file please refresh after sometime', null, null);
+         // this.loadAll();
+          return response;
+    }.
+     error => {
+       console.log(error.message);
+       this.jhiAlertService.error(error.statusText, null, null);
+     });
+        event.target.value = null;
+        }
     }
 }

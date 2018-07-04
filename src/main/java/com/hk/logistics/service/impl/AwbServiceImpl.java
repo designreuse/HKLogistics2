@@ -9,6 +9,12 @@ import com.hk.logistics.service.*;
 import com.hk.logistics.repository.search.AwbSearchRepository;
 import com.hk.logistics.service.dto.*;
 import com.hk.logistics.service.mapper.AwbMapper;
+
+import io.github.jhipster.service.filter.BooleanFilter;
+import io.github.jhipster.service.filter.LongFilter;
+import io.github.jhipster.service.filter.StringFilter;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +43,6 @@ public class AwbServiceImpl implements AwbService {
 	private final AwbMapper awbMapper;
 
 	private final AwbSearchRepository awbSearchRepository;
-
-	
 
 	public AwbServiceImpl(AwbRepository awbRepository, AwbMapper awbMapper, AwbSearchRepository awbSearchRepository) {
 		this.awbRepository = awbRepository;
@@ -118,7 +122,4 @@ public class AwbServiceImpl implements AwbService {
 				.map(awbMapper::toDto)
 				.collect(Collectors.toList());
 	}
-
-
-
 }

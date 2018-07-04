@@ -5,18 +5,27 @@ import com.hk.logistics.service.VendorWHCourierMappingService;
 import com.hk.logistics.web.rest.errors.BadRequestAlertException;
 import com.hk.logistics.web.rest.util.HeaderUtil;
 import com.hk.logistics.service.dto.VendorWHCourierMappingDTO;
+import com.hk.logistics.service.dto.PincodeRegionZoneCriteria;
+import com.hk.logistics.service.dto.PincodeRegionZoneDTO;
+import com.hk.logistics.service.dto.SourceDestinationMappingCriteria;
+import com.hk.logistics.service.dto.SourceDestinationMappingDTO;
 import com.hk.logistics.service.dto.VendorWHCourierMappingCriteria;
+import com.hk.logistics.service.CourierService;
 import com.hk.logistics.service.VendorWHCourierMappingQueryService;
+
+import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -37,6 +46,9 @@ public class VendorWHCourierMappingResource {
     private final VendorWHCourierMappingService vendorWHCourierMappingService;
 
     private final VendorWHCourierMappingQueryService vendorWHCourierMappingQueryService;
+    
+    @Autowired
+    private CourierService courierService;
 
     public VendorWHCourierMappingResource(VendorWHCourierMappingService vendorWHCourierMappingService, VendorWHCourierMappingQueryService vendorWHCourierMappingQueryService) {
         this.vendorWHCourierMappingService = vendorWHCourierMappingService;
@@ -140,5 +152,26 @@ public class VendorWHCourierMappingResource {
         log.debug("REST request to search VendorWHCourierMappings for query {}", query);
         return vendorWHCourierMappingService.search(query);
     }
+    
+    @GetMapping("/vendor-wh-courier-mappings/filter")
+    @Timed
+	public List<VendorWHCourierMappingDTO> filter(HttpServletResponse response, VendorWHCourierMappingCriteria criteria) {
+		log.debug("REST request to filter Couriers for criteria {}", criteria);
+
+		List<VendorWHCourierMappingDTO> list = vendorWHCourierMappingQueryService.findByCriteria(criteria);
+		
+		List<VendorWHCourierMappingDTO> resultList = new ArrayList<VendorWHCourierMappingDTO>();
+		if(criteria.getCourierId()!=null)
+		{
+			list.forEach(vendorWHCourierMapping->{ 
+				if(vendorWHCourierMapping.getCourierId().equals(criteria.getCourierId().getEquals()))
+				{
+					resultList.add(vendorWHCourierMapping);
+				}
+			});
+		}
+		return resultList;
+
+	}
 
 }

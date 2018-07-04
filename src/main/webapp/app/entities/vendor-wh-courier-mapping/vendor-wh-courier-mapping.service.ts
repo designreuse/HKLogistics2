@@ -41,4 +41,37 @@ export class VendorWHCourierMappingService {
         const options = createRequestOption(req);
         return this.http.get<IVendorWHCourierMapping[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
     }
+
+    filter(vendor: string, warehouse:number, courierId:number): Observable<EntityArrayResponseType> {
+        console.log('req.filter');
+        // const options = createRequestOption(req);
+        let filterUrl = this.resourceUrl + '/filter?';
+        if(vendor && warehouse && courierId)
+        {
+            filterUrl = filterUrl + 'vendor.equals=' + vendor + '&warehouse.equals=' + warehouse + 
+            '&courierId.equals=' + courierId ;
+        }
+        else if(vendor && warehouse){
+            filterUrl = filterUrl + 'vendor.equals=' + vendor + '&warehouse.equals=' + warehouse;
+        }
+        else if(vendor && courierId){
+            filterUrl = filterUrl + 'vendor.equals=' + vendor + '&courierId.equals=' + courierId;
+        }
+        else if(warehouse && courierId){
+            filterUrl = filterUrl + 'warehouse.equals=' + warehouse + '&courierId.equals=' + courierId;
+        }
+        else if(vendor)
+        {
+            filterUrl = filterUrl + 'vendor.equals=' + vendor; 
+        }
+        else if(warehouse)
+        {
+            filterUrl = filterUrl + 'warehouse.equals=' + warehouse; 
+        }
+        else if(courierId)
+        {
+            filterUrl = filterUrl + 'courierId.equals=' + courierId; 
+        }
+        return this.http.get<IVendorWHCourierMapping[]>( filterUrl, { observe: 'response' });
+    }
 }

@@ -10,7 +10,7 @@
     </h2>
     <jhi-alert></jhi-alert>
     <div class="row">
-        <div class="col-sm-6">Courier Group
+        <div class="col-sm-6">Courier
             <select [(ngModel)]="courier" class="form-control">
                 <option option value="null" disabled selected>Select Courier</option>
                 <option [ngValue]="courierOption" *ngFor="let courierOption of couriers; trackBy: trackCourierById">{{courierOption.name}}</option>
@@ -26,11 +26,20 @@
     </div>
     <div class="row">
     </div>
-
+    <div class="row">
     <button (click)="downloadFileFromServer()" style="margin-top: 40px;"  class="btn btn-warning float-right jh-create-entity">
             <i class="fa fa-download" aria-hidden="true"></i>
             <span class="hidden-sm-down" >
             Download
             </span>
     </button>
+    </div>
+    <div class="row">
+    <label for="files" class="btn btn-primary float-right jh-create-entity create-region-type">Upload</label>
+    <input id="files" style="display: none" type="file" this.value="upload" accept=".xls" (change)=upload($event)>
+</div>
+<div class="row">
+    <label for="filesToDelete" class="btn btn-primary float-right jh-create-entity create-region-type">Delete</label>
+    <input id="filesToDelete" style="display: none" type="file" this.value="delete" accept=".xls" (change)=deleteBulk($event)>
+</div>
 </div>

@@ -47,6 +47,8 @@ public class AwbCriteria implements Serializable {
     private LongFilter vendorWHCourierMappingId;
 
     private LongFilter awbStatusId;
+    
+    private LongFilter courierId;
 
     public AwbCriteria() {
     }
@@ -139,7 +141,15 @@ public class AwbCriteria implements Serializable {
         this.awbStatusId = awbStatusId;
     }
 
-    @Override
+    public LongFilter getCourierId() {
+		return courierId;
+	}
+
+	public void setCourierId(LongFilter courierId) {
+		this.courierId = courierId;
+	}
+
+	@Override
     public String toString() {
         return "AwbCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +

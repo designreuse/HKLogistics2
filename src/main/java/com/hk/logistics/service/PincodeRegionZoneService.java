@@ -49,4 +49,6 @@ public interface PincodeRegionZoneService {
      * @return the list of entities
      */
     List<PincodeRegionZoneDTO> search(String query);
+
+	List<PincodeRegionZoneDTO> upload(List<PincodeRegionZoneDTO> batch);
 }

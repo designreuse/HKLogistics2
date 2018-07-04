@@ -1,21 +1,28 @@
 package com.hk.logistics.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.hk.logistics.domain.*;
+import com.hk.logistics.repository.search.AwbSearchRepository;
+import com.hk.logistics.service.*;
+import com.hk.logistics.service.dto.*;
+import com.hk.logistics.service.mapper.AwbMapper;
+import io.github.jhipster.service.filter.BooleanFilter;
+import io.github.jhipster.service.filter.LongFilter;
+import io.github.jhipster.service.filter.StringFilter;
+import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hk.logistics.constants.EnumAwbStatus;
-import com.hk.logistics.domain.Awb;
-import com.hk.logistics.domain.AwbStatus;
-import com.hk.logistics.domain.Channel;
-import com.hk.logistics.domain.Courier;
-import com.hk.logistics.domain.CourierChannel;
-import com.hk.logistics.domain.VendorWHCourierMapping;
 import com.hk.logistics.enums.EnumChannel;
 import com.hk.logistics.enums.EnumWarehouse;
 import com.hk.logistics.repository.AwbRepository;
@@ -24,24 +31,11 @@ import com.hk.logistics.repository.CourierChannelRepository;
 import com.hk.logistics.repository.CourierRepository;
 import com.hk.logistics.repository.PincodeRepository;
 import com.hk.logistics.repository.VendorWHCourierMappingRepository;
-import com.hk.logistics.service.AwbService;
-import com.hk.logistics.service.CourierCostCalculatorService;
-import com.hk.logistics.service.CustomAwbService;
-import com.hk.logistics.service.PincodeCourierService;
-import com.hk.logistics.service.VariantService;
-import com.hk.logistics.service.VendorService;
-import com.hk.logistics.service.WarehouseService;
-import com.hk.logistics.service.dto.AwbAttachAPIDto;
-import com.hk.logistics.service.dto.AwbChangeAPIDto;
-import com.hk.logistics.service.dto.AwbCourierRequest;
-import com.hk.logistics.service.dto.AwbCourierResponse;
-import com.hk.logistics.service.dto.AwbResponse;
-import com.hk.logistics.service.dto.BrightChangeCourierRequest;
-import com.hk.logistics.service.dto.CourierChangeAPIDto;
-import com.hk.logistics.service.dto.WarehouseDTO;
 
 @Service
 public class CustomAwbServiceImpl implements CustomAwbService {
+
+    private final Logger log = LoggerFactory.getLogger(AwbServiceImpl.class);
 
 	@Autowired
 	VendorWHCourierMappingRepository vendorWHCourierMappingRepository;
@@ -65,7 +59,14 @@ public class CustomAwbServiceImpl implements CustomAwbService {
 	VariantService variantService;
 	@Autowired
 	AwbRepository awbRepository;
-
+    @Autowired
+    AwbMapper awbMapper;
+    @Autowired
+    AwbSearchRepository awbSearchRepository;
+    @Autowired
+    VendorWHCourierMappingQueryService vendorWHCourierMappingQueryService;
+    @Autowired
+    AwbQueryService awbQueryService;
 
 	@Override
 	public Awb getAvailableAwbByVendorWHCourierMappingAndCodAndAwbStatusAndChannel(VendorWHCourierMapping vendorWHCourierMapping, Boolean cod, AwbStatus awbStatus, Channel channel) {
@@ -317,4 +318,164 @@ public class CustomAwbServiceImpl implements CustomAwbService {
 		Awb awb = awbRepository.findByVendorWHCourierMappingAndAwbNumberAndCod(vendorWHCourierMapping,awbNumber, Boolean.parseBoolean(isCod));
 		return awb;
 	}
+
+
+
+    @Override
+    @Transactional
+    public List<AwbDTO> upload(List<AwbDTO> batch) {
+        log.debug("Request to upload Awb : {}", batch);
+        List<Awb> inList = batch.parallelStream().map(dto -> awbMapper.toEntity(dto))
+            .collect(Collectors.toList());
+        List<Awb> outList = awbRepository.saveAll(inList);
+        List<AwbDTO> result = outList.parallelStream().map(awb -> awbMapper.toDto(awb))
+            .collect(Collectors.toList());
+        awbSearchRepository.saveAll(inList);
+        return result;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public VendorWHCourierMappingDTO getVendorWHCourierMappingByCourierAndWHId(Long courierId, Long whId) {
+        VendorWHCourierMappingCriteria vendorWHCourierMappingCriteria = new VendorWHCourierMappingCriteria();
+        LongFilter courierIdFilter = new LongFilter();
+        courierIdFilter.setEquals(courierId);
+
+        LongFilter whIdFilter = new LongFilter();
+        whIdFilter.setEquals(whId);
+
+        vendorWHCourierMappingCriteria.setCourierId(courierIdFilter);
+        vendorWHCourierMappingCriteria.setWarehouse(whIdFilter);
+
+        List<VendorWHCourierMappingDTO> list = vendorWHCourierMappingQueryService
+            .findByCriteria(vendorWHCourierMappingCriteria);
+
+        if (CollectionUtils.isNotEmpty(list))
+            return list.get(0);
+
+        return null;
+    }
+
+    @Override
+    @Transactional(readOnly=true)
+    public VendorWHCourierMappingDTO getVendorWHCourierMappingByCourierAndVendorShortCode(Long courierId,
+                                                                                          String vendorShortCode) {
+        VendorWHCourierMappingCriteria vendorWHCourierMappingCriteria = new VendorWHCourierMappingCriteria();
+        LongFilter courierIdFilter = new LongFilter();
+        courierIdFilter.setEquals(courierId);
+
+        StringFilter vendorFilter = new StringFilter();
+        vendorFilter.setEquals(vendorShortCode);
+
+        vendorWHCourierMappingCriteria.setCourierId(courierIdFilter);
+        vendorWHCourierMappingCriteria.setVendor(vendorFilter);
+
+        List<VendorWHCourierMappingDTO> list = vendorWHCourierMappingQueryService
+            .findByCriteria(vendorWHCourierMappingCriteria);
+
+        if (CollectionUtils.isNotEmpty(list))
+            return list.get(0);
+
+        return null;
+    }
+
+    @Override
+    public List<AwbExcelPojo> getAwbsForExcelDownload(AwbCriteria criteria) {
+        VendorWHCourierMappingCriteria vendorWHCourierMappingCriteria = new VendorWHCourierMappingCriteria();
+        vendorWHCourierMappingCriteria.setCourierId(criteria.getCourierId());
+        List<VendorWHCourierMappingDTO> vendorWHCourierMappingList = vendorWHCourierMappingQueryService
+            .findByCriteria(vendorWHCourierMappingCriteria);
+
+        List<AwbExcelPojo> awbExcelPojoList = new ArrayList<AwbExcelPojo>();
+        if (CollectionUtils.isNotEmpty(vendorWHCourierMappingList)) {
+            for (VendorWHCourierMappingDTO vendorWHCourierMapping : vendorWHCourierMappingList) {
+                LongFilter vendorWHCourierMappingFilter = new LongFilter();
+                vendorWHCourierMappingFilter.setEquals(vendorWHCourierMapping.getId());
+                criteria.setVendorWHCourierMappingId(vendorWHCourierMappingFilter);
+                criteria.setCourierId(null);
+
+                List<AwbDTO> dtoList = awbQueryService.findByCriteria(criteria);
+                if (CollectionUtils.isNotEmpty(dtoList)) {
+
+                    awbExcelPojoList = mapToAwbExcelPojo(dtoList, vendorWHCourierMapping.getCourierId(),
+                        vendorWHCourierMapping.getVendor(), vendorWHCourierMapping.getWarehouse());
+                }
+            }
+        }
+        return awbExcelPojoList;
+    }
+
+    private List<AwbExcelPojo> mapToAwbExcelPojo(List<AwbDTO> dtoList, Long courierId, String vendorShortCode, Long whId) {
+        List<AwbExcelPojo> list = dtoList.parallelStream().map(dto -> convertToAwbExcelPojo(dto, courierId, vendorShortCode, whId))
+            .collect(Collectors.toList());
+        return list;
+    }
+
+    private AwbExcelPojo convertToAwbExcelPojo(AwbDTO dto, Long courierId, String vendorShortCode, Long whId) {
+        AwbExcelPojo pojo = new AwbExcelPojo();
+        pojo.setAwbNumber(dto.getAwbNumber());
+        pojo.setCod(dto.isCod());
+        pojo.setAwbStatus(dto.getAwbStatusStatus());
+        pojo.setChannelName(dto.getChannelName());
+        pojo.setVendorShortCode(vendorShortCode);
+        pojo.setWhId(whId);
+
+        return pojo;
+    }
+
+    @Override
+    @Transactional(readOnly=true)
+    public AwbDTO isAwbEligibleForDeletion(Long courierId, String awbNumber, Long whId, Boolean cod) {{
+        // :: TODO
+        List<AwbStatus> awbStatusList = Arrays.asList(EnumAwbStatus.Unused.getAsAwbStatus(), EnumAwbStatus.Used.getAsAwbStatus());
+
+        VendorWHCourierMappingCriteria vendorWHCourierMappingCriteria = new VendorWHCourierMappingCriteria();
+
+        LongFilter courierIdFilter = new LongFilter();
+        courierIdFilter.equals(courierId);
+
+        LongFilter whIdFilter = new LongFilter();
+        whIdFilter.equals(whId);
+
+        vendorWHCourierMappingCriteria.setCourierId(courierIdFilter);
+        vendorWHCourierMappingCriteria.setWarehouse(whIdFilter);
+        List<VendorWHCourierMappingDTO> vendorWHCourierMappingDTOList = vendorWHCourierMappingQueryService.findByCriteria(vendorWHCourierMappingCriteria);
+
+        List<Long> vendorWHCourierMappingIds = new ArrayList<Long>();
+
+        if(CollectionUtils.isNotEmpty(vendorWHCourierMappingDTOList))
+        {
+            vendorWHCourierMappingDTOList.forEach(dto-> vendorWHCourierMappingIds.add(dto.getId()));
+        }
+
+        AwbCriteria awbCriteria = new AwbCriteria();
+        LongFilter vendorWHCourierMappingIdFilter = new LongFilter();
+        vendorWHCourierMappingIdFilter.setIn(vendorWHCourierMappingIds);
+
+        StringFilter awbNumberFilter = new StringFilter();
+        awbNumberFilter.setEquals(awbNumber);
+
+        BooleanFilter codFilter = new BooleanFilter();
+        codFilter.equals(cod);
+
+        LongFilter awbStatusIdFilter = new LongFilter();
+        awbStatusIdFilter.setIn(Arrays.asList(1L,2L));
+
+        awbCriteria.setVendorWHCourierMappingId(vendorWHCourierMappingIdFilter);
+        awbCriteria.setAwbStatusId(awbStatusIdFilter);
+        awbCriteria.setAwbNumber(awbNumberFilter);
+        awbCriteria.setCod(codFilter);
+        AwbDTO awbFromDb = awbQueryService.findByCriteria(awbCriteria).get(0);
+        if (awbFromDb != null) {
+            // ::TODO
+            //String shipmentQuery = " select  s.awb from Shipment s where s.awb.id = :awbId";
+            //List<Awb> awbList = getCurrentSession().createQuery(shipmentQuery).setParameter("awbId", awbFromDb.getId()).list();
+            //if (awbList == null || awbList.size() == 0) {
+            return awbFromDb;
+            //}
+        }
+        return null;
+    }
+}
+
 }

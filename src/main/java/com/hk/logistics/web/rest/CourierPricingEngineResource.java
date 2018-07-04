@@ -5,6 +5,8 @@ import com.hk.logistics.service.CourierPricingEngineService;
 import com.hk.logistics.web.rest.errors.BadRequestAlertException;
 import com.hk.logistics.web.rest.util.HeaderUtil;
 import com.hk.logistics.service.dto.CourierPricingEngineDTO;
+import com.hk.logistics.service.dto.VendorWHCourierMappingCriteria;
+import com.hk.logistics.service.dto.VendorWHCourierMappingDTO;
 import com.hk.logistics.service.dto.CourierPricingEngineCriteria;
 import com.hk.logistics.service.CourierPricingEngineQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -13,10 +15,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -140,5 +143,15 @@ public class CourierPricingEngineResource {
         log.debug("REST request to search CourierPricingEngines for query {}", query);
         return courierPricingEngineService.search(query);
     }
+    
+    @GetMapping("/courier-pricing-engines/filter")
+    @Timed
+	public List<CourierPricingEngineDTO> filter(HttpServletResponse response, CourierPricingEngineCriteria criteria) {
+		log.debug("REST request to filter courier-pricing-engines for criteria {}", criteria);
+
+		return courierPricingEngineQueryService.findByCriteria(criteria);
+		
+	}
+
 
 }

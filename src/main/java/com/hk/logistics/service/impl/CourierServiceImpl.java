@@ -111,4 +111,20 @@ public class CourierServiceImpl implements CourierService {
         return courierSearchRepository.search(queryStringQuery(query), pageable)
             .map(courierMapper::toDto);
     }
+    
+    /**
+     * Search for the courier corresponding to the query.
+     *
+     * @param query the query of the search
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<CourierDTO> searchByName(String query, Pageable pageable) {
+        log.debug("Request to search for a page of Couriers for query {}", query);
+        return courierSearchRepository.findByName(query, pageable)
+            .map(courierMapper::toDto);
+    }
 }

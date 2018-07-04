@@ -54,7 +54,7 @@ spring:
     data:
         elasticsearch:
             cluster-name: elasticsearch-manish30
-            cluster-nodes: 192.168.70.127:9300
+            cluster-nodes: 192.168.70.123:9300
             #properties:
              #   path:
               #      logs: build/elasticsearch/log

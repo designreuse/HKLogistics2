@@ -1,20 +1,10 @@
 package com.hk.logistics.service;
 
+import com.hk.logistics.domain.*;
+import com.hk.logistics.service.dto.*;
 import org.springframework.stereotype.Service;
 
-import com.hk.logistics.domain.Awb;
-import com.hk.logistics.domain.AwbStatus;
-import com.hk.logistics.domain.Channel;
-import com.hk.logistics.domain.Courier;
-import com.hk.logistics.domain.CourierChannel;
-import com.hk.logistics.domain.VendorWHCourierMapping;
-import com.hk.logistics.service.dto.AwbAttachAPIDto;
-import com.hk.logistics.service.dto.AwbChangeAPIDto;
-import com.hk.logistics.service.dto.AwbCourierRequest;
-import com.hk.logistics.service.dto.AwbCourierResponse;
-import com.hk.logistics.service.dto.AwbResponse;
-import com.hk.logistics.service.dto.BrightChangeCourierRequest;
-import com.hk.logistics.service.dto.CourierChangeAPIDto;
+import java.util.List;
 
 public interface CustomAwbService {
 
@@ -42,4 +32,15 @@ public interface CustomAwbService {
 
 	Awb markAwbUnused(Courier courier, String awbNumber, String fulfillmentCentreCode, String store, String channelName,
 			String isCod);
+
+    List<AwbDTO> upload(List<AwbDTO> batch);
+
+    VendorWHCourierMappingDTO getVendorWHCourierMappingByCourierAndWHId(Long courierId, Long whId);
+
+    VendorWHCourierMappingDTO getVendorWHCourierMappingByCourierAndVendorShortCode(Long courierId,
+			String vendorShortCode);
+
+    List<AwbExcelPojo> getAwbsForExcelDownload(AwbCriteria criteria);
+
+    AwbDTO isAwbEligibleForDeletion(Long courierId, String awbNumber, Long whId, Boolean cod);
 }

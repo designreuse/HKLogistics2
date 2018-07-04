@@ -12,18 +12,46 @@
     <div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="Query">
-                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                <div class="col-sm-6">Courier Name
+                    <input type="text" class="form-control" [(ngModel)]="currentSearchName" 
+                    id="currentSearchName" name="currentSearchName">
+                   <!-- <button class="input-group-append btn btn-info" (click)="searchName(currentSearchName)">
                         <fa-icon [icon]="'search'"></fa-icon>
                     </button>
-                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                    <button class="input-group-append btn btn-danger" (click)="clearName()" *ngIf="currentSearchName">
                         <fa-icon [icon]="'trash-alt'"></fa-icon>
-                    </button>
+                    </button>-->
                 </div>
             </form>
         </div>
     </div>
+    <div class="col-sm-6">Courier Group
+        <select [(ngModel)]="courierGroup" class="form-control">
+            <option option value="null" disabled selected>Courier Group</option>
+            <option [ngValue]="courierOption" *ngFor="let courierOption of couriergroups; trackBy: trackCourierGroupById">{{courierOption.name}}</option>
+        </select>
+    </div>
+    <div class="col-sm-6">Status
+        <select [(ngModel)]="status">
+            <option value="null" disabled selected>All</option>
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+        </select>
+    </div>
+    <div class="col-sm-6">Courier Operations
+        <select [(ngModel)]="operation">
+            <option value="null" disabled selected>All</option>
+            <option value="hkShipping">hkShipping</option>
+            <option value="vendorShipping">vendorShipping</option>
+            <option value="reversePickup">reversePickup</option>
+        </select>
+    </div>
+    <button class="input-group-append btn btn-info" (click)="filter()">
+        <fa-icon [icon]="'search'"></fa-icon>
+    </button>
+    <button class="input-group-append btn btn-danger" (click)="clearFilter()" *ngIf="currentSearchName || courierGroup || status || operation">
+        <fa-icon [icon]="'trash-alt'"></fa-icon>
+    </button>
     <br/>
     <div class="table-responsive" *ngIf="couriers">
         <table class="table table-striped">

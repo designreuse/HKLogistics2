@@ -6,6 +6,7 @@ import com.hk.logistics.web.rest.errors.BadRequestAlertException;
 import com.hk.logistics.web.rest.util.HeaderUtil;
 import com.hk.logistics.web.rest.util.PaginationUtil;
 import com.hk.logistics.service.dto.CourierDTO;
+import com.hk.logistics.service.dto.AwbCriteria;
 import com.hk.logistics.service.dto.CourierCriteria;
 import com.hk.logistics.service.CourierQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -133,7 +135,7 @@ public class CourierResource {
         courierService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
+    
     /**
      * SEARCH  /_search/couriers?query=:query : search for the courier corresponding
      * to the query.
@@ -144,11 +146,36 @@ public class CourierResource {
      */
     @GetMapping("/_search/couriers")
     @Timed
-    public ResponseEntity<List<CourierDTO>> searchCouriers(@RequestParam String query, Pageable pageable) {
+    public ResponseEntity<List<CourierDTO>> search(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Couriers for query {}", query);
         Page<CourierDTO> page = courierService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/couriers");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    /**
+     * SEARCH  /_search/couriers?query=:query : search for the courier corresponding
+     * to the query.
+     *
+     * @param query the query of the courier search
+     * @param pageable the pagination information
+     * @return the result of the search
+     */
+    @GetMapping("/_search/couriers/name")
+    @Timed
+    public ResponseEntity<List<CourierDTO>> searchCouriersByName(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of Couriers for query {}", query);
+        Page<CourierDTO> page = courierService.searchByName(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/couriers/name");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+    @GetMapping("/couriers/filter")
+    @Timed
+    public ResponseEntity<List<CourierDTO>> filter(HttpServletResponse response, CourierCriteria criteria, Pageable pageable) {
+        log.debug("REST request to filter Couriers for criteria {}", criteria);
+        Page<CourierDTO> page = courierQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders("", page, "/api/_search/couriers/filter");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 }

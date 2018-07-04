@@ -79,9 +79,9 @@ security:
         client:
             access-token-uri: http://192.168.70.107:9080/auth/realms/Logistics/protocol/openid-connect/token
             user-authorization-uri: http://192.168.70.107:9080/auth/realms/Logistics/protocol/openid-connect/auth
-            client-id: web_app
-            client-secret: 7d7bcefe-a7a1-40c2-9162-ba1ab91179b0
-            scope: openid profile email
+            client-id: web-app
+            client-secret: 92741eb6-96bc-403f-983c-4d3e15d9c03a #7d7bcefe-a7a1-40c2-9162-ba1ab91179b0
+            scope: openid profile email roles login
         resource:
             user-info-uri: http://192.168.70.107:9080/auth/realms/Logistics/protocol/openid-connect/userinfo
 

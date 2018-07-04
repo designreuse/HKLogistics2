@@ -53,4 +53,14 @@ public interface CourierService {
      * @return the list of entities
      */
     Page<CourierDTO> search(String query, Pageable pageable);
+
+    /**
+     * Search for the courier corresponding to the query.
+     *
+     * @param query the query of the search
+     * 
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+	Page<CourierDTO> searchByName(String query, Pageable pageable);
 }

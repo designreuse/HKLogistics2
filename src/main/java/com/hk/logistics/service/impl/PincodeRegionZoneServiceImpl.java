@@ -1,9 +1,11 @@
 package com.hk.logistics.service.impl;
 
 import com.hk.logistics.service.PincodeRegionZoneService;
+import com.hk.logistics.domain.Pincode;
 import com.hk.logistics.domain.PincodeRegionZone;
 import com.hk.logistics.repository.PincodeRegionZoneRepository;
 import com.hk.logistics.repository.search.PincodeRegionZoneSearchRepository;
+import com.hk.logistics.service.dto.PincodeDTO;
 import com.hk.logistics.service.dto.PincodeRegionZoneDTO;
 import com.hk.logistics.service.mapper.PincodeRegionZoneMapper;
 import org.slf4j.Logger;
@@ -113,4 +115,17 @@ public class PincodeRegionZoneServiceImpl implements PincodeRegionZoneService {
             .map(pincodeRegionZoneMapper::toDto)
             .collect(Collectors.toList());
     }
+    
+    @Override
+	@Transactional
+	public List<PincodeRegionZoneDTO> upload(List<PincodeRegionZoneDTO> batch) {
+		log.debug("Request to upload Pincode : {}", batch);
+		List<PincodeRegionZone> inList = batch.parallelStream().map(dto -> pincodeRegionZoneMapper.toEntity(dto))
+				.collect(Collectors.toList());
+		List<PincodeRegionZone> outList = pincodeRegionZoneRepository.saveAll(inList);
+		List<PincodeRegionZoneDTO> result = outList.parallelStream().map(pincode -> pincodeRegionZoneMapper.toDto(pincode))
+				.collect(Collectors.toList());
+		pincodeRegionZoneSearchRepository.saveAll(inList);
+		return result;
+	}
 }

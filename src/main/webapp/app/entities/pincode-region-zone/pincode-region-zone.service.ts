@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { IPincodeRegionZone } from 'app/shared/model/pincode-region-zone.model';
+import { ICourierGroup } from 'app/shared/model/courier-group.model';
 
 type EntityResponseType = HttpResponse<IPincodeRegionZone>;
 type EntityArrayResponseType = HttpResponse<IPincodeRegionZone[]>;
@@ -40,5 +41,35 @@ export class PincodeRegionZoneService {
     search(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
         return this.http.get<IPincodeRegionZone[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+    }
+
+    filter(sourcePincode: string, destinationPincode: string, courierGroup: ICourierGroup, 
+        regionTypeId: number): Observable<EntityArrayResponseType> {
+        console.log('req.filter');
+        // const options = createRequestOption(req);
+        let filterUrl = this.resourceUrl + '/filter?';
+        if(destinationPincode)
+        {
+            filterUrl = filterUrl + 'destinationPincode.equals=' + destinationPincode;
+        }
+        if(sourcePincode)
+        {
+            filterUrl = filterUrl + '&sourcePincode.equals=' + sourcePincode;
+        }
+        if(courierGroup)
+        {
+            filterUrl = filterUrl + '&courierGroupId.equals=' + courierGroup.id;
+        }
+        if(regionTypeId)
+        {
+            filterUrl = filterUrl + '&regionTypeId.equals=' + regionTypeId;
+        }
+        return this.http.get<IPincodeRegionZone[]>( filterUrl, { observe: 'response' });
+    }
+
+    public uploadFile(fileToUpload: File) {
+        const _formData = new FormData();
+        _formData.append('file', fileToUpload, fileToUpload.name);
+        return this.http.post<IPincodeRegionZone>(this.resourceUrl + '/upload', _formData, { observe: 'response' });
     }
 }
